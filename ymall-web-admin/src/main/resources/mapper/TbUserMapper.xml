@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbUserMapper" >
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbUser" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="file" property="file" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List">
+   id, username, password, phone, email, created, updated, sex, address, state, description,
+   role_id, file
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbUser" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_user (username, password, phone,
+      email, sex, address, 
+      state, description, role_id, 
+      file, created, updated
+      )
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, 
+      #{file,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbUser" >
+    update tb_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=INTEGER},
+      file = #{file,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, username, password, phone, email, sex, address, state, description, role_id, 
+    file, created, updated
+    from tb_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, username, password, phone, email, sex, address, state, description, role_id, 
+    file, created, updated
+    from tb_user
+  </select>
+
+    <select id="getRoles" resultType="string">
+        select r.name
+        from tb_user u
+        join tb_role r on u.role_id = r.id
+        where u.username = #{username}
+    </select>
+
+    <select id="getPermissions" resultType="string">
+        select p.permission
+        from tb_user u
+        join tb_role r on u.role_id = r.id
+        join tb_role_perm rp on rp.role_id = u.role_id
+        join tb_permission p on rp.permission_id = p.id
+        where u.username = #{username}
+    </select>
+
+    <select id="getUserByUsername" resultType="TbUser">
+        select <include refid="Base_Column_List"/>
+        from tb_user
+        where username = #{username}
+    </select>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbRolePermMapper" >
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbRolePerm" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="permission_id" property="permissionId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_role_perm
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbRolePerm" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_role_perm (role_id, permission_id)
+    values (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbRolePerm" >
+    update tb_role_perm
+    set role_id = #{roleId,jdbcType=INTEGER},
+      permission_id = #{permissionId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, role_id, permission_id
+    from tb_role_perm
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, role_id, permission_id
+    from tb_role_perm
+  </select>
+</mapper>

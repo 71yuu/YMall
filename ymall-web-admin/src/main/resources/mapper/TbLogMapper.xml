@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbLogMapper" >
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="request_type" property="requestType" jdbcType="VARCHAR" />
+    <result column="request_param" property="requestParam" jdbcType="VARCHAR" />
+    <result column="user" property="user" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="ip_info" property="ipInfo" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbLog" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_log (name, type, url,
+      request_type, request_param, user, 
+      ip, ip_info, time, create_date
+      )
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
+      #{requestType,jdbcType=VARCHAR}, #{requestParam,jdbcType=VARCHAR}, #{user,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{ipInfo,jdbcType=VARCHAR}, #{time,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbLog" >
+    update tb_log
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      request_type = #{requestType,jdbcType=VARCHAR},
+      request_param = #{requestParam,jdbcType=VARCHAR},
+      user = #{user,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      ip_info = #{ipInfo,jdbcType=VARCHAR},
+      time = #{time,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, name, type, url, request_type, request_param, user, ip, ip_info, time, 
+    create_date
+    from tb_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, name, type, url, request_type, request_param, user, ip, ip_info, time, 
+    create_date
+    from tb_log
+  </select>
+</mapper>

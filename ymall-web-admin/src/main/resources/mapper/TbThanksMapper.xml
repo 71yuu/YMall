@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbThanksMapper" >
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbThanks" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="info" property="info" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_thanks
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbThanks" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_thanks (nick_name, username, money,
+      info, email, state, 
+      pay_type, order_id, date
+      )
+    values (#{nickName,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{info,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{payType,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbThanks" >
+    update tb_thanks
+    set nick_name = #{nickName,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      info = #{info,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      pay_type = #{payType,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, nick_name, username, money, info, email, state, pay_type, order_id, date
+    from tb_thanks
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, nick_name, username, money, info, email, state, pay_type, order_id, date
+    from tb_thanks
+  </select>
+</mapper>

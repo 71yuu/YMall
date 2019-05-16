@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbBaseMapper" >
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbBase" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="web_name" property="webName" jdbcType="VARCHAR" />
+    <result column="key_word" property="keyWord" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="source_path" property="sourcePath" jdbcType="VARCHAR" />
+    <result column="upload_path" property="uploadPath" jdbcType="VARCHAR" />
+    <result column="copyright" property="copyright" jdbcType="VARCHAR" />
+    <result column="count_code" property="countCode" jdbcType="VARCHAR" />
+    <result column="has_log_notice" property="hasLogNotice" jdbcType="INTEGER" />
+    <result column="log_notice" property="logNotice" jdbcType="VARCHAR" />
+    <result column="has_all_notice" property="hasAllNotice" jdbcType="INTEGER" />
+    <result column="all_notice" property="allNotice" jdbcType="VARCHAR" />
+    <result column="notice" property="notice" jdbcType="VARCHAR" />
+    <result column="update_log" property="updateLog" jdbcType="VARCHAR" />
+    <result column="front_url" property="frontUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_base
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbBase" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_base (web_name, key_word, description,
+      source_path, upload_path, copyright, 
+      count_code, has_log_notice, log_notice, 
+      has_all_notice, all_notice, notice, 
+      update_log, front_url)
+    values (#{webName,jdbcType=VARCHAR}, #{keyWord,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{sourcePath,jdbcType=VARCHAR}, #{uploadPath,jdbcType=VARCHAR}, #{copyright,jdbcType=VARCHAR}, 
+      #{countCode,jdbcType=VARCHAR}, #{hasLogNotice,jdbcType=INTEGER}, #{logNotice,jdbcType=VARCHAR}, 
+      #{hasAllNotice,jdbcType=INTEGER}, #{allNotice,jdbcType=VARCHAR}, #{notice,jdbcType=VARCHAR}, 
+      #{updateLog,jdbcType=VARCHAR}, #{frontUrl,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbBase" >
+    update tb_base
+    set web_name = #{webName,jdbcType=VARCHAR},
+      key_word = #{keyWord,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      source_path = #{sourcePath,jdbcType=VARCHAR},
+      upload_path = #{uploadPath,jdbcType=VARCHAR},
+      copyright = #{copyright,jdbcType=VARCHAR},
+      count_code = #{countCode,jdbcType=VARCHAR},
+      has_log_notice = #{hasLogNotice,jdbcType=INTEGER},
+      log_notice = #{logNotice,jdbcType=VARCHAR},
+      has_all_notice = #{hasAllNotice,jdbcType=INTEGER},
+      all_notice = #{allNotice,jdbcType=VARCHAR},
+      notice = #{notice,jdbcType=VARCHAR},
+      update_log = #{updateLog,jdbcType=VARCHAR},
+      front_url = #{frontUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, web_name, key_word, description, source_path, upload_path, copyright, 
+    count_code, has_log_notice, log_notice, has_all_notice, all_notice, notice, update_log, 
+    front_url
+    from tb_base
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, web_name, key_word, description, source_path, upload_path, copyright, 
+    count_code, has_log_notice, log_notice, has_all_notice, all_notice, notice, update_log, 
+    front_url
+    from tb_base
+  </select>
+
+    <select id="getBase" resultType="TbBase">
+        select  has_log_notice, log_notice, has_all_notice, all_notice
+        from tb_base
+    </select>
+</mapper>

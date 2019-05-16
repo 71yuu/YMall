@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- 配置自定义Realm -->
+    <bean id="myRealm" class="com.yuu.ymall.web.admin.commons.shiro.MyRealm"/>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+    </bean>
+
+    <!-- RemeberMe 配置 -->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMeShiro"/><!-- 浏览器中cookie的名字 -->
+        <property name="httpOnly" value="true"/><!--document对象中就看不到cookie了-->
+        <property name="maxAge" value="2592000"/><!-- 30天 -->
+    </bean>
+
+    <!-- RememberMe管理器 -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <!--秘钥要16位，24位或32位的Base64。这个解密后是1234567890abcdef-->
+        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('MTIzNDU2Nzg5MGFiY2RlZg==')}"/>
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+
+    <!-- 自定义过滤器 -->
+    <bean id="perms" class="com.yuu.ymall.web.admin.commons.shiro.MyPermissionFilter"/>
+
+    <!-- Shiro过滤器 核心-->
+    <bean id="shiroFilter" class="com.yuu.ymall.web.admin.commons.shiro.MyShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 身份认证失败，则跳转到登录页面的配置 -->
+        <property name="loginUrl" value="/user/login"/>
+        <!-- 登录成功之后的 跳转页面 -->
+        <property name="successUrl" value="/"/>
+        <!-- 权限认证失败，则跳转到指定页面 -->
+        <property name="unauthorizedUrl" value="/403"/>
+        <!--自定义过滤器-->
+        <property name="filters">
+            <util:map>
+                <entry key="perms" value-ref="perms"></entry>
+                <entry key="roles" value-ref="perms"></entry>
+            </util:map>
+        </property>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <property name="filterChainDefinitions">
+            <value>
+                <!--从数据库中读取-->
+            </value>
+        </property>
+    </bean>
+
+    <!-- Shiro生命周期处理器 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>
