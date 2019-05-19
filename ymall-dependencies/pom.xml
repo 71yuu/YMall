@@ -49,7 +49,8 @@
         <pagehelper.version>4.1.6</pagehelper.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <slf4j.version>1.8.0-alpha2</slf4j.version>
-        <spring.version>4.3.17.RELEASE</spring.version>
+        <spring.version>4.3.24.RELEASE</spring.version>
+        <spring-data-redis.version>1.8.22.RELEASE</spring-data-redis.version>
         <shiro.version>1.4.0</shiro.version>
         <swegger2.version>2.9.2</swegger2.version>
         <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
@@ -235,6 +236,11 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-redis</artifactId>
+                <version>${spring-data-redis.version}</version>
             </dependency>
             <!-- Redis End -->
 

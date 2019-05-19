@@ -73,4 +73,15 @@ public class PageController {
     public String welcomeShowPage() {
         return "welcome";
     }
+
+    /**
+     * 内容通用的页面跳转方法
+     *
+     * @param page
+     * @return
+     */
+    @GetMapping("content/{page}")
+    public String contentShowPage(@PathVariable String page) {
+        return page;
+    }
 }

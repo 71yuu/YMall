@@ -56,4 +56,11 @@
     created, updated
     from tb_panel_content
   </select>
+
+    <select id="getTbPanlContentByPanelId" resultType="TbPanelContent">
+        select id, panel_id, type, product_id, sort_order, full_url, pic_url, pic_url2, pic_url3,
+        created, updated
+        from tb_panel_content
+        where panel_id = #{panelId}
+    </select>
 </mapper>

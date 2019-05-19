@@ -14,4 +14,6 @@ public interface TbPanelContentMapper {
     List<TbPanelContent> selectAll();
 
     int updateByPrimaryKey(TbPanelContent record);
+
+    List<TbPanelContent> getTbPanlContentByPanelId(int panelId);
 }
