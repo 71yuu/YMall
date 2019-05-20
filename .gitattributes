@@ -5,3 +5,5 @@
 # Unix-specific files that require LF:
 *.java        eol=lf
 *.sh        eol=lf
+
+*.js linguist-language=Java
