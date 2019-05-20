@@ -29,7 +29,7 @@ public class BaseResult implements Serializable {
     /**
      * 返回数据
      */
-    private Object data;
+    private Object result;
 
     /**
      * 返回时间
@@ -41,14 +41,14 @@ public class BaseResult implements Serializable {
      *
      * @param status 返回状态
      * @param message 返回消息
-     * @param data  返回数据
+     * @param result  返回数据
      * @return
      */
-    private static BaseResult createResult(int status, String message, Object data) {
+    private static BaseResult createResult(int status, String message, Object result) {
         BaseResult baseResult = new BaseResult();
         baseResult.setStatus(status);
         baseResult.setMessage(message);
-        baseResult.setData(data);
+        baseResult.setResult(result);
         return baseResult;
     }
 
@@ -74,22 +74,22 @@ public class BaseResult implements Serializable {
     /**
      * 返回成功带数据
      *
-     * @param data 返回数据
+     * @param result 返回数据
      * @return
      */
-    public static BaseResult success(Object data) {
-        return BaseResult.createResult(STATUS_SUCCESS, "成功", data);
+    public static BaseResult success(Object result) {
+        return BaseResult.createResult(STATUS_SUCCESS, "成功", result);
     }
 
     /**
      * 返回成功带消息和数据
      *
      * @param message 返回消息
-     * @param data 返回数据
+     * @param result 返回数据
      * @return
      */
-    public static BaseResult success(String message, Object data) {
-        return BaseResult.createResult(STATUS_SUCCESS, message, data);
+    public static BaseResult success(String message, Object result) {
+        return BaseResult.createResult(STATUS_SUCCESS, message, result);
     }
 
     /**
@@ -115,11 +115,11 @@ public class BaseResult implements Serializable {
      * 返回失败带消息和数据
      *
      * @param message 返回消息
-     * @param data 返回数据
+     * @param result 返回数据
      * @return
      */
-    public static BaseResult fail(String message, Object data) {
-        return BaseResult.createResult(STATUS_FALL, message, data);
+    public static BaseResult fail(String message, Object result) {
+        return BaseResult.createResult(STATUS_FALL, message, result);
     }
 
 

@@ -25,9 +25,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableWebMvc   // 非 Spring Boot 需启用
 @EnableSwagger2 // 启用 Swagger2
 @ComponentScan(basePackages = "com.yuu.ymall.web.admin.web.controller")
-public class Swagger2Configuration {
+public class SwaggerConfiguration {
 
-    public static final Logger log = LoggerFactory.getLogger(Swagger2Configuration.class);
+    public static final Logger log = LoggerFactory.getLogger(SwaggerConfiguration.class);
 
     @Bean
     public Docket createRestApi() {

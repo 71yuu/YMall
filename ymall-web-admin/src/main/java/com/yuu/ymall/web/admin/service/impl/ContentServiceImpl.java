@@ -1,6 +1,6 @@
 package com.yuu.ymall.web.admin.service.impl;
 
-import com.yuu.ymall.commons.execption.YMallException;
+import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.domain.TbItem;
 import com.yuu.ymall.domain.TbPanelContent;
 import com.yuu.ymall.web.admin.commons.dto.PageInfo;
@@ -67,31 +67,35 @@ public class ContentServiceImpl implements ContentService {
 
     @Transactional(readOnly = false)
     @Override
-    public int updateContent(TbPanelContent tbPanelContent) {
+    public BaseResult updateContent(TbPanelContent tbPanelContent) {
         // 更新板块内容
         tbPanelContent.setUpdated(new Date());
         int result = tbPanelContentMapper.updateByPrimaryKey(tbPanelContent);
+
+        // 更新失败
         if (result != 1) {
-            throw new YMallException("更新板块内容失败");
+            return BaseResult.fail("更新板块内容失败！");
         }
+
         // 删除导航栏缓存
         if (tbPanelContent.getPanelId() == HEADER_PANEL_ID) {
             updateNavListRedis();
         }
+
         // 同步缓存
         deleteHomeRedis();
-        return result;
+        return BaseResult.success("更新板块内容成功");
     }
 
     @Transactional(readOnly = false)
     @Override
-    public int deletePanelContent(int[] ids) {
+    public BaseResult deletePanelContent(int[] ids) {
         // 删除板块内容
         int result = 0;
         for (int id : ids) {
             result = tbPanelContentMapper.deleteByPrimaryKey(id);
             if (result != 1) {
-                throw new YMallException("删除首页板块失败");
+                return BaseResult.fail("删除板块内容失败！");
             }
             // 同步导航栏缓存
             if (id == HEADER_PANEL_ID) {
@@ -100,25 +104,28 @@ public class ContentServiceImpl implements ContentService {
         }
         // 同步缓存
         deleteHomeRedis();
-        return result;
+        return BaseResult.success();
     }
 
     @Transactional(readOnly = false)
     @Override
-    public int addPanelContent(TbPanelContent tbPanelContent) {
+    public BaseResult addPanelContent(TbPanelContent tbPanelContent) {
         tbPanelContent.setCreated(new Date());
         tbPanelContent.setUpdated(new Date());
         int result = tbPanelContentMapper.insert(tbPanelContent);
+
         if (result == 0) {
-            throw new YMallException("添加板块内容失败");
+            return BaseResult.fail("添加导航栏失败！");
         }
+
         // 删除导航栏缓存
         if (tbPanelContent.getPanelId() == HEADER_PANEL_ID) {
             updateNavListRedis();
         }
+
         // 删除首页缓存
         deleteHomeRedis();
-        return result;
+        return BaseResult.success("添加导航栏成功！");
     }
 
     /**

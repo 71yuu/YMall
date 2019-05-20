@@ -35,7 +35,7 @@
         <!-- Shiro的核心安全接口,这个属性是必须的 -->
         <property name="securityManager" ref="securityManager"/>
         <!-- 身份认证失败，则跳转到登录页面的配置 -->
-        <property name="loginUrl" value="/user/login"/>
+        <property name="loginUrl" value="/login"/>
         <!-- 登录成功之后的 跳转页面 -->
         <property name="successUrl" value="/"/>
         <!-- 权限认证失败，则跳转到指定页面 -->

@@ -44,8 +44,8 @@ public class ContentController {
     @PostMapping("update")
     @ApiOperation(value = "编辑板块内容")
     public BaseResult updateContent(@ModelAttribute TbPanelContent tbPanelContent) {
-        contentService.updateContent(tbPanelContent);
-        return BaseResult.success();
+        BaseResult baseResult = contentService.updateContent(tbPanelContent);
+        return baseResult;
     }
 
     /**
@@ -57,8 +57,8 @@ public class ContentController {
     @DeleteMapping("delete/{ids}")
     @ApiOperation(value = "删除板块内容")
     public BaseResult deleteContent(@PathVariable int[] ids) {
-        contentService.deletePanelContent(ids);
-        return BaseResult.success("删除成功!");
+        BaseResult baseResult = contentService.deletePanelContent(ids);
+        return baseResult;
     }
 
     /**
@@ -70,8 +70,8 @@ public class ContentController {
     @PostMapping("add")
     @ApiOperation(value = "添加板块内容")
     public BaseResult addContent(@ModelAttribute TbPanelContent tbPanelContent) {
-        contentService.addPanelContent(tbPanelContent);
-        return BaseResult.success("添加成功！");
+        BaseResult baseResult = contentService.addPanelContent(tbPanelContent);
+        return baseResult;
     }
 
 }

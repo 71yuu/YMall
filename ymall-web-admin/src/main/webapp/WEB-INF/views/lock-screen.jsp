@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="Exrick">
+    <meta name="author" content="Yuu">
     <link rel="Shortcut Icon" href="/static/assets/icon/logo.png" />
     <title>YMall后台管理系统 v1.0</title>
     <meta name="keywords" content="YMall后台管理系统 v1.0,YMall,YMall购物商城后台管理系统">
@@ -38,7 +38,7 @@
 
     <div class="lock-box text-center">
         <img id="avatar" width="85px" height="85px" src="/static/assets/static/h-ui/images/ucnter/avatar-default.jpg" alt="lock avatar"/>
-        <h1 id="username">Exrick</h1>
+        <h1 id="username">Yuu</h1>
         <span class="locked">Locked</span>
         <form role="form" class="form-inline">
             <div class="form-group col-lg-12">
@@ -54,27 +54,27 @@
 <script type="text/javascript" src="/static/assets/lib/layer/2.4/layer.js"></script>
 <script>
 
-    /** 获取用户信息 **/
+    // 获取用户信息
     $.ajax({
         url: '/user/userInfo',
         type: 'GET',
         dataType: 'json',
-        success: function (result) {
-            if (result.status == 200) {
-                $('#username').html(result.data.username);
-                if (result.data.file != null && result.data.file != "") {
-                    $('#avatar').attr('src', result.data.file);
+        success: function (data) {
+            if (data.status == 200) {
+                $('#username').html(data.result.username);
+                if (data.result.file != null && data.result.file != "") {
+                    $('#avatar').attr('src', data.result.file);
                 }
             } else {
-                layer.alert(result.message, {title: '错误信息', icon: 2});
+                layer.alert(data.message, {title: '错误信息', icon: 2});
             }
         },
-        error: function (XMLHttpRequest) {
-            layer.alert('数据处理失败！错误码' + XMLHttpRequest.status + '错误信息: ' + JSON.parse(XMLHttpRequest.responseText).message, {title: '错误信息', icon: 2});
+        error: function () {
+            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息', icon: 2});
         }
     });
 
-    /** 解锁 **/
+    // 解锁
     $("#unlockButton").click(function () {
         var password = $("#password").val();
         if (password == null || password == "") {
@@ -88,15 +88,15 @@
             data: {
                 password: password
             },
-            success: function (result) {
-                if (result.status == 200) {
+            success: function (data) {
+                if (data.result == 200) {
                     window.location.href = "/";
                 } else {
-                    layer.msg(result.message);
+                    layer.msg(data.message);
                 }
             },
             error: function (XMLHttpRequest) {
-                layer.alert('数据处理失败！错误码: ' + XMLHttpRequest.status + '错误信息: ' + JSON.parse(XMLHttpRequest.responseText).message, {title: '错误消息', icon: 2});
+                layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误消息', icon: 2});
             }
         })
     });

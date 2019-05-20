@@ -70,4 +70,10 @@
         <servlet-name>DruidStatView</servlet-name>
         <url-pattern>/druid/*</url-pattern>
     </servlet-mapping>
+    
+    <!-- Swagger2 配置 -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/swagger-ui.html</url-pattern>
+    </servlet-mapping>
 </web-app>

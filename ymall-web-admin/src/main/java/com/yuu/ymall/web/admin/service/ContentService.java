@@ -1,5 +1,6 @@
 package com.yuu.ymall.web.admin.service;
 
+import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.domain.TbPanelContent;
 import com.yuu.ymall.web.admin.commons.dto.PageInfo;
 
@@ -24,7 +25,7 @@ public interface ContentService {
      * @param tbPanelContent 编辑板块内容
      * @return
      */
-    int updateContent(TbPanelContent tbPanelContent);
+    BaseResult updateContent(TbPanelContent tbPanelContent);
 
     /**
      * 删除板块内容
@@ -32,7 +33,7 @@ public interface ContentService {
      * @param id 板块内容 id 集合
      * @return
      */
-    int deletePanelContent(int[] ids);
+    BaseResult deletePanelContent(int[] ids);
 
     /**
      * 添加板块内容
@@ -40,5 +41,5 @@ public interface ContentService {
      * @param tbPanelContent 板块内容
      * @return
      */
-    int addPanelContent(TbPanelContent tbPanelContent);
+    BaseResult addPanelContent(TbPanelContent tbPanelContent);
 }

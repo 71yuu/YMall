@@ -1,8 +1,10 @@
 package com.yuu.ymall.web.admin.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import springfox.documentation.swagger.web.ApiResourceController;
 
 /**
  * 页面跳转
@@ -14,74 +16,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class PageController {
 
+    @Autowired
+    private ApiResourceController apiResourceController;
+
     @GetMapping("/")
     public String showIndex() {
         return "index";
     }
 
     /**
-     * 用户通用的页面跳转方法
+     * 通用的跳转方法
      *
      * @param page
      * @return
      */
-    @GetMapping("user/{page}")
-    public String userShowPage(@PathVariable String page) {
+    @GetMapping("{page}")
+    public String showPage(@PathVariable String page) {
         return page;
     }
 
-    /**
-     * 商品通用的页面跳转方法
-     *
-     * @param page
-     * @return
-     */
-    @GetMapping("product/{page}")
-    public String productShowPage(@PathVariable String page) {
-        return page;
-    }
-
-    /**
-     * 会员通用的页面跳转方法
-     *
-     * @param page
-     * @return
-     */
-    @GetMapping("member/{page}")
-    public String memberShowPage(@PathVariable String page) {
-        return page;
-    }
-
-    /**
-     * 捐赠通用的页面跳转方法
-     *
-     * @param page
-     * @return
-     */
-    @GetMapping("thanks/{page}")
-    public String thanksShowPage(@PathVariable String page) {
-        return page;
-    }
-
-    /**
-     * 跳转到欢迎页
-     *
-     * @param page
-     * @return
-     */
-    @GetMapping("welcome")
-    public String welcomeShowPage() {
-        return "welcome";
-    }
-
-    /**
-     * 内容通用的页面跳转方法
-     *
-     * @param page
-     * @return
-     */
-    @GetMapping("content/{page}")
-    public String contentShowPage(@PathVariable String page) {
-        return page;
-    }
 }

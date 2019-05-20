@@ -2,24 +2,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="/static/assets/lib/html5shiv.js"></script>
-    <script type="text/javascript" src="/static/assets/lib/respond.min.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" type="text/css" href="/static/assets/static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="/static/assets/static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="/static/assets/lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="/static/assets/static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="/static/assets/static/h-ui.admin/css/style.css" />
-    <!--[if IE 6]>
-    <script type="text/javascript" src="/static/assets/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-    <script>DD_belatedPNG.fix('*');</script>
-    <![endif]-->
+    <jsp:include page="../includes/header.jsp"/>
     <title>导航栏管理</title>
 
     <!-- iCheck for checkboxes and radio inputs -->
@@ -38,7 +21,7 @@
         <div class="cl pd-5 bg-1 bk-gray mt-20">
             <span class="l">
                 <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-                <a class="btn btn-primary radius" onclick="add('添加导航栏内容','/content/content-header-add',700,350)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加导航栏内容</a>
+                <a class="btn btn-primary radius" onclick="add('添加导航栏内容','/content-header-add',700,350)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加导航栏内容</a>
             </span>
         </div>
         <div class="mt-20">
@@ -61,11 +44,7 @@
     </form>
 </div>
 
-<!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="/static/assets/lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="/static/assets/lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="/static/assets/static/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="/static/assets/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+<jsp:include page="../includes/footer.jsp"/>
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="/static/assets/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
@@ -117,9 +96,7 @@
         });
     };
 
-
-
-    /** DataTables **/
+    // 初始化 DataTables
     $('.table').DataTable({
         // 是否开启本地分页
         "paging": true,
@@ -162,7 +139,7 @@
             {
                 "data": null,
                 render: function (data, type, row, meta) {
-                    return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"edit('编辑','/content/content-header-edit',700,350)\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> " +
+                    return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"edit('编辑','/content-header-edit',700,350)\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> " +
                         "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"del("+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
                 }
             }
@@ -199,12 +176,12 @@
         }
     });
 
-    /** 添加导航栏内容 **/
+    // 弹出添加导航栏窗口
     function add(title, url, w, h) {
         layer_show(title, url, w, h);
     }
 
-    /** 编辑导航栏内容 **/
+    // 编辑导航栏内容
     var id, picUrl, fullUrl, sortOrder, type;
     function edit(title,url,w,h){
         var table = $('.table').DataTable();
@@ -218,7 +195,7 @@
         layer_show(title,url,w,h);
     }
 
-    /** 删除单个 **/
+    // 删除单个导航栏
     function del(id) {
         layer.confirm('确定要删除ID为\''+ id +'\'的数据吗？', {icon:0},function () {
             $.ajax({
@@ -228,17 +205,19 @@
                 success: function (data) {
                     if (data.status == 200) {
                         refresh();
-                        layer.msg(data.message, {icon:2, time:1000});
+                        layer.msg("删除导航栏成功！", {icon:2, time:1000});
+                    } else {
+                        layer.alert("删除导航栏失败！", {title: "错误信息", icon: 2});
                     }
                 },
-                error: function (XMLHttpRequest) {
-                    layer.alert('数据处理失败！错误码:' + XMLHttpRequest.status, {title: '错误信息', icon: 2});
+                error: function () {
+                    layer.alert(ERROR_REQUEST_MESSAGE, {title: "错误信息", icon: 2});
                 }
             })
         });
     }
 
-    /** 批量删除 **/
+    // 批量删除
     function datadel() {
         _idArray = new Array();
 
@@ -266,21 +245,19 @@
                     layer.close(index);
                     if (data.status == 200) {
                         refresh();
-                        layer.msg(data.message, {icon:1, time:1000});
+                        layer.msg("删除导航栏成功！", {icon:1, time:1000});
+                    } else {
+                        layer.alert("删除导航栏失败！", {title: "错误信息", icon: 2});
                     }
                 },
-                error: function (XMLHttpRequest) {
+                error: function () {
                     layer.close(index);
-                    layer.alert('数据处理失败！错误码:' + XMLHttpRequest.status, {title: '错误信息', icon: 2});
+                    layer.alert(ERROR_REQUEST_MESSAGE, {title: "错误信息", icon: 2});
                 }
             });
         });
     }
 
-    /** 编辑成功消息提示 **/
-    function msgSuccess(content) {
-        layer.msg(content, {icon:1, time:3000});
-    }
 </script>
 </body>
 </html>

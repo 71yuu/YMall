@@ -95,9 +95,7 @@ public class UserController {
             System.out.println(gtResult);
         } else {
             // gt-server 非正常情况下，进行 failback 模式验证
-            System.out.println("failback: use your own server captcha validate");
             gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
-            System.out.println(gtResult);
         }
 
         // 验证成功
@@ -142,10 +140,13 @@ public class UserController {
      * @return
      */
     @GetMapping("userInfo")
-    @ApiOperation("获取登录信息")
+    @ApiOperation("获取用户信息")
     public BaseResult getUserInfo() {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         TbUser tbUser = userService.getUserByUsername(username);
+        if (tbUser == null) {
+            return BaseResult.fail("获取用户信息失败！");
+        }
         tbUser.setPassword(null);
         return BaseResult.success(tbUser);
     }
@@ -153,7 +154,7 @@ public class UserController {
     /**
      * 用户解锁
      *
-     * @param password
+     * @param password 密码
      * @return
      */
     @GetMapping("unlock")
@@ -161,6 +162,9 @@ public class UserController {
     public BaseResult unlock(String password) {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         TbUser tbUser = userService.getUserByUsername(username);
+        if (tbUser == null) {
+            return BaseResult.fail("用户不存在！");
+        }
         String md5Pwd = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!tbUser.getPassword().equals(md5Pwd)) {
             return BaseResult.fail("密码不正确!");

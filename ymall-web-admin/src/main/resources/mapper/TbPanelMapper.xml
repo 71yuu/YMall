@@ -13,6 +13,18 @@
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="updated" property="updated" jdbcType="TIMESTAMP" />
   </resultMap>
+    <sql id="tbPanelColums">
+      a.id,
+      a.name,
+      a.type,
+      a.sort_order,
+      a.position,
+      a.limit_num,
+      a.status,
+      a.remark,
+      a.created,
+      a.updated
+    </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_panel
     where id = #{id,jdbcType=INTEGER}
@@ -44,14 +56,37 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, name, type, sort_order, position, limit_num, status, remark, created, 
-    updated
+    select
     from tb_panel
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, name, type, sort_order, position, limit_num, status, remark, created, 
-    updated
-    from tb_panel
+    select
+    <include refid="tbPanelColums"/>
+    from tb_panel as a
   </select>
+
+    <select id="getPanelList" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="tbPanelColums"/>
+        FROM
+        tb_panel AS a
+        <where>
+            <if test="type == -1">
+                AND a.type != 0
+            </if>
+            <if test="type == 0">
+                AND a.type = #{type}
+            </if>
+            AND a.position = #{position}
+        </where>
+        ORDER BY a.sort_order
+    </select>
+    <select id="getPanelByType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="tbPanelColums"/>
+        FROM
+        tb_panel AS a
+        WHERE a.type = #{type}
+    </select>
 </mapper>

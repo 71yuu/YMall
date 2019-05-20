@@ -32,8 +32,10 @@
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
 
     <!-- Swagger 配置 -->
-    <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
-    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+    <mvc:resources mapping="/swagger-ui.html" location="classpath:/META-INF/resources/*" />
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+    <!--<mvc:resources mapping="/swagger-resources/configuration/ui" location="classpath:/META-INF/resources/swagger-resources/configuration/ui/"/>-->
+    <!--<mvc:resources mapping="/api/swagger/**" location="classpath:/META-INF/resources/"/>-->
 
     <!-- 拦截器配置 -->
     <mvc:interceptors>

@@ -92,11 +92,11 @@
                     <!--user info table start-->
                     <section class="panel">
                         <div class="panel-body">
-                            <a href="http://blog.exrick.cn" target="_blank" class="task-thumb">
+                            <a href="http://blog.Yuu.cn" target="_blank" class="task-thumb">
                                 <img width="83px" height="83px" src="/static/assets/lib/flatlab/img/avatar1.jpg" alt="">
                             </a>
                             <div class="task-thumb-details">
-                                <h1><a href="http://blog.exrick.cn" target="_blank">Yuu</a></h1>
+                                <h1><a href="http://blog.Yuu.cn" target="_blank">Yuu</a></h1>
                                 <p>Author</p>
                             </div>
                         </div>
@@ -231,7 +231,7 @@
                                                 <span class="timeline-icon green"></span>
                                                 <span class="timeline-date">17:00 pm</span>
                                                 <h1 class="green">22 Oct | Sunday</h1>
-                                                <p><a href="http://blog.exrick.cn" target="_blank">Exrick</a> 完成目前所有功能开发 <span><a href="https://github.com/Exrick/YMall" class="green" target="_blank">v1.0发布</a></span></p>
+                                                <p><a href="http://blog.Yuu.cn" target="_blank">Yuu</a> 完成目前所有功能开发 <span><a href="https://github.com/Yuu/YMall" class="green" target="_blank">v1.0发布</a></span></p>
                                             </div>
                                         </div>
                                     </div>
@@ -244,7 +244,7 @@
                                                 <span class="timeline-icon blue"></span>
                                                 <span class="timeline-date">11:35 pm</span>
                                                 <h1 class="blue">13 Oct | Friday</h1>
-                                                <p><a href="http://blog.exrick.cn" target="_blank">Exrick</a> 完成后端接口改造二次开发 <span><a class="blue" href="https://github.com/Exrick/YMall-front" target="_blank">YMall-Front</a></span></p>
+                                                <p><a href="http://blog.Yuu.cn" target="_blank">Yuu</a> 完成后端接口改造二次开发 <span><a class="blue" href="https://github.com/Yuu/YMall-front" target="_blank">YMall-Front</a></span></p>
                                                 <div class="album">
                                                  &lt;%&ndash;   <a href="#">
                                                         <img alt="" width="48px" height="32px" src="http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170915134720.png">
@@ -280,7 +280,7 @@
                                                 </p>
                                                 <div class="notification">
                                                     <i class=" icon-exclamation-sign"></i> 启动了前台项目
-                                                    <a href="https://github.com/Exrick/YMall-front" target="_blank">YMall-Front</a>
+                                                    <a href="https://github.com/Yuu/YMall-front" target="_blank">YMall-Front</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -295,7 +295,7 @@
                                             <span class="timeline-date">09:00 pm</span>
                                             <h1 class="light-green">10 May | Friday</h1>
                                             <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 启动了
-                                                <span><a href="https://github.com/Exrick/YMall" target="_blank" class="light-green">YMall</a></span>
+                                                <span><a href="https://github.com/Yuu/YMall" target="_blank" class="light-green">YMall</a></span>
                                                 项目，并完成第一次提交</p>
                                         </div>
                                     </div>
@@ -440,26 +440,20 @@
 <script src="/static/assets/lib/flatlab/js/jquery.nicescroll.js" type="text/javascript"></script>
 <script src="/static/assets/lib/flatlab/js/jquery.sparkline.js" type="text/javascript"></script>
 <script src="/static/assets/lib/flatlab/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-<script src="/static/assets/lib/flatlab/js/owl.carousel.js" ></script>
-<script src="/static/assets/lib/flatlab/js/jquery.customSelect.min.js" ></script>
 <script src="/static/assets/lib/flatlab/js/respond.min.js" ></script>
 
-<script class="include" type="text/javascript" src="/static/assets/lib/flatlab/js/jquery.dcjqaccordion.2.7.js"></script>
-
 <!--common script for all pages-->
-<script src="/static/assets/lib/flatlab/js/common-scripts.js"></script>
-
 <script type="text/javascript" src="/static/assets/lib/layer/2.4/layer.js"></script>
 
 <!--script for this page-->
-<script src="/static/assets/lib/flatlab/js/sparkline-chart.js"></script>
-<script src="/static/assets/lib/flatlab/js/easy-pie-chart.js"></script>
 <script src="/static/assets/lib/flatlab/js/count.js"></script>
 
 <script>
 
+    // 获取用户名
     $("#username").html(parent.username);
 
+    // 显示现在时段
     var now = new Date(),hour = now.getHours();
     if (hour < 5 || hour > 22) {$("#hello").html("深夜好！");}
     if(hour < 6){ $("#hello").html("凌晨好！");}
@@ -470,6 +464,7 @@
     else if (hour < 19){$("#hello").html("傍晚好！");}
     else if (hour < 22){$("#hello").html("晚上好！");}
 
+    // 获取当前时间
     $(function(){
         setInterval(function(){
             $("#currentTime").text(new Date().toLocaleString());
@@ -477,72 +472,52 @@
     });
 
 
-    //owl carousel
-    $(document).ready(function() {
-        $("#owl-demo").owlCarousel({
-            navigation : true,
-            slideSpeed : 300,
-            paginationSpeed : 400,
-            singleItem : true,
-            autoPlay:true
-        });
-    });
-
-    //custom select box
-    $(function(){
-        $('select.styled').customSelect();
-    });
-
-    /** 统计用户数 **/
+    // 统计用户数
     $.ajax({
         url:"/member/count",
         type:"GET",
-        success:function (result) {
-            countUp(result.data);
+        success:function (data) {
+            countUp(data.result);
         },
-        error:function(XMLHttpRequest){
-            layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
+        error:function(){
+            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息',icon: 2});
         }
     });
 
-    /** 统计商品总数 **/
+    // 统计商品总数
     $.ajax({
         url:"/item/count",
         type: 'GET',
-        success:function (result) {
-            countUp2(result.data);
+        success:function (data) {
+            countUp2(data.result);
         },
-        error:function(XMLHttpRequest){
-            if(XMLHttpRequest.status!=200){
-                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
-            }
+        error:function(){
+            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息',icon: 2});
         }
     });
 
-    /** 统计订单总数 **/
+    // 统计订单总数
     $.ajax({
         url:"/order/count",
         type: 'GET',
-        success:function (result) {
-            countUp3(result.data);
+        success:function (data) {
+            countUp3(data.result);
         },
-        error:function(XMLHttpRequest){
-            if(XMLHttpRequest.status!=200){
-                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
-            }
+        error:function(){
+            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息',icon: 2});
         }
     });
 
-    /** 获取天气数据 **/
+    // 获取天气数据
     $.ajax({
         url:"/sys/weather",
         type: 'GET',
-        success:function (result) {
-            if(result.data == null || result.data == "" || result.data.indexOf('错误') >= 0) {
+        success:function (data) {
+            if(data.result == null || data.result == "" || data.result.indexOf('错误') >= 0) {
                 layer.msg("无法获取您的IP，天气信息获取失败");
                 return ;
             }
-            var json = JSON.parse(result.data);
+            var json = JSON.parse(data.result);
             var param = json.result[0];
             var weather = param.weather;
             if (weather.indexOf("雨") >= 0) {
@@ -558,10 +533,8 @@
             $("#airCondition").html(param.airCondition);
             $("#wind").html(param.wind);
         },
-        error:function(XMLHttpRequest){
-            if(XMLHttpRequest.status!=200){
-                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
-            }
+        error:function(){
+            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息',icon: 2});
         }
     });
 
@@ -569,44 +542,42 @@
     $.ajax({
         url:"/sys/weekHot",
         type: 'GET',
-        success:function (result) {
-            $("#hot-title").html(result.data.title);
-            $("#hot-num").html(result.data.total);
-            if(result.data.picPath != "" && result.data.picPath != null) {
-                $("#hot-img").attr("src", result.data.picPath);
+        success:function (data) {
+            $("#hot-title").html(data.result.title);
+            $("#hot-num").html(data.result.total);
+            if(data.result.picPath != "" && data.result.picPath != null) {
+                $("#hot-img").attr("src", data.result.picPath);
             }
         },
-        error:function(XMLHttpRequest){
-            if(XMLHttpRequest.status!=200){
-                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
-            }
+        error:function(){
+            layer.alert(ERROR_REQUEST_MESSAGE,{title: '错误信息',icon: 2});
         }
     });
 
+    // 如果标题太长，截取前 18 个
     if($("#hot-title").text().length > 18){
-        $("#hot-title").text($("#hot-title").text().substring(0,18) +"...");
-
+        $("#hot-title").text($("#hot-title").text().substring(0,18) + "...");
     }
 
+    // 获取系统基本信息
     $.ajax({
         url:"/sys/base",
         type: 'GET',
-        success:function (result) {
-            if(result.status == 500){
-                layer.alert(result.message,{title: '错误信息',icon: 2});
-                return;
-            }
-            if(result.data.hasAllNotice == 1){
-                allNotice(result.data.allNotice);
+        success:function (data) {
+            if(data.status == 200){
+                if(data.result.hasAllNotice == 1){
+                    allNotice(data.result.allNotice);
+                }
+            } else {
+                layer.alert(data.message,{title: '错误信息',icon: 2});
             }
         },
-        error:function(XMLHttpRequest){
-            if(XMLHttpRequest.status!=200){
-                layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
-            }
+        error:function(){
+            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息',icon: 2});
         }
     });
 
+    // 弹出通知窗口
     function allNotice(data){
         layer.open({
             type: 1

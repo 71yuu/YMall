@@ -33,9 +33,12 @@ public class SystemController {
      * @return
      */
     @GetMapping("base")
-    @ApiOperation(value = "获取基本配置")
+    @ApiOperation(value = "获取系统基本配置")
     public BaseResult getBase() {
         TbBase tbBase = systemService.getBase();
+        if (tbBase == null) {
+            return BaseResult.fail("获取系统基本配置失败");
+        }
         return BaseResult.success(tbBase);
     }
 

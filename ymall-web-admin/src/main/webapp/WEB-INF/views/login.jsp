@@ -99,6 +99,7 @@
 </div>
 <script type="text/javascript">
 
+    // 登录验证
     var handler = function (captchaObj) {
         captchaObj.appendTo('#captcha');
         captchaObj.onReady(function () {
@@ -151,8 +152,8 @@
                         $("#loginButton").removeAttr("disabled");
                     }
                 },
-                error:function(XMLHttpRequest){
-                    layer.alert('数据处理失败! 错误码:'+XMLHttpRequest.status+' 错误信息:'+JSON.parse(XMLHttpRequest.responseText).message,{title: '错误信息',icon: 2});
+                error:function(){
+                    layer.alert(ERROR_REQUEST_MESSAGE, {title: "错误信息", icon: 2});
                     $("#loginButton").val("登录");
                     $("#loginButton").removeAttr("disabled");
                 }
@@ -161,6 +162,7 @@
         window.gt = captchaObj;
     };
 
+    // 获取极验
     $.ajax({
         url: '/user/geetestInit?t=' + (new Date()).getTime(), // 加随机数防止缓存
         type: "GET",
@@ -177,7 +179,7 @@
         }
     });
 
-
+    // 提示测试账号密码
     function forgetPass() {
         layer.alert('体验测试账号密码: test | test', {
             icon: 4,
@@ -185,22 +187,23 @@
         });
     }
 
+    // 获取系统基本信息
     $.ajax({
         url: '/sys/base',
         type: 'GET',
         success: function (data) {
-            if (data.status == 500) {
+            if (data.status == 200) {
+                if (data.result.hasLogNotice == 1) {
+                    layer.alert(data.result.logNotice, {
+                        title: "通知"
+                    });
+                }
+            } else {
                 layer.alert(data.message, {title: '错误信息', icon: 2});
-                return ;
-            }
-            if (data.data.hasLogNotice == 1) {
-                layer.alert(data.data.logNotice, {
-                    title: "通知"
-                });
             }
         },
-        error: function (XMLHttpRequest) {
-            layer.alert('数据处理失败！错误码：' + XMLHttpRequest.status, {title: '错误信息', icon: 2});
+        error: function () {
+            layer.alert(ERROR_REQUEST_MESSAGE, {title:'错误信息', icon: 2});
         }
     })
 
