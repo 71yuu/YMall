@@ -53,7 +53,9 @@ var Validate = function () {
             },
             submitHandler: function (form) {
                 if (beforeSubmit != "") {
-                    beforeSubmit();
+                    if(!beforeSubmit()) {
+                        return;
+                    }
                 }
                 var index = layer.load(3);
                 $(form).ajaxSubmit({
@@ -63,10 +65,6 @@ var Validate = function () {
                         layer.close(index);
                         if (data.status == 200) {
                             successMethod(data);
-                            /*parent.refresh();
-                            parent.msgSuccess(data.message);
-                            var index = parent.layer.getFrameIndex(window.name);
-                            parent.layer.close(index);*/
                         } else {
                             layer.alert(data.message, {title: '错误信息', icon: 2});
                         }

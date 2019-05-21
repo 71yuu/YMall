@@ -97,6 +97,11 @@
 
     </div>
 </div>
+
+<!-- App -->
+<script type="text/javascript" src="/static/assets/app/const.js"></script>
+<script type="text/javascript" src="/static/assets/app/app.js"></script>
+
 <script type="text/javascript">
 
     // 登录验证
@@ -188,25 +193,14 @@
     }
 
     // 获取系统基本信息
-    $.ajax({
-        url: '/sys/base',
-        type: 'GET',
-        success: function (data) {
-            if (data.status == 200) {
-                if (data.result.hasLogNotice == 1) {
-                    layer.alert(data.result.logNotice, {
-                        title: "通知"
-                    });
-                }
-            } else {
-                layer.alert(data.message, {title: '错误信息', icon: 2});
-            }
-        },
-        error: function () {
-            layer.alert(ERROR_REQUEST_MESSAGE, {title:'错误信息', icon: 2});
+    function successMethod(data) {
+        if (data.result.hasLogNotice == 1) {
+            layer.alert(data.result.logNotice, {
+                title: "通知"
+            });
         }
-    })
-
+    }
+    App.ajax("/sys/base", "GET", successMethod);
 </script>
 </body>
 </html>

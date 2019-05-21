@@ -8,7 +8,7 @@
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商城管理 <span class="c-gray en">&gt;</span> 首页板块 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div style="margin-left: 1vw;margin-right: 1vw" class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="content_panel_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除所选板块</a> <a class="btn btn-primary radius" onclick="content_panel_add('添加板块','content-panel-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加首页板块</a></span> </div>
+<div style="margin-left: 1vw;margin-right: 1vw" class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="delSingle()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除所选板块</a> <a class="btn btn-primary radius" onclick="App.openAndFull('添加板块','content-panel-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加首页板块</a></span> </div>
 <table class="table">
     <tr>
         <td style="padding-left: 4vw" width="200" class="va-t"><ul id="myTree" class="ztree"></ul></td>
@@ -89,6 +89,7 @@
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 
 <!-- App -->
+<script type="text/javascript" src="/static/assets/app/app.js"></script>
 <script type="text/javascript" src="/static/assets/app/validate.js"></script>
 <script type="text/javascript">
 
@@ -99,51 +100,47 @@
     // treeNode 初始化值
     var id = -1, name = "";
 
-    // zTree 的配置
-    var setting =  {
-        view: {
-            // 禁止多选
-            selectedMulti: false
+    /**
+     * ZTree callback
+     * @param value
+     */
+    var callback = {
+        onAsyncSuccess: function () {
+            layer.close(index);
         },
-        async: {
-            // 开启异步加载
-            enable: true,
-            // 远程访问地址
-            url: "/panel/indexAll/list",
-            // 请求方式
-            type: "GET"
-        },
-        callback: {
-            onAsyncSuccess: function () {
-                layer.close(index);
-            },
-            // 点击之前的操作
-            beforeClick: function (treeId, treeNode) {
-                $("#name").val(treeNode.name);
-                $("#id").val(treeNode.id);
-                $("#type").val(treeNode.type);
-                $("#sortOrder").val(treeNode.sortOrder);
-                $("#remark").val(treeNode.remark);
-                $("#limitNum").val(treeNode.limitNum);
-                changeSwitch(treeNode.status);
-                id = treeNode.id;
-                name = treeNode.name;
-                if (treeNode.isParent) {
-                    return false;
-                } else {
-                    return true;
-                }
+        // 点击之前的操作
+        beforeClick: function (treeId, treeNode) {
+            $("#name").val(treeNode.name);
+            $("#id").val(treeNode.id);
+            $("#type").val(treeNode.type);
+            $("#sortOrder").val(treeNode.sortOrder);
+            $("#remark").val(treeNode.remark);
+            $("#limitNum").val(treeNode.limitNum);
+            changeSwitch(treeNode.status);
+            id = treeNode.id;
+            name = treeNode.name;
+            if (treeNode.isParent) {
+                return false;
+            } else {
+                return true;
             }
         }
     };
 
-    // 初始化 zTree 控件
-    initTree();
-    function initTree() {
-        $.fn.zTree.init($("#myTree"), setting);
-    }
+    /**
+     * 初始化 ZTree
+     *
+     * @param value
+     */
+    $(function () {
+        App.initZtree("/panel/indexAll/list", callback);
+    });
 
-    // 切换按钮
+    /**
+     * 切换按钮
+     *
+     * @param value
+     */
     function changeSwitch(value) {
         if (value == 1) {
             $("#mySwitch").bootstrapSwitch('setState', true);
@@ -152,7 +149,9 @@
         }
     }
 
-    // 同步 Status 的值
+    /**
+     * 同步 status 的值
+     * */
     $("#mySwitch").on('switch-change', function (e, data) {
         if (data.value == true) {
             $("#status").val(1);
@@ -161,28 +160,60 @@
         }
     });
 
-    // 备注文本框输入限制
+    /**
+     * 备注文本输入框限制
+     * */
     $(".textarea").Huitextarealength({
         minlength: 0,
         maxlength: 100
     });
 
-    // 编辑提交验证
-    // 验证之前执行的方法
+    /**
+     * 验证之前的触发的方法
+     */
     function beforeSubmit() {
         if ($("#id").val() == null || $("#id").val() == "") {
             layer.alert('请点击选择要修改的板块！请勿自己填写！', {title: '错误信息', icon: 0});
-            return;
+            return false;
         }
+        return true;
     }
-    // 验证成功
+    /**
+     * 验证成功触发的方法
+     *
+     * @param data
+     */
     function successMethod(data) {
         layer.alert(data.message, {icon: 1}, function (index) {
-            initTree();
-            msgSuccess("编辑成功");
+            App.initZtree("/panel/indexAll/list", callback);
+            App.msgSuccess("编辑成功");
         });
     }
     Validate.validate("/panel/update", beforeSubmit, successMethod);
+
+    /**
+     * 删除单个板块
+     */
+    function delSingle() {
+        if(id == -1){
+            layer.alert('请点击选择要删除的板块! ', {title: '错误信息',icon: 0});
+            return;
+        }
+
+        // 确认消息
+        var confirmMsg = '确定要删除所选的\''+ name +'\'板块吗？';
+
+        // 提交请求
+        var url = '/panel/del/' + id;
+
+        // 成功回调方法
+        function successMethod() {
+            App.initZtree("/panel/indexAll/list", callback);
+            App.msgSuccess("删除成功!");
+        }
+
+        App.deleteSinge(confirmMsg, url, successMethod);
+    }
 
 </script>
 </body>

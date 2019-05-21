@@ -99,7 +99,7 @@
     // 新增提交验证
     function successMethod(data) {
         layer.alert(data.message, {icon: 1}, function (index) {
-            parent.initTree();
+            parent.App.initZtree("/panel/indexAll/list", parent.callback);
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
         });

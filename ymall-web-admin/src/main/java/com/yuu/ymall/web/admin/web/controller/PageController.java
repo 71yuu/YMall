@@ -1,10 +1,8 @@
 package com.yuu.ymall.web.admin.web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import springfox.documentation.swagger.web.ApiResourceController;
 
 /**
  * 页面跳转
@@ -16,9 +14,11 @@ import springfox.documentation.swagger.web.ApiResourceController;
 @Controller
 public class PageController {
 
-    @Autowired
-    private ApiResourceController apiResourceController;
-
+    /**
+     * 跳转到首页
+     *
+     * @return
+     */
     @GetMapping("/")
     public String showIndex() {
         return "index";

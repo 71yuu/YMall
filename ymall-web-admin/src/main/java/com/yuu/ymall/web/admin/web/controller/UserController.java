@@ -135,7 +135,7 @@ public class UserController {
     }
 
     /**
-     * 获取登录信息
+     * 获取用户信息
      *
      * @return
      */

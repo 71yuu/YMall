@@ -52,27 +52,20 @@
 </div>
 <script type="text/javascript" src="/static/assets/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="/static/assets/lib/layer/2.4/layer.js"></script>
+
+<!-- App -->
+<script type="text/javascript" src="/static/assets/app/app.js"></script>
+<script type="text/javascript" src="/static/assets/app/const.js"></script>
 <script>
 
     // 获取用户信息
-    $.ajax({
-        url: '/user/userInfo',
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            if (data.status == 200) {
-                $('#username').html(data.result.username);
-                if (data.result.file != null && data.result.file != "") {
-                    $('#avatar').attr('src', data.result.file);
-                }
-            } else {
-                layer.alert(data.message, {title: '错误信息', icon: 2});
-            }
-        },
-        error: function () {
-            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息', icon: 2});
+    function successMethod(data) {
+        $('#username').html(data.result.username);
+        if (data.result.file != null && data.result.file != "") {
+            $('#avatar').attr('src', data.result.file);
         }
-    });
+    }
+    App.ajax("/user/userInfo", "GET", successMethod);
 
     // 解锁
     $("#unlockButton").click(function () {
@@ -81,27 +74,16 @@
             layer.msg("密码不能为空");
             return ;
         }
-        $.ajax({
-            url: '/user/unlock',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                password: password
-            },
-            success: function (data) {
-                if (data.result == 200) {
-                    window.location.href = "/";
-                } else {
-                    layer.msg(data.message);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误消息', icon: 2});
-            }
-        })
+        var data = {password: password};
+        function successMethod() {
+            window.location.href = "/";
+        }
+        App.ajaxWithData("/user/unlock", "GET", data, successMethod);
     });
 
-
+    /**
+     * 设置时间
+     */
     function startTime()
     {
         var today=new Date();
@@ -115,6 +97,11 @@
         t=setTimeout(function(){startTime()},500);
     }
 
+    /**
+     * 计时
+     * @param i
+     * @returns {*}
+     */
     function checkTime(i)
     {
         if (i<10)

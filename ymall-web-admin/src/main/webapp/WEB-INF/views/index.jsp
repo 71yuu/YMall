@@ -17,8 +17,8 @@
                 <ul class="cl">
                     <li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onclick="product_add('添加商品','/product-add')"><i class="Hui-iconfont">&#xe620;</i> 商品</a></li>
-                            <li><a href="javascript:;" onclick="member_add('添加会员','/member-add','','630')"><i class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
+                            <li><a href="javascript:;" onclick="App.openAndFull('添加商品','/product-add')"><i class="Hui-iconfont">&#xe620;</i> 商品</a></li>
+                            <li><a href="javascript:;" onclick="App.show('添加会员','/member-add','','630')"><i class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
                         </ul>
                     <li class="navbar-levelone current"><a href="javascript:;">平台</a></li>
                     <li class="navbar-levelone"><a href="javascript:;">财务</a></li>
@@ -32,7 +32,7 @@
                     <li class="dropDown dropDown_hover">
                         <a href="#" class="dropDown_A"><sapn id="username"></sapn> <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
+                            <li><a href="javascript:;" onClick="App.show('管理员信息','/admin-show',360,400)">个人信息</a></li>
                             <li><a onclick="logout()">切换账户</a></li>
                             <li><a onclick="logout()">退出</a></li>
                         </ul>
@@ -205,64 +205,28 @@
         });
     });
 
-    // 显示个人信息窗口
-    function myselfinfo(){
-        layer_show('管理员信息','/admin-show',360,400);
-    }
-
-    // 添加商品窗口
-    function product_add(title,url){
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
-
-    // 添加用户窗口
-    function member_add(title,url,w,h){
-        layer_show(title,url,w,h);
-    }
-
     // 获取用户信息
     var username="",description="",sex="",phone="",email="",address="",created="",file="";
-    $.ajax({
-        type: 'GET',
-        url: '/user/userInfo',
-        success:function (data) {
-            if (data.status == 200) {
-                $("#role").html(data.result.description);
-                $("#username").html(data.result.username);
-                username = data.result.username;
-                description = data.result.description;
-                sex = data.result.sex;
-                phone = data.result.phone;
-                email = data.result.email;
-                address = data.result.address;
-                created = data.result.created;
-                file = data.result.file;
-            } else {
-                layer.alert(data.message, {title: "错误信息", icon: 2});
-            }
-        },
-        error:function(){
-            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息',icon: 2});
-        }
-    });
+    function successMethod(data) {
+        $("#role").html(data.result.description);
+        $("#username").html(data.result.username);
+        username = data.result.username;
+        description = data.result.description;
+        sex = data.result.sex;
+        phone = data.result.phone;
+        email = data.result.email;
+        address = data.result.address;
+        created = data.result.created;
+        file = data.result.file;
+    }
+    App.ajax("/user/userInfo", "GET", successMethod);
 
     // 退出登录
     function logout() {
-        $.ajax({
-            type: 'GET',
-            url: '/user/logout',
-            success:function () {
-                window.location.href = "/login";
-            },
-            error:function(){
-                layer.alert(ERROR_REQUEST_MESSAGE,{title: '错误信息',icon: 2});
-            }
-        });
+        function successMethod() {
+            window.location.href = "/login";
+        }
+        App.ajax("/user/logout", "GET", successMethod());
     }
 
     // 弹出感谢窗口

@@ -58,7 +58,7 @@
     // 导航栏添加提交
     function successMethod(data) {
         parent.refresh();
-        parent.msgSuccess(data.message);
+        parent.App.msgSuccess(data.message);
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index);
     }
