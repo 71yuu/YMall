@@ -1,17 +1,15 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbExpress;
 
-import java.util.List;
+public interface TbExpressMapper extends BaseMapper<TbExpress> {
 
-public interface TbExpressMapper {
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
     int deleteByPrimaryKey(Integer id);
-
-    int insert(TbExpress record);
-
-    TbExpress selectByPrimaryKey(Integer id);
-
-    List<TbExpress> selectAll();
-
-    int updateByPrimaryKey(TbExpress record);
 }

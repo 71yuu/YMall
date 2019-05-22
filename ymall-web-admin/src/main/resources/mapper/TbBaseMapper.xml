@@ -1,43 +1,47 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuu.ymall.web.admin.mapper.TbBaseMapper" >
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbBase" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="web_name" property="webName" jdbcType="VARCHAR" />
-    <result column="key_word" property="keyWord" jdbcType="VARCHAR" />
-    <result column="description" property="description" jdbcType="VARCHAR" />
-    <result column="source_path" property="sourcePath" jdbcType="VARCHAR" />
-    <result column="upload_path" property="uploadPath" jdbcType="VARCHAR" />
-    <result column="copyright" property="copyright" jdbcType="VARCHAR" />
-    <result column="count_code" property="countCode" jdbcType="VARCHAR" />
-    <result column="has_log_notice" property="hasLogNotice" jdbcType="INTEGER" />
-    <result column="log_notice" property="logNotice" jdbcType="VARCHAR" />
-    <result column="has_all_notice" property="hasAllNotice" jdbcType="INTEGER" />
-    <result column="all_notice" property="allNotice" jdbcType="VARCHAR" />
-    <result column="notice" property="notice" jdbcType="VARCHAR" />
-    <result column="update_log" property="updateLog" jdbcType="VARCHAR" />
-    <result column="front_url" property="frontUrl" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbBaseMapper">
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbBase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="web_name" jdbcType="VARCHAR" property="webName" />
+    <result column="key_word" jdbcType="VARCHAR" property="keyWord" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="source_path" jdbcType="VARCHAR" property="sourcePath" />
+    <result column="upload_path" jdbcType="VARCHAR" property="uploadPath" />
+    <result column="copyright" jdbcType="VARCHAR" property="copyright" />
+    <result column="count_code" jdbcType="VARCHAR" property="countCode" />
+    <result column="has_log_notice" jdbcType="INTEGER" property="hasLogNotice" />
+    <result column="log_notice" jdbcType="VARCHAR" property="logNotice" />
+    <result column="has_all_notice" jdbcType="INTEGER" property="hasAllNotice" />
+    <result column="all_notice" jdbcType="VARCHAR" property="allNotice" />
+    <result column="notice" jdbcType="VARCHAR" property="notice" />
+    <result column="update_log" jdbcType="VARCHAR" property="updateLog" />
+    <result column="front_url" jdbcType="VARCHAR" property="frontUrl" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_base
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbBase" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbBase">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base (web_name, key_word, description,
+    insert into tb_base (web_name, key_word, description, 
       source_path, upload_path, copyright, 
       count_code, has_log_notice, log_notice, 
       has_all_notice, all_notice, notice, 
-      update_log, front_url)
+      update_log, front_url, created, 
+      updated)
     values (#{webName,jdbcType=VARCHAR}, #{keyWord,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{sourcePath,jdbcType=VARCHAR}, #{uploadPath,jdbcType=VARCHAR}, #{copyright,jdbcType=VARCHAR}, 
       #{countCode,jdbcType=VARCHAR}, #{hasLogNotice,jdbcType=INTEGER}, #{logNotice,jdbcType=VARCHAR}, 
       #{hasAllNotice,jdbcType=INTEGER}, #{allNotice,jdbcType=VARCHAR}, #{notice,jdbcType=VARCHAR}, 
-      #{updateLog,jdbcType=VARCHAR}, #{frontUrl,jdbcType=VARCHAR})
+      #{updateLog,jdbcType=VARCHAR}, #{frontUrl,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbBase" >
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbBase">
     update tb_base
     set web_name = #{webName,jdbcType=VARCHAR},
       key_word = #{keyWord,jdbcType=VARCHAR},
@@ -52,25 +56,47 @@
       all_notice = #{allNotice,jdbcType=VARCHAR},
       notice = #{notice,jdbcType=VARCHAR},
       update_log = #{updateLog,jdbcType=VARCHAR},
-      front_url = #{frontUrl,jdbcType=VARCHAR}
+      front_url = #{frontUrl,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, web_name, key_word, description, source_path, upload_path, copyright, 
     count_code, has_log_notice, log_notice, has_all_notice, all_notice, notice, update_log, 
-    front_url
+    front_url, created, updated
     from tb_base
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, web_name, key_word, description, source_path, upload_path, copyright, 
     count_code, has_log_notice, log_notice, has_all_notice, all_notice, notice, update_log, 
-    front_url
+    front_url, created, updated
     from tb_base
   </select>
 
+    <!-- sql 片断封装 -->
+    <sql id="tbBaseColumns">
+        a.id,
+        a.web_name,
+        a.key_word,
+        a.description,
+        a.source_path,
+        a.upload_path,
+        a.copyright,
+        a.count_code,
+        a.has_log_notice,
+        a.log_notice,
+        a.has_all_notice,
+        a.all_notice,
+        a.notice,
+        a.update_log,
+    front_url
+    </sql>
+
+    <!-- 获取系统基本信息 -->
     <select id="getBase" resultType="TbBase">
-        select  has_log_notice, log_notice, has_all_notice, all_notice
-        from tb_base
+        select  <include refid="tbBaseColumns"/>
+        from tb_base as a
     </select>
 </mapper>

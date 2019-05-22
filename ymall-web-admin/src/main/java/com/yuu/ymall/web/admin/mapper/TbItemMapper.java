@@ -1,19 +1,22 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbItem;
 
-import java.util.List;
+public interface TbItemMapper extends BaseMapper<TbItem> {
 
-public interface TbItemMapper {
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
     int deleteByPrimaryKey(Long id);
 
-    int insert(TbItem record);
-
-    TbItem selectByPrimaryKey(Long id);
-
-    List<TbItem> selectAll();
-
-    int updateByPrimaryKey(TbItem record);
-
+    /**
+     * 获取商品总数
+     *
+     * @return
+     */
     int getAllItemCount();
 }

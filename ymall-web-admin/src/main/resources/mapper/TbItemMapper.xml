@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuu.ymall.web.admin.mapper.TbItemMapper" >
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbItem" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="sell_point" property="sellPoint" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="num" property="num" jdbcType="INTEGER" />
-    <result column="limit_num" property="limitNum" jdbcType="INTEGER" />
-    <result column="image" property="image" jdbcType="VARCHAR" />
-    <result column="cid" property="cid" jdbcType="BIGINT" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="created" property="created" jdbcType="TIMESTAMP" />
-    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbItemMapper">
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbItem">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sell_point" jdbcType="VARCHAR" property="sellPoint" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="limit_num" jdbcType="INTEGER" property="limitNum" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="cid" jdbcType="BIGINT" property="cid" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tb_item
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbItem" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_item (title, sell_point, price,
+    insert into tb_item (title, sell_point, price, 
       num, limit_num, image, 
       cid, status, created, 
       updated)
@@ -31,7 +31,7 @@
       #{cid,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, 
       #{updated,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbItem" >
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbItem">
     update tb_item
     set title = #{title,jdbcType=VARCHAR},
       sell_point = #{sellPoint,jdbcType=VARCHAR},
@@ -45,18 +45,19 @@
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select id, title, sell_point, price, num, limit_num, image, cid, status, created, 
     updated
     from tb_item
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, title, sell_point, price, num, limit_num, image, cid, status, created, 
     updated
     from tb_item
   </select>
 
+    <!-- 获取商品总数 -->
     <select id="getAllItemCount" resultType="java.lang.Integer">
         select count(*) from tb_item;
     </select>

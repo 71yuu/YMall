@@ -1,48 +1,59 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuu.ymall.web.admin.mapper.TbShiroFilterMapper" >
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbShiroFilter" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="perms" property="perms" jdbcType="VARCHAR" />
-    <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbShiroFilterMapper">
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbShiroFilter">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="perms" jdbcType="VARCHAR" property="perms" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, name, perms, sort_order
-  </sql>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_shiro_filter
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbShiroFilter" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbShiroFilter">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_shiro_filter (name, perms, sort_order
-      )
-    values (#{name,jdbcType=VARCHAR}, #{perms,jdbcType=VARCHAR}, #{sortOrder,jdbcType=INTEGER}
-      )
+    insert into tb_shiro_filter (name, perms, sort_order, 
+      created, updated)
+    values (#{name,jdbcType=VARCHAR}, #{perms,jdbcType=VARCHAR}, #{sortOrder,jdbcType=INTEGER}, 
+      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbShiroFilter" >
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbShiroFilter">
     update tb_shiro_filter
     set name = #{name,jdbcType=VARCHAR},
       perms = #{perms,jdbcType=VARCHAR},
-      sort_order = #{sortOrder,jdbcType=INTEGER}
+      sort_order = #{sortOrder,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, name, perms, sort_order
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, perms, sort_order, created, updated
     from tb_shiro_filter
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select id, name, perms, sort_order
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, perms, sort_order, created, updated
     from tb_shiro_filter
   </select>
 
+    <!-- sql 片段封装 -->
+    <sql id="tbShiroColumns">
+        a.id,
+        a.name,
+        a.perms,
+        a.sort_order,
+        a.created,
+        a.updated
+    </sql>
+    <!-- 获取所有 Shiro 权限过滤器 -->
     <select id="getShiroFilter" resultType="TbShiroFilter">
-        select <include refid="Base_Column_List"/>
-        from tb_shiro_filter
+        select <include refid="tbShiroColumns" />
+        from tb_shiro_filter as a
         order by sort_order
     </select>
 </mapper>

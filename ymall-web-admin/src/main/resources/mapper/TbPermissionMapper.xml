@@ -1,35 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuu.ymall.web.admin.mapper.TbPermissionMapper" >
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbPermission" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="permission" property="permission" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbPermissionMapper">
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbPermission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_permission
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbPermission" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbPermission">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_permission (name, permission)
-    values (#{name,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR})
+    insert into tb_permission (name, permission, created, 
+      updated)
+    values (#{name,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbPermission" >
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbPermission">
     update tb_permission
     set name = #{name,jdbcType=VARCHAR},
-      permission = #{permission,jdbcType=VARCHAR}
+      permission = #{permission,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, name, permission
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, permission, created, updated
     from tb_permission
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select id, name, permission
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, permission, created, updated
     from tb_permission
   </select>
 </mapper>

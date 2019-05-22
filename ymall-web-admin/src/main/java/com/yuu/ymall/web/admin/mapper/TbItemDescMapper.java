@@ -1,17 +1,15 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbItemDesc;
 
-import java.util.List;
+public interface TbItemDescMapper extends BaseMapper<TbItemDesc> {
 
-public interface TbItemDescMapper {
-    int deleteByPrimaryKey(Long itemId);
-
-    int insert(TbItemDesc record);
-
-    TbItemDesc selectByPrimaryKey(Long itemId);
-
-    List<TbItemDesc> selectAll();
-
-    int updateByPrimaryKey(TbItemDesc record);
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
+    int deleteByPrimaryKey(Long id);
 }

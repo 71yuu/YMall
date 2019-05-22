@@ -37,7 +37,7 @@
                 type="XMLMAPPER"/>
 
         <!-- 配置需要指定生成的数据库和表，% 代表所有表 -->
-        <table catalog="ymall" tableName="%" enableCountByExample="true" enableDeleteByExample="true"
+        <table tableName="%" enableCountByExample="true" enableDeleteByExample="true"
                enableSelectByExample="true" enableUpdateByExample="true">
             <!-- mysql 配置 -->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>

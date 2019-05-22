@@ -1,19 +1,22 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbMember;
 
-import java.util.List;
+public interface TbMemberMapper extends BaseMapper<TbMember> {
 
-public interface TbMemberMapper {
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
     int deleteByPrimaryKey(Long id);
 
-    int insert(TbMember record);
-
-    TbMember selectByPrimaryKey(Long id);
-
-    List<TbMember> selectAll();
-
-    int updateByPrimaryKey(TbMember record);
-
+    /**
+     * 获取会员总数
+     *
+     * @return
+     */
     int getAllMemberCount();
 }

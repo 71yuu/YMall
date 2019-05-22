@@ -1,34 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuu.ymall.web.admin.mapper.TbOrderShippingMapper" >
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbOrderShipping" >
-    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
-    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
-    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
-    <result column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
-    <result column="receiver_state" property="receiverState" jdbcType="VARCHAR" />
-    <result column="receiver_city" property="receiverCity" jdbcType="VARCHAR" />
-    <result column="receiver_district" property="receiverDistrict" jdbcType="VARCHAR" />
-    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
-    <result column="receiver_zip" property="receiverZip" jdbcType="VARCHAR" />
-    <result column="created" property="created" jdbcType="TIMESTAMP" />
-    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbOrderShippingMapper">
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbOrderShipping">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
+    <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
+    <result column="receiver_state" jdbcType="VARCHAR" property="receiverState" />
+    <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity" />
+    <result column="receiver_district" jdbcType="VARCHAR" property="receiverDistrict" />
+    <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
+    <result column="receiver_zip" jdbcType="VARCHAR" property="receiverZip" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_order_shipping
-    where order_id = #{orderId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrderShipping" >
-    insert into tb_order_shipping (order_id, receiver_name, receiver_phone,
-      receiver_mobile, receiver_state, receiver_city, 
-      receiver_district, receiver_address, receiver_zip, 
-      created, updated)
-    values (#{orderId,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR}, 
-      #{receiverMobile,jdbcType=VARCHAR}, #{receiverState,jdbcType=VARCHAR}, #{receiverCity,jdbcType=VARCHAR}, 
-      #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{receiverZip,jdbcType=VARCHAR}, 
-      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrderShipping">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_order_shipping (receiver_name, receiver_phone, receiver_mobile, 
+      receiver_state, receiver_city, receiver_district, 
+      receiver_address, receiver_zip, created, 
+      updated)
+    values (#{receiverName,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, 
+      #{receiverState,jdbcType=VARCHAR}, #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR}, 
+      #{receiverAddress,jdbcType=VARCHAR}, #{receiverZip,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrderShipping" >
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrderShipping">
     update tb_order_shipping
     set receiver_name = #{receiverName,jdbcType=VARCHAR},
       receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
@@ -40,17 +43,17 @@
       receiver_zip = #{receiverZip,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
-    where order_id = #{orderId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select order_id, receiver_name, receiver_phone, receiver_mobile, receiver_state, 
-    receiver_city, receiver_district, receiver_address, receiver_zip, created, updated
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, receiver_name, receiver_phone, receiver_mobile, receiver_state, receiver_city, 
+    receiver_district, receiver_address, receiver_zip, created, updated
     from tb_order_shipping
-    where order_id = #{orderId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select order_id, receiver_name, receiver_phone, receiver_mobile, receiver_state, 
-    receiver_city, receiver_district, receiver_address, receiver_zip, created, updated
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, receiver_name, receiver_phone, receiver_mobile, receiver_state, receiver_city, 
+    receiver_district, receiver_address, receiver_zip, created, updated
     from tb_order_shipping
   </select>
 </mapper>

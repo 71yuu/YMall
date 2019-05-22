@@ -1,24 +1,41 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbUser;
 
-import java.util.List;
 import java.util.Set;
 
-public interface TbUserMapper {
+public interface TbUserMapper extends BaseMapper<TbUser> {
+
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
     int deleteByPrimaryKey(Long id);
 
-    int insert(TbUser record);
-
-    TbUser selectByPrimaryKey(Long id);
-
-    List<TbUser> selectAll();
-
-    int updateByPrimaryKey(TbUser record);
-
+    /**
+     * 获取用户的所有角色
+     *
+     * @param username 用户名
+     * @return
+     */
     Set<String> getRoles(String username);
 
+    /**
+     * 获取用户的所有权限
+     *
+     * @param username 用户名
+     * @return
+     */
     Set<String> getPermissions(String username);
 
+    /**
+     * 根据用户名获取用户
+     *
+     * @param username 用户名
+     * @return
+     */
     TbUser getUserByUsername(String username);
 }

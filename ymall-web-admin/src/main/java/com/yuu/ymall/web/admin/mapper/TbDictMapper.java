@@ -1,17 +1,15 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbDict;
 
-import java.util.List;
+public interface TbDictMapper extends BaseMapper<TbDict> {
 
-public interface TbDictMapper {
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
     int deleteByPrimaryKey(Integer id);
-
-    int insert(TbDict record);
-
-    TbDict selectByPrimaryKey(Integer id);
-
-    List<TbDict> selectAll();
-
-    int updateByPrimaryKey(TbDict record);
 }

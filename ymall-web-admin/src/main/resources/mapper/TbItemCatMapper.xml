@@ -1,27 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuu.ymall.web.admin.mapper.TbItemCatMapper" >
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbItemCat" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
-    <result column="is_parent" property="isParent" jdbcType="BIT" />
-    <result column="icon" property="icon" jdbcType="VARCHAR" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="created" property="created" jdbcType="TIMESTAMP" />
-    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbItemCatMapper">
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbItemCat">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="is_parent" jdbcType="BIT" property="isParent" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tb_item_cat
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbItemCat" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbItemCat">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_item_cat (parent_id, name, status,
+    insert into tb_item_cat (parent_id, name, status, 
       sort_order, is_parent, icon, 
       remark, created, updated
       )
@@ -30,7 +30,7 @@
       #{remark,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbItemCat" >
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbItemCat">
     update tb_item_cat
     set parent_id = #{parentId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
@@ -43,13 +43,13 @@
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select id, parent_id, name, status, sort_order, is_parent, icon, remark, created, 
     updated
     from tb_item_cat
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, parent_id, name, status, sort_order, is_parent, icon, remark, created, 
     updated
     from tb_item_cat

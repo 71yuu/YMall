@@ -1,17 +1,15 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbOrderShipping;
 
-import java.util.List;
+public interface TbOrderShippingMapper extends BaseMapper<TbOrderShipping> {
 
-public interface TbOrderShippingMapper {
-    int deleteByPrimaryKey(String orderId);
-
-    int insert(TbOrderShipping record);
-
-    TbOrderShipping selectByPrimaryKey(String orderId);
-
-    List<TbOrderShipping> selectAll();
-
-    int updateByPrimaryKey(TbOrderShipping record);
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
+    int deleteByPrimaryKey(String id);
 }

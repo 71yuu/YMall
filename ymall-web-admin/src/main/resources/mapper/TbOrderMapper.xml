@@ -1,51 +1,54 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuu.ymall.web.admin.mapper.TbOrderMapper" >
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbOrder" >
-    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
-    <result column="payment" property="payment" jdbcType="DECIMAL" />
-    <result column="payment_type" property="paymentType" jdbcType="INTEGER" />
-    <result column="post_fee" property="postFee" jdbcType="DECIMAL" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="payment_time" property="paymentTime" jdbcType="TIMESTAMP" />
-    <result column="consign_time" property="consignTime" jdbcType="TIMESTAMP" />
-    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
-    <result column="shipping_name" property="shippingName" jdbcType="VARCHAR" />
-    <result column="shipping_code" property="shippingCode" jdbcType="VARCHAR" />
-    <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="buyer_message" property="buyerMessage" jdbcType="VARCHAR" />
-    <result column="buyer_nick" property="buyerNick" jdbcType="VARCHAR" />
-    <result column="buyer_comment" property="buyerComment" jdbcType="BIT" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbOrderMapper">
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbOrder">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="payment" jdbcType="DECIMAL" property="payment" />
+    <result column="payment_type" jdbcType="INTEGER" property="paymentType" />
+    <result column="post_fee" jdbcType="DECIMAL" property="postFee" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="consign_time" jdbcType="TIMESTAMP" property="consignTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="close_time" jdbcType="TIMESTAMP" property="closeTime" />
+    <result column="shipping_name" jdbcType="VARCHAR" property="shippingName" />
+    <result column="shipping_code" jdbcType="VARCHAR" property="shippingCode" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="buyer_message" jdbcType="VARCHAR" property="buyerMessage" />
+    <result column="buyer_nick" jdbcType="VARCHAR" property="buyerNick" />
+    <result column="buyer_comment" jdbcType="BIT" property="buyerComment" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_order
-    where order_id = #{orderId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrder" >
-    insert into tb_order (order_id, payment, payment_type,
-      post_fee, status, create_time, 
-      update_time, payment_time, consign_time, 
-      end_time, close_time, shipping_name, 
-      shipping_code, user_id, buyer_message, 
-      buyer_nick, buyer_comment)
-    values (#{orderId,jdbcType=VARCHAR}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, 
-      #{postFee,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=TIMESTAMP}, #{consignTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{shippingName,jdbcType=VARCHAR}, 
-      #{shippingCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{buyerMessage,jdbcType=VARCHAR}, 
-      #{buyerNick,jdbcType=VARCHAR}, #{buyerComment,jdbcType=BIT})
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrder">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_order (payment, payment_type, post_fee, 
+      status, created, updated, 
+      payment_time, consign_time, end_time, 
+      close_time, shipping_name, shipping_code, 
+      user_id, buyer_message, buyer_nick, 
+      buyer_comment)
+    values (#{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, #{postFee,jdbcType=DECIMAL}, 
+      #{status,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, 
+      #{paymentTime,jdbcType=TIMESTAMP}, #{consignTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{closeTime,jdbcType=TIMESTAMP}, #{shippingName,jdbcType=VARCHAR}, #{shippingCode,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=BIGINT}, #{buyerMessage,jdbcType=VARCHAR}, #{buyerNick,jdbcType=VARCHAR}, 
+      #{buyerComment,jdbcType=BIT})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrder" >
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrder">
     update tb_order
     set payment = #{payment,jdbcType=DECIMAL},
       payment_type = #{paymentType,jdbcType=INTEGER},
       post_fee = #{postFee,jdbcType=DECIMAL},
       status = #{status,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
       payment_time = #{paymentTime,jdbcType=TIMESTAMP},
       consign_time = #{consignTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
@@ -56,21 +59,23 @@
       buyer_message = #{buyerMessage,jdbcType=VARCHAR},
       buyer_nick = #{buyerNick,jdbcType=VARCHAR},
       buyer_comment = #{buyerComment,jdbcType=BIT}
-    where order_id = #{orderId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select order_id, payment, payment_type, post_fee, status, create_time, update_time, 
-    payment_time, consign_time, end_time, close_time, shipping_name, shipping_code, user_id, 
-    buyer_message, buyer_nick, buyer_comment
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, payment, payment_type, post_fee, status, created, updated, payment_time, 
+    consign_time, end_time, close_time, shipping_name, shipping_code, user_id, buyer_message, 
+    buyer_nick, buyer_comment
     from tb_order
-    where order_id = #{orderId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select order_id, payment, payment_type, post_fee, status, create_time, update_time, 
-    payment_time, consign_time, end_time, close_time, shipping_name, shipping_code, user_id, 
-    buyer_message, buyer_nick, buyer_comment
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, payment, payment_type, post_fee, status, created, updated, payment_time, 
+    consign_time, end_time, close_time, shipping_name, shipping_code, user_id, buyer_message, 
+    buyer_nick, buyer_comment
     from tb_order
   </select>
+
+    <!-- 获取订单总数 -->
     <select id="getAllOrderCount" resultType="java.lang.Integer">
         select count(*) from tb_order;
     </select>

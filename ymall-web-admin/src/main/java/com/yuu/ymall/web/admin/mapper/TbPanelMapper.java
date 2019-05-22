@@ -1,33 +1,33 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbPanel;
 
 import java.util.List;
 import java.util.Map;
 
-public interface TbPanelMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(TbPanel record);
-
-    TbPanel selectByPrimaryKey(Integer id);
-
-    List<TbPanel> selectAll();
-
-    int updateByPrimaryKey(TbPanel record);
+public interface TbPanelMapper extends BaseMapper<TbPanel> {
 
     /**
-     * 查询板块列表
+     * 根据主键 id 删除数据
      *
-     * @param params 条件参数列表
+     * @param id
+     * @return
+     */
+    int deleteByPrimaryKey(Integer id);
+
+    /**
+     * 根据条件查询所有板块
+     *
+     * @param params
      * @return
      */
     List<TbPanel> getPanelList(Map<String, String> params);
 
     /**
-     * 根据板块类型获取板块
+     * 根据板块的类型查询板块
      *
-     * @param type 板块类型
+     * @param type
      * @return
      */
     TbPanel getPanelByType(int type);

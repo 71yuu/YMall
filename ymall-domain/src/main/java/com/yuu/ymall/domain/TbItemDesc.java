@@ -1,17 +1,22 @@
 package com.yuu.ymall.domain;
 
+import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
+/**
+ * 商品描述实体
+ */
 @Data
-public class TbItemDesc {
-    private Long itemId;
+@EqualsAndHashCode(callSuper = true)
+public class TbItemDesc extends BaseEntity {
+    /**
+     * 商品描述 id
+     */
+    private Long id;
 
-    private Date created;
-
-    private Date updated;
-
+    /**
+     * 商品描述信息
+     */
     private String itemDesc;
-
 }

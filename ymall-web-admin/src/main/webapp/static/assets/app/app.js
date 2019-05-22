@@ -173,11 +173,13 @@ var App = function () {
      */
     var handlerDeleteSingle = function (confirmMsg, url, successMethod) {
         layer.confirm(confirmMsg, {icon:0},function () {
+            var index = layer.load(3);
             $.ajax({
                 type: 'DELETE',
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                    layer.close(index);
                     if (data.status == 200) {
                         successMethod(data);
                     } else {
@@ -185,6 +187,7 @@ var App = function () {
                     }
                 },
                 error: function () {
+                    layer.close(index);
                     layer.alert(ERROR_REQUEST_MESSAGE, {title: "错误信息", icon: 2});
                 }
             })
@@ -394,6 +397,5 @@ var App = function () {
         ajaxWithData: function (url, type, data, successMethod) {
             handlerAjaxWithData(url, type, data, successMethod);
         }
-
     }
 }();

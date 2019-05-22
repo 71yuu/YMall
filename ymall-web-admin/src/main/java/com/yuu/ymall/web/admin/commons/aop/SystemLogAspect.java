@@ -2,9 +2,9 @@ package com.yuu.ymall.web.admin.commons.aop;
 
 import com.yuu.ymall.domain.TbLog;
 import com.yuu.ymall.web.admin.commons.annotation.SystemControllerLog;
-import com.yuu.ymall.web.admin.service.SystemService;
 import com.yuu.ymall.web.admin.commons.utils.IPInfoUtil;
 import com.yuu.ymall.web.admin.commons.utils.ThreadPoolUtil;
+import com.yuu.ymall.web.admin.service.SystemService;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -103,7 +103,7 @@ public class SystemLogAspect {
                 // 请求耗时
                 Long logElapsedTime = endTime - beginTime;
                 tbLog.setTime(logElapsedTime.intValue());
-                tbLog.setCreateDate(logStartTime);
+                tbLog.setCreated(logStartTime);
 
                 // 调用线程保存至数据库
                 ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(tbLog, systemService));

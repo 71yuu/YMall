@@ -1,7 +1,7 @@
 package com.yuu.ymall.web.admin.service.impl;
 
-import com.yuu.ymall.web.admin.mapper.TbUserMapper;
 import com.yuu.ymall.domain.TbUser;
+import com.yuu.ymall.web.admin.mapper.TbUserMapper;
 import com.yuu.ymall.web.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,32 +1,36 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuu.ymall.web.admin.mapper.TbOrderItemMapper" >
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbOrderItem" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="item_id" property="itemId" jdbcType="VARCHAR" />
-    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
-    <result column="num" property="num" jdbcType="INTEGER" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="total_fee" property="totalFee" jdbcType="DECIMAL" />
-    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.ymall.web.admin.mapper.TbOrderItemMapper">
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbOrderItem">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="total_fee" jdbcType="DECIMAL" property="totalFee" />
+    <result column="pic_path" jdbcType="VARCHAR" property="picPath" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_order_item
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrderItem" >
-    <selectKey resultType="java.lang.String" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrderItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_order_item (item_id, order_id, num,
+    insert into tb_order_item (item_id, order_id, num, 
       title, price, total_fee, 
-      pic_path)
+      pic_path, created, updated
+      )
     values (#{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{totalFee,jdbcType=DECIMAL}, 
-      #{picPath,jdbcType=VARCHAR})
+      #{picPath,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrderItem" >
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrderItem">
     update tb_order_item
     set item_id = #{itemId,jdbcType=VARCHAR},
       order_id = #{orderId,jdbcType=VARCHAR},
@@ -34,19 +38,22 @@
       title = #{title,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       total_fee = #{totalFee,jdbcType=DECIMAL},
-      pic_path = #{picPath,jdbcType=VARCHAR}
+      pic_path = #{picPath,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select id, item_id, order_id, num, title, price, total_fee, pic_path
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, item_id, order_id, num, title, price, total_fee, pic_path, created, updated
     from tb_order_item
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select id, item_id, order_id, num, title, price, total_fee, pic_path
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, item_id, order_id, num, title, price, total_fee, pic_path, created, updated
     from tb_order_item
   </select>
 
+    <!-- 获取本周热门商品 -->
     <select id="getWeekHot" resultType="TbOrderItem">
         SELECT
         i.title,

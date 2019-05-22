@@ -1,17 +1,15 @@
 package com.yuu.ymall.web.admin.mapper;
 
-import com.yuu.ymall.domain.TbRolePerm;
+import com.yuu.ymall.commons.persistence.BaseMapper;
+import com.yuu.ymall.domain.TbRole;
 
-import java.util.List;
+public interface TbRolePermMapper extends BaseMapper<TbRole> {
 
-public interface TbRolePermMapper {
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
     int deleteByPrimaryKey(Integer id);
-
-    int insert(TbRolePerm record);
-
-    TbRolePerm selectByPrimaryKey(Integer id);
-
-    List<TbRolePerm> selectAll();
-
-    int updateByPrimaryKey(TbRolePerm record);
 }

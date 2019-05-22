@@ -1,17 +1,16 @@
 package com.yuu.ymall.web.admin.mapper;
 
+import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbAddress;
 
-import java.util.List;
+public interface TbAddressMapper extends BaseMapper<TbAddress> {
 
-public interface TbAddressMapper {
-    int deleteByPrimaryKey(Long addressId);
+    /**
+     * 根据主键 id 删除数据
+     *
+     * @param id
+     * @return
+     */
+    int deleteByPrimaryKey(Long id);
 
-    int insert(TbAddress record);
-
-    TbAddress selectByPrimaryKey(Long addressId);
-
-    List<TbAddress> selectAll();
-
-    int updateByPrimaryKey(TbAddress record);
 }

@@ -74,7 +74,11 @@
             },
             { "data": "id"},
             { "data": "picUrl"},
-            { "data": "fullUrl"},
+            { "data": "fullUrl",
+                render: function (data, type, row, meta) {
+                    return '<a href="'+ row.fullUrl+'" target="_blank">'+ row.fullUrl +'</a>';
+                }
+            },
             { "data": "type",
                 render: function (data, type, row, meta) {
                     if(data == 0){
