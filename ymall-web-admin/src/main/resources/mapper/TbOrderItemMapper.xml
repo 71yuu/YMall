@@ -61,9 +61,9 @@
         count(*) total
         FROM
         tb_order_item i
-        LEFT JOIN tb_order o ON i.order_id = o.order_id
+        LEFT JOIN tb_order o ON i.order_id = o.id
         WHERE
-        YEARWEEK(date_format(o.create_time, '%Y-%m-%d'), 1) = YEARWEEK(now(), 1)
+        YEARWEEK(date_format(o.created, '%Y-%m-%d'), 1) = YEARWEEK(now(), 1)
         AND o.status = 4
         GROUP BY
         i.item_id

@@ -117,6 +117,13 @@
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
         <!-- Swagger2 End -->
+
+        <!-- QiNiuYun Begin -->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+        </dependency>
+        <!-- QiNiuYun End -->
     </dependencies>
 
     <build>

@@ -4,8 +4,7 @@
 <head>
     <jsp:include page="../includes/header.jsp"/>
     <title>导航栏管理</title>
-
-    <!-- iCheck for checkboxes and radio inputs -->
+    <!-- iCheck -->
     <link rel="stylesheet" href="/static/assets/plugins/iCheck/all.css">
 </head>
 <style>
@@ -21,11 +20,11 @@
         <div class="cl pd-5 bg-1 bk-gray mt-20">
             <span class="l">
                 <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-                <a class="btn btn-primary radius" onclick="App.show('添加导航栏内容','/content-header-add',700,350)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加导航栏内容</a>
+                <a class="btn btn-primary radius" onclick="add('添加导航栏内容','/content-header-form',700,350)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加导航栏内容</a>
             </span>
         </div>
         <div class="mt-20">
-            <div class="mt-20" style="margin-bottom: 70px">
+            <div class="mt-20" >
                 <table id="dataTable" class="table table-border table-bordered table-bg table-hover table-sort" width="100%">
                     <thead>
                     <tr class="text-c">
@@ -38,6 +37,8 @@
                         <th width="50">操作</th>
                     </tr>
                     </thead>
+                    <tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -46,18 +47,13 @@
 
 <jsp:include page="../includes/footer.jsp"/>
 
-<!--请在下方写此页面业务相关的脚本-->
+<!-- DataTables -->
 <script type="text/javascript" src="/static/assets/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/static/assets/lib/datatables/dataTables.colReorder.min.js"></script>
 <script type="text/javascript" src="/static/assets/lib/laypage/1.2/laypage.js"></script>
-<script type="text/javascript" src="/static/assets/lib/common.js"></script>
 <!-- iCheck 1.0.1 -->
 <script src="/static/assets/plugins/iCheck/icheck.min.js"></script>
 
-<!-- App -->
-<script type="text/javascript" src="/static/assets/app/app.js"></script>
 <script type="text/javascript">
-
 
     // 初始化 iCheck
     App.initICheck();
@@ -67,19 +63,22 @@
     */
    $(function () {
         const _columns = [
-            { "data": null,
-                render : function(data,type, row, meta) {
+            {
+                "data": null,
+                render: function(data,type, row, meta) {
                     return '<input id="' + row.id + '" type="checkbox" class="minimal" />';
                 }
             },
             { "data": "id"},
             { "data": "picUrl"},
-            { "data": "fullUrl",
+            {
+                "data": "fullUrl",
                 render: function (data, type, row, meta) {
                     return '<a href="'+ row.fullUrl+'" target="_blank">'+ row.fullUrl +'</a>';
                 }
             },
-            { "data": "type",
+            {
+                "data": "type",
                 render: function (data, type, row, meta) {
                     if(data == 0){
                         return "<span class=\"label label-warning radius td-status\">站外</span>";
@@ -92,7 +91,7 @@
             {
                 "data": null,
                 render: function (data, type, row, meta) {
-                    return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"edit('编辑','/content-header-edit',700,350)\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> " +
+                    return "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"edit('编辑','/content-header-form',700,350)\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> " +
                         "<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"del("+row.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
                 }
             }
@@ -101,11 +100,12 @@
        App.initDataTables("/content/list/0", _columns);
     });
 
+
    /**
     * 编辑导航栏内容
     */
    var id, picUrl, fullUrl, sortOrder, type;
-    function edit(title,url,w,h){
+   function edit(title,url,w,h){
         var table = $('.table').DataTable();
         $('.table tbody').on( 'click', 'tr', function () {
             id = table.row(this).data().id;
@@ -115,6 +115,18 @@
             type = table.row(this).data().type;
         });
         App.show(title,url,w,h);
+    }
+
+    /**
+     * 添加导航栏内容
+     * */
+    function add(title, url, w, h) {
+        id = "";
+        picUrl = "";
+        fullUrl = "";
+        sortOrder = "";
+        type = "";
+        App.show(title, url, w, h);
     }
 
 

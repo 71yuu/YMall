@@ -2,12 +2,14 @@ package com.yuu.ymall.web.admin.web.controller;
 
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.domain.TbPanelContent;
-import com.yuu.ymall.web.admin.commons.dto.PageInfo;
+import com.yuu.ymall.web.admin.commons.dto.DataTablesResult;
 import com.yuu.ymall.web.admin.service.ContentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Classname ContentController
@@ -30,21 +32,22 @@ public class ContentController {
      */
     @GetMapping("list/{panelId}")
     @ApiOperation("通过 panelId 获取板块内容列表")
-    public PageInfo<TbPanelContent> getContentByCid(@PathVariable int panelId) {
-        PageInfo<TbPanelContent> pageInfo = contentService.getPanelContentListByPanelId(panelId);
-        return pageInfo;
+    public DataTablesResult<TbPanelContent> getContentByCid(@PathVariable int panelId, HttpServletRequest request, @RequestParam(value = "search[value]", required = false) String search) {
+         DataTablesResult<TbPanelContent> result = contentService.getPanelContentListByPanelId(request, panelId, search);
+         return result;
     }
 
     /**
-     * 编辑板块内容
+     * 新增或编辑内容
+     * 有 id 则为编辑，无 id 则为 新增
      *
-     * @param tbPanelContent 板块内容
+     * @param tbPanelContent
      * @return
      */
-    @PostMapping("update")
-    @ApiOperation(value = "编辑板块内容")
-    public BaseResult updateContent(@ModelAttribute TbPanelContent tbPanelContent) {
-        BaseResult baseResult = contentService.updateContent(tbPanelContent);
+    @PostMapping("save")
+    @ApiOperation(value = "新增或编辑内容")
+    public BaseResult saveContent(@ModelAttribute TbPanelContent tbPanelContent) {
+        BaseResult baseResult = contentService.saveContent(tbPanelContent);
         return baseResult;
     }
 
@@ -58,19 +61,6 @@ public class ContentController {
     @ApiOperation(value = "删除板块内容")
     public BaseResult deleteContent(@PathVariable int[] ids) {
         BaseResult baseResult = contentService.deletePanelContent(ids);
-        return baseResult;
-    }
-
-    /**
-     * 添加板块内容
-     *
-     * @param tbPanelContent 板块内容
-     * @return
-     */
-    @PostMapping("add")
-    @ApiOperation(value = "添加板块内容")
-    public BaseResult addContent(@ModelAttribute TbPanelContent tbPanelContent) {
-        BaseResult baseResult = contentService.addPanelContent(tbPanelContent);
         return baseResult;
     }
 

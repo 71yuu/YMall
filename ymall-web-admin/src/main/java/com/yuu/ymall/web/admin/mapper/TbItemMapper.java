@@ -2,6 +2,10 @@ package com.yuu.ymall.web.admin.mapper;
 
 import com.yuu.ymall.commons.persistence.BaseMapper;
 import com.yuu.ymall.domain.TbItem;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface TbItemMapper extends BaseMapper<TbItem> {
 
@@ -19,4 +23,27 @@ public interface TbItemMapper extends BaseMapper<TbItem> {
      * @return
      */
     int getAllItemCount();
+
+    /**
+     * 有条件的查询商品集合
+     * @param cid 分类 id
+     * @return
+     */
+    List<TbItem> selectItemByCondition(@Param("cid") Long cid, @Param("search") String search);
+
+    /**
+     * 根据分类 id 查询商品集合
+     *
+     * @param params 查询条件
+     * @return
+     */
+    List<TbItem> getItemByCid(Map<String, Object> params);
+
+    /**
+     * 查询分类商品总数
+     *
+     * @param params 查询条件
+     * @return
+     */
+    int getTbItemByCidCount(Map<String, Object> params);
 }

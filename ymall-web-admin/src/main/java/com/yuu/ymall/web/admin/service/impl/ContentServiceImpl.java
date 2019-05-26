@@ -1,9 +1,11 @@
 package com.yuu.ymall.web.admin.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.domain.TbItem;
 import com.yuu.ymall.domain.TbPanelContent;
-import com.yuu.ymall.web.admin.commons.dto.PageInfo;
+import com.yuu.ymall.web.admin.commons.dto.DataTablesResult;
 import com.yuu.ymall.web.admin.commons.redis.RedisCacheManager;
 import com.yuu.ymall.web.admin.mapper.TbItemMapper;
 import com.yuu.ymall.web.admin.mapper.TbPanelContentMapper;
@@ -13,8 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Classname ContentServiceImpl
@@ -44,11 +49,16 @@ public class ContentServiceImpl implements ContentService {
     private String HEADER_PANEL;
 
     @Override
-    public PageInfo<TbPanelContent> getPanelContentListByPanelId(int panelId) {
+    public DataTablesResult<TbPanelContent> getPanelContentListByPanelId(HttpServletRequest request, int panelId, String search) {
+        DataTablesResult<TbPanelContent> result = new DataTablesResult<>(request);
 
-        // 获取板块内容结果集
-        PageInfo<TbPanelContent> pageInfo = new PageInfo<>();
-        List<TbPanelContent> tbPanelContentList = tbPanelContentMapper.getTbPanlContentByPanelId(panelId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("panelId", panelId);
+        params.put("search", search);
+
+        // 分页查询
+        PageHelper.startPage(result.getPageNum(), result.getLength());
+        List<TbPanelContent> tbPanelContentList = tbPanelContentMapper.getTbPanelContentByPanelId(params);
 
         // 封装内容
         for (TbPanelContent tbPanelContent : tbPanelContentList) {
@@ -60,31 +70,13 @@ public class ContentServiceImpl implements ContentService {
             }
         }
 
-        // 返回数据
-        pageInfo.setData(tbPanelContentList);
-        return pageInfo;
-    }
+        PageInfo<TbPanelContent> tbPanelContentPageInfo = new PageInfo<>(tbPanelContentList);
+        result.setRecordsFiltered((int) tbPanelContentPageInfo.getTotal());
+        result.setRecordsTotal(tbPanelContentMapper.getTbPanelContentCount(params));
+        result.setDraw(result.getDraw());
+        result.setData(tbPanelContentList);
 
-    @Transactional(readOnly = false)
-    @Override
-    public BaseResult updateContent(TbPanelContent tbPanelContent) {
-        // 更新板块内容
-        tbPanelContent.setUpdated(new Date());
-        int result = tbPanelContentMapper.updateByPrimaryKey(tbPanelContent);
-
-        // 更新失败
-        if (result != 1) {
-            return BaseResult.fail("更新板块内容失败！");
-        }
-
-        // 删除导航栏缓存
-        if (tbPanelContent.getPanelId() == HEADER_PANEL_ID) {
-            updateNavListRedis();
-        }
-
-        // 同步缓存
-        deleteHomeRedis();
-        return BaseResult.success("更新板块内容成功");
+        return result;
     }
 
     @Transactional(readOnly = false)
@@ -109,13 +101,29 @@ public class ContentServiceImpl implements ContentService {
 
     @Transactional(readOnly = false)
     @Override
-    public BaseResult addPanelContent(TbPanelContent tbPanelContent) {
-        tbPanelContent.setCreated(new Date());
+    public BaseResult saveContent(TbPanelContent tbPanelContent) {
         tbPanelContent.setUpdated(new Date());
-        int result = tbPanelContentMapper.insert(tbPanelContent);
 
-        if (result == 0) {
-            return BaseResult.fail("添加导航栏失败！");
+        int result;
+
+        // 新增
+        if (tbPanelContent.getId() == null) {
+            tbPanelContent.setCreated(new Date());
+            result = tbPanelContentMapper.insert(tbPanelContent);
+
+            if (result == 0) {
+                return BaseResult.fail("添加导航栏失败！");
+            }
+        }
+
+        // 编辑
+        else {
+            result = tbPanelContentMapper.updateByPrimaryKey(tbPanelContent);
+
+            // 更新失败
+            if (result != 1) {
+                return BaseResult.fail("更新板块内容失败！");
+            }
         }
 
         // 删除导航栏缓存
@@ -125,7 +133,7 @@ public class ContentServiceImpl implements ContentService {
 
         // 删除首页缓存
         deleteHomeRedis();
-        return BaseResult.success("添加导航栏成功！");
+        return BaseResult.success("保存导航栏成功！");
     }
 
     /**

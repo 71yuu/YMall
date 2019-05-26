@@ -53,53 +53,43 @@ var App = function () {
      */
     var handlerInitDataTables = function (url, columns) {
         var _dataTable = $("#dataTable").DataTable({
-            // 是否开启本地分页
+           /*/!* // 是否开启本地分页
             "paging": true,
-            // 是否开启本地排序
-            "ordering": false,
             // 是否显示左下角信息
             "info": true,
             // 是否允许用户改变表格每页显示的记录数
             "lengthChange": false,
-            // 是否显示处理状态（排序的时候，数据很多耗费时间长的话，也会显示这个）
-            "processing": true,
+            // 是否开启本地排序
+            "ordering": false,
             // 是否运行 DataTables 开启本地搜索
-            "searching": false,
+            "searching": false,*!/
             // 是否开启服务器模式
             "serverSide": true,
+            // 是否显示处理状态（排序的时候，数据很多耗费时间长的话，也会显示这个）
+            "processing": true,
             // 控制 DataTables 的延迟渲染，可以提高初始化速度
             "deferRender": true,
             // 增加或修改通过 Ajax 提交到服务端的请求数据
+            "processing": true,//加载显示提示*/
+            "paging": true,
+            "info": true,
+            "lengthChange": true,
+            "ordering": false,
+            "processing": true,
+            "searching": true,
+            "serverSide": true,
+            "deferRender": true,
             "ajax": {
-                "url": url,
+                url: url,
                 type: 'GET'
             },
             "columns": columns,
-            // 国际化
-            "language": {
-                "sProcessing": "处理中...",
-                "sLengthMenu": "显示 _MENU_ 项结果",
-                "sZeroRecords": "没有匹配结果",
-                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix": "",
-                "sSearch": "搜索:",
-                "sUrl": "",
-                "sEmptyTable": "表中数据为空",
-                "sLoadingRecords": "载入中...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "上页",
-                    "sNext": "下页",
-                    "sLast": "末页"
-                },
-                "oAria": {
-                    "sSortAscending": ": 以升序排列此列",
-                    "sSortDescending": ": 以降序排列此列"
-                }
+            "bStateSave": false,//状态保存
+            language: {
+                url: '/static/assets/lib/datatables/Chinese.json'
             },
+            "aaSorting": [[ 1, "asc" ]],
+            "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],
             "drawCallback": function () {
                 handlerInitCheckbox();
                 handlerCheckboxAll();
@@ -183,7 +173,7 @@ var App = function () {
                     if (data.status == 200) {
                         successMethod(data);
                     } else {
-                        layer.alert("删除导航栏失败！", {title: "错误信息", icon: 2});
+                        layer.alert("删除失败！", {title: "错误信息", icon: 2});
                     }
                 },
                 error: function () {

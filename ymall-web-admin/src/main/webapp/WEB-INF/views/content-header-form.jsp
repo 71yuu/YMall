@@ -3,8 +3,6 @@
 <html>
 <head>
     <jsp:include page="../includes/header.jsp"/>
-
-    <title>编辑导航栏</title>
 </head>
 <body>
 <article class="page-container">
@@ -48,7 +46,7 @@
 
 <jsp:include page="../includes/footer.jsp"/>
 
-<!--请在下方写此页面业务相关的脚本-->
+<!-- jQuery Validation -->
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/messages_zh.js"></script>
@@ -64,6 +62,8 @@
     $("#sortOrder").val(parent.sortOrder);
     $("#type").val(parent.type);
 
+
+
     // 编辑验证
     function successMethod(data) {
         parent.refresh();
@@ -71,7 +71,7 @@
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index);
     }
-    Validate.validate("/content/update", "", successMethod);
+    Validate.validate("/content/save", "", successMethod);
 
 </script>
 <!--/请在上方写此页面业务相关的脚本-->

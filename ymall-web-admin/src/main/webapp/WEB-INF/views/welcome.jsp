@@ -448,6 +448,9 @@
 <!--script for this page-->
 <script src="/static/assets/lib/flatlab/js/count.js"></script>
 
+<!-- App -->
+<script type="text/javascript" src="/static/assets/app/const.js"></script>
+
 <script>
 
     // 获取用户名

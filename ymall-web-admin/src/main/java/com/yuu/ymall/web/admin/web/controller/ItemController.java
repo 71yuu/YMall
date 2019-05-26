@@ -1,15 +1,17 @@
 package com.yuu.ymall.web.admin.web.controller;
 
 import com.yuu.ymall.commons.dto.BaseResult;
+import com.yuu.ymall.domain.TbItem;
+import com.yuu.ymall.web.admin.commons.dto.DataTablesResult;
 import com.yuu.ymall.web.admin.service.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Classname ItemController
@@ -37,4 +39,20 @@ public class ItemController {
         int itemCount = itemService.getAllItemCount();
         return BaseResult.success(itemCount);
     }
+
+    /**
+     * 通过 Cid 获取商品列表
+     *
+     * @param  cid 分类 id
+     * @param request 请求
+     * @param search 查询条件
+     * @return
+     */
+    @GetMapping("list/{cid}")
+    @ApiOperation(value = "分页搜索排序获取商品列表")
+    public DataTablesResult<TbItem> getItemList(@PathVariable Long cid, HttpServletRequest request, @RequestParam("search[value]") String search) {
+        DataTablesResult<TbItem> result = itemService.getItemListByCid(request, cid, search);
+        return result;
+    }
+
 }

@@ -57,8 +57,68 @@
     from tb_item
   </select>
 
+    <!-- sql 片断 -->
+    <sql id="tbItemColumns">
+        a.id,
+        a.title,
+        a.sell_point,
+        a.price,
+        a.num,
+        a.limit_num,
+        a.image,
+        a.cid,
+        a.status,
+        a.created,
+        a.updated
+    </sql>
+
     <!-- 获取商品总数 -->
     <select id="getAllItemCount" resultType="java.lang.Integer">
         select count(*) from tb_item;
+    </select>
+
+    <!-- 条件查询商品集合 -->
+    <select id="selectItemByCondition" resultType="com.yuu.ymall.domain.TbItem">
+        select <include refid="tbItemColumns"/>
+        from tb_item as a
+        <where>
+            <if test="search != null and != ''">
+                AND title like concat(concat('%', #{search} ), '%')
+                OR sell_point like concat(concat('%', #{search} ), '%')
+                OR price like concat(concat('%', #{search} ), '%')
+                OR id like concat(concat('%', #{search} ), '%')
+            </if>
+            <if test="cid != -1">
+                AND cid = #{cid}
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据分类 id 获取商品列表 -->
+    <select id="getItemByCid" resultType="com.yuu.ymall.domain.TbItem" parameterType="map">
+        select <include refid="tbItemColumns"/>
+        from tb_item as a
+        <where>
+            <if test="cid != -1">
+                AND a.cid = #{cid}
+            </if>
+            <if test="search != null and search != ''">
+                AND (title like concat(concat('%', #{search} ), '%')
+                OR sell_point like concat(concat('%', #{search} ), '%')
+                OR price like concat(concat('%', #{search} ), '%')
+                OR id like concat(concat('%', #{search} ), '%'))
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询分类商品总数 -->
+    <select id="getTbItemByCidCount" resultType="java.lang.Integer" parameterType="map">
+        select count(*)
+        from tb_item as a
+        <where>
+            <if test="cid != -1">
+                AND a.cid = #{cid}
+            </if>
+        </where>
     </select>
 </mapper>

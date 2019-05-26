@@ -71,7 +71,7 @@
 
 <jsp:include page="../includes/footer.jsp"/>
 
-<!--请在下方写此页面业务相关的脚本-->
+<!-- jQuery Validation -->
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/messages_zh.js"></script>

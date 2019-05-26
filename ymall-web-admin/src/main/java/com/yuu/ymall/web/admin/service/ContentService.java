@@ -2,7 +2,9 @@ package com.yuu.ymall.web.admin.service;
 
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.domain.TbPanelContent;
-import com.yuu.ymall.web.admin.commons.dto.PageInfo;
+import com.yuu.ymall.web.admin.commons.dto.DataTablesResult;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Classname ContentService
@@ -11,21 +13,16 @@ import com.yuu.ymall.web.admin.commons.dto.PageInfo;
  */
 public interface ContentService {
 
-    /**
-     * 通过 panelId 获取板块具体内容
-     *
-     * @param panelId 板块 ID
-     * @return
-     */
-    PageInfo<TbPanelContent> getPanelContentListByPanelId(int panelId);
 
     /**
-     * 编辑板块内容
+     * 通过板块 id 分页查询板块内容
      *
-     * @param tbPanelContent 编辑板块内容
+     * @param request 请求
+     * @param panelId 板块 id
+     * @param search 搜索条件
      * @return
      */
-    BaseResult updateContent(TbPanelContent tbPanelContent);
+    DataTablesResult<TbPanelContent> getPanelContentListByPanelId(HttpServletRequest request, int panelId, String search);
 
     /**
      * 删除板块内容
@@ -36,10 +33,10 @@ public interface ContentService {
     BaseResult deletePanelContent(int[] ids);
 
     /**
-     * 添加板块内容
+     * 新增或编辑板块内容
      *
      * @param tbPanelContent 板块内容
      * @return
      */
-    BaseResult addPanelContent(TbPanelContent tbPanelContent);
+    BaseResult saveContent(TbPanelContent tbPanelContent);
 }

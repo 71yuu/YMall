@@ -39,4 +39,16 @@
         <!-- 设置 JDBC 类型为空时,某些驱动程序 要指定值, default:OTHER，插入空值时不需要指定类型 -->
         <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
+
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <!--<property name="dialect" value="mysql"/>-->
+            <property name="offsetAsPageNum" value="false"/>
+            <property name="rowBoundsWithCount" value="false"/>
+            <property name="pageSizeZero" value="true"/>
+            <property name="reasonable" value="true"/>
+            <property name="supportMethodsArguments" value="false"/>
+            <property name="returnPageInfo" value="none"/>
+        </plugin>
+    </plugins>
 </configuration>

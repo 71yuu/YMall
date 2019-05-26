@@ -3,8 +3,9 @@
 <html>
 <head>
     <jsp:include page="../includes/header.jsp"/>
-    <link rel="stylesheet" href="/static/assets/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css"/>
     <title>首页板块</title>
+    <!-- ZTree -->
+    <link rel="stylesheet" href="/static/assets/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css"/>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商城管理 <span class="c-gray en">&gt;</span> 首页板块 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
@@ -82,15 +83,15 @@
 
 <jsp:include page="../includes/footer.jsp"/>
 
-<!--请在下方写此页面业务相关的脚本-->
+<!-- jQuery Validation -->
 <script type="text/javascript" src="/static/assets/lib/zTree/v3/js/jquery.ztree.all-3.5.js"></script>
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 
 <!-- App -->
-<script type="text/javascript" src="/static/assets/app/app.js"></script>
 <script type="text/javascript" src="/static/assets/app/validate.js"></script>
+
 <script type="text/javascript">
 
     // 加载中...

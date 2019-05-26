@@ -57,11 +57,47 @@
     from tb_panel_content
   </select>
 
+    <!-- sql 片断 -->
+    <sql id="tbPanelContentColumns">
+        a.id,
+        a.panel_id,
+        a.type,
+        a.product_id,
+        a.sort_order,
+        a.full_url,
+        a.pic_url,
+        a.pic_url2,
+        a.pic_url3,
+        a.created,
+        a.updated
+    </sql>
+
     <!-- 根据板块 id 获取板块内容 -->
-    <select id="getTbPanlContentByPanelId" resultType="TbPanelContent">
-        select id, panel_id, type, product_id, sort_order, full_url, pic_url, pic_url2, pic_url3,
-        created, updated
-        from tb_panel_content
-        where panel_id = #{panelId}
+    <select id="getTbPanelContentByPanelId" resultType="TbPanelContent" parameterType="map">
+        select <include refid="tbPanelContentColumns"/>
+        from tb_panel_content as a
+        <where>
+            <if test="panelId != null">
+                AND a.panel_id = #{panelId}
+            </if>
+            <if test="search != null and search != ''">
+                AND (a.id like concat('%', #{search}, '%')
+                OR a.product_id like concat('%', #{search}, '%')
+                OR a.full_url like concat('%', #{search}, '%')
+                OR a.pic_url like concat('%', #{search}, '%'))
+            </if>
+        </where>
     </select>
+
+    <!-- 条件查询板块内容总数 -->
+    <select id="getTbPanelContentCount" resultType="java.lang.Integer" parameterType="map">
+        select count(*)
+        from tb_panel_content
+        <where>
+            <if test="panelId != null">
+                AND panel_id = #{panelId}
+            </if>
+        </where>
+    </select>
+
 </mapper>

@@ -79,4 +79,16 @@ public class PanelController {
         return baseResult;
     }
 
+    /**
+     * 获得首页轮播板块列表
+     *
+     * @return
+     */
+    @GetMapping("indexBanner/list")
+    @ApiOperation(value = "获得首页轮播板块列表")
+    public List<ZTreeNode> getIndexBannerPanel() {
+        List<ZTreeNode> zTreeNodeList = panelService.getPanelList(-1, true);
+        return zTreeNodeList;
+    }
+
 }
