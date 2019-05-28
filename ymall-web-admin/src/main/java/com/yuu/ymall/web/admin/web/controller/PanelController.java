@@ -41,6 +41,30 @@ public class PanelController {
     }
 
     /**
+     * 获得首页轮播板块列表
+     *
+     * @return
+     */
+    @GetMapping("indexBanner/list")
+    @ApiOperation(value = "获得首页轮播板块列表")
+    public List<ZTreeNode> getIndexBannerPanel() {
+        List<ZTreeNode> zTreeNodeList = panelService.getPanelList(-1, true);
+        return zTreeNodeList;
+    }
+
+    /**
+     * 获得首页板块列表不含轮播
+     *
+     * @return
+     */
+    @GetMapping("index/list")
+    @ApiOperation(value = "获得首页板块列表不含轮播")
+    public List<ZTreeNode> getIndexPanel() {
+        List<ZTreeNode> zTreeNodeList = panelService.getPanelList(0, false);
+        return zTreeNodeList;
+    }
+
+    /**
      * 编辑板块
      *
      * @param tbPanel 板块信息
@@ -79,16 +103,5 @@ public class PanelController {
         return baseResult;
     }
 
-    /**
-     * 获得首页轮播板块列表
-     *
-     * @return
-     */
-    @GetMapping("indexBanner/list")
-    @ApiOperation(value = "获得首页轮播板块列表")
-    public List<ZTreeNode> getIndexBannerPanel() {
-        List<ZTreeNode> zTreeNodeList = panelService.getPanelList(-1, true);
-        return zTreeNodeList;
-    }
 
 }
