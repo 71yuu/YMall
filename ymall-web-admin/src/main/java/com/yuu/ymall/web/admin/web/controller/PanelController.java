@@ -5,6 +5,8 @@ import com.yuu.ymall.domain.TbPanel;
 import com.yuu.ymall.web.admin.commons.dto.ZTreeNode;
 import com.yuu.ymall.web.admin.service.PanelService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,38 +31,20 @@ public class PanelController {
     private PanelService panelService;
 
     /**
-     * 获得首页板块列表含轮播
+     * 通过的获取板块内容
+     * type: 0 仅含轮播，-1 非轮播，1 所有
      *
+     * @param type 类型
+     * @param showAll
      * @return
      */
-    @GetMapping("indexAll/list")
-    @ApiOperation(value = "获得首页板块列表含轮播")
-    public List<ZTreeNode> getAllIndexPanel() {
-        List<ZTreeNode> zTreeNodeList = panelService.getPanelList(0, true);
-        return zTreeNodeList;
-    }
-
-    /**
-     * 获得首页轮播板块列表
-     *
-     * @return
-     */
-    @GetMapping("indexBanner/list")
-    @ApiOperation(value = "获得首页轮播板块列表")
-    public List<ZTreeNode> getIndexBannerPanel() {
-        List<ZTreeNode> zTreeNodeList = panelService.getPanelList(-1, true);
-        return zTreeNodeList;
-    }
-
-    /**
-     * 获得首页板块列表不含轮播
-     *
-     * @return
-     */
-    @GetMapping("index/list")
-    @ApiOperation(value = "获得首页板块列表不含轮播")
-    public List<ZTreeNode> getIndexPanel() {
-        List<ZTreeNode> zTreeNodeList = panelService.getPanelList(0, false);
+    @GetMapping("common/list/{type}")
+    @ApiOperation(value = "通用的获取板块内容")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "type", value = "类型", required = true, dataType = "int", paramType = "path"),
+    })
+    public List<ZTreeNode> getCommonPanel(@PathVariable int type) {
+        List<ZTreeNode> zTreeNodeList = panelService.getPanelList(type);
         return zTreeNodeList;
     }
 

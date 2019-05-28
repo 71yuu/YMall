@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商城管理 <span class="c-gray en">&gt;</span> 首页板块 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div style="margin-left: 1vw;margin-right: 1vw" class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="delSingle()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除所选板块</a> <a class="btn btn-primary radius" onclick="App.openAndFull('添加板块','content-panel-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加首页板块</a></span> </div>
+<div style="margin-left: 1vw;margin-right: 1vw" class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="delSingle()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除所选板块</a> <a class="btn btn-primary radius" onclick="panel_add()" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加首页板块</a></span> </div>
 <table class="table">
     <tr>
         <td style="padding-left: 4vw" width="200" class="va-t"><ul id="myTree" class="ztree"></ul></td>
@@ -103,7 +103,6 @@
 
     /**
      * ZTree callback
-     * @param value
      */
     var callback = {
         onAsyncSuccess: function () {
@@ -127,15 +126,10 @@
             }
         }
     };
-
     /**
      * 初始化 ZTree
-     *
-     * @param value
      */
-    $(function () {
-        App.initZtree("/panel/indexAll/list", callback);
-    });
+    App.initZtree("/panel/common/list/1", callback);
 
     /**
      * 切换按钮
@@ -186,7 +180,7 @@
      */
     function successMethod(data) {
         layer.alert(data.message, {icon: 1}, function (index) {
-            App.initZtree("/panel/indexAll/list", callback);
+            App.initZtree("/panel/common/list/1", callback);
             App.msgSuccess("编辑成功");
         });
     }
@@ -209,7 +203,7 @@
 
         // 成功回调方法
         function successMethod() {
-            App.initZtree("/panel/indexAll/list", callback);
+            App.initZtree("/panel/common/list/1", callback);
             App.msgSuccess("删除成功!");
         }
 

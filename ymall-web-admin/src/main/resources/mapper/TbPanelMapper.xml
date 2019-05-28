@@ -56,7 +56,7 @@
   </select>
 
     <!-- sql 封装 -->
-    <sql id="tbPanelColums">
+    <sql id="tbPanelColumns">
         a.id,
         a.name,
         a.type,
@@ -72,7 +72,7 @@
     <!-- 根据条件查询所有板块 -->
     <select id="getPanelList" parameterType="map" resultMap="BaseResultMap">
         SELECT
-        <include refid="tbPanelColums" />
+        <include refid="tbPanelColumns" />
         FROM
         tb_panel AS a
         <where>
@@ -90,7 +90,7 @@
     <!-- 根据板块的类型查询板块 -->
     <select id="getPanelByType" resultMap="BaseResultMap">
         SELECT
-        <include refid="tbPanelColums" />
+        <include refid="tbPanelColumns" />
         FROM
         tb_panel AS a
         WHERE a.type = #{type}

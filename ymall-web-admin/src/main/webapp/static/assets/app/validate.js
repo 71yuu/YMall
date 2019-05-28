@@ -8,6 +8,7 @@ var Validate = function () {
      */
     var handlerInitValidate = function (url, beforeSubmit, successMethod) {
         $("#validate-form").validate({
+            ignore: ":hidden",//不验证的元素
             rules: {
                 picUrl: {
                     required: true,

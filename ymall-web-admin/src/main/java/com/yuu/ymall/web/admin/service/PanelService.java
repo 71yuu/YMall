@@ -16,11 +16,10 @@ public interface PanelService {
     /**
      * 获取板块类目
      *
-     * @param position 板块定位
-     * @param showAll 是否显示所有
+     * @param type
      * @return
      */
-    List<ZTreeNode> getPanelList(int position, boolean showAll);
+    List<ZTreeNode> getPanelList(int type);
 
     /**
      * 编辑内容板块

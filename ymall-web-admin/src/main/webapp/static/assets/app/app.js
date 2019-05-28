@@ -53,27 +53,6 @@ var App = function () {
      */
     var handlerInitDataTables = function (url, columns) {
         var _dataTable = $("#dataTable").DataTable({
-           /*/!* // 是否开启本地分页
-            "paging": true,
-            // 是否显示左下角信息
-            "info": true,
-            // 是否允许用户改变表格每页显示的记录数
-            "lengthChange": false,
-            // 是否开启本地排序
-            "ordering": false,
-            // 是否运行 DataTables 开启本地搜索
-            "searching": false,*!/
-            // 是否开启服务器模式
-            "serverSide": true,
-            // 是否显示处理状态（排序的时候，数据很多耗费时间长的话，也会显示这个）
-            "processing": true,
-            // 控制 DataTables 的延迟渲染，可以提高初始化速度
-            "deferRender": true,
-            // 增加或修改通过 Ajax 提交到服务端的请求数据
-            "processing": true,//加载显示提示*/
-            "paging": true,
-            "info": true,
-            "lengthChange": true,
             "ordering": false,
             "processing": true,
             "searching": true,
@@ -84,18 +63,14 @@ var App = function () {
                 type: 'GET'
             },
             "columns": columns,
-            "bStateSave": false,//状态保存
             language: {
                 url: '/static/assets/lib/datatables/Chinese.json'
             },
-            "aaSorting": [[ 1, "asc" ]],
-            "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],
             "drawCallback": function () {
                 handlerInitCheckbox();
                 handlerCheckboxAll();
             }
         });
-
         return _dataTable;
     };
 

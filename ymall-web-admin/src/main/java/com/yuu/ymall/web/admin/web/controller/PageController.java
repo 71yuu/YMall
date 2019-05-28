@@ -2,6 +2,7 @@ package com.yuu.ymall.web.admin.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
@@ -35,4 +36,15 @@ public class PageController {
         return page;
     }
 
+    /**
+     * 通用的板块内容管理页面跳转
+     *
+     * @param type 类型 -1 板块内容管理 0 轮播图管理
+     * @return
+     */
+    @GetMapping("content-common-list")
+    public String contentCommonListPage(@ModelAttribute("type") Integer type) {
+        return "content-common-list";
+    }
 }
+

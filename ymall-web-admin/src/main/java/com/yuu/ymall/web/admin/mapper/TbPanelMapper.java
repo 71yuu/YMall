@@ -22,7 +22,7 @@ public interface TbPanelMapper extends BaseMapper<TbPanel> {
      * @param params
      * @return
      */
-    List<TbPanel> getPanelList(Map<String, String> params);
+    List<TbPanel> getPanelList(Map<String, Object> params);
 
     /**
      * 根据板块的类型查询板块

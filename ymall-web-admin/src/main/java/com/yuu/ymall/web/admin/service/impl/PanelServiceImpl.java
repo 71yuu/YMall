@@ -33,24 +33,19 @@ public class PanelServiceImpl implements PanelService {
     private String PRODUCT_HOME;
 
     @Override
-    public List<ZTreeNode> getPanelList(int position, boolean showAll) {
-        Map<String, String> params = new HashMap<>();
+    public List<ZTreeNode> getPanelList(int type) {
+        Map<String, Object> params = new HashMap<>();
 
-        // 非轮播
-        if (position == 0 && !showAll) {
-            params.put("type", "-1");
-        }
-
-        // 仅含轮播
-        else if (position == -1) {
-            params.put("type", "0");
+        // type = 1 时，查询所有，不需要 type 条件
+        if (type != 1) {
+            params.put("type", type);
         }
 
         // 首页板块
         params.put("position", "0");
         List<TbPanel> tbPanelList = tbPanelMapper.getPanelList(params);
 
-        // 封装 ZTrreNode
+        // 封装 ZTreeNode
         List<ZTreeNode> zTreeNodeList = new ArrayList<>();
         for (TbPanel tbPanel : tbPanelList) {
             ZTreeNode zTreeNode = DtoUtil.TbPanel2ZTreeNode(tbPanel);

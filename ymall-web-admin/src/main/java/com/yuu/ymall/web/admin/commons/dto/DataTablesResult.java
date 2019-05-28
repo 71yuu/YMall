@@ -37,7 +37,7 @@ public class DataTablesResult<T> implements Serializable {
 
         this.draw = strDraw == null ? 0 : Integer.parseInt(strDraw);
         this.start = strStart == null ? 0 : Integer.parseInt(strStart);
-        this.length = strLength == null ? 5 : Integer.parseInt(strLength);
+        this.length = strLength == null ? 10 : Integer.parseInt(strLength);
 
         // 计算页面
         this.pageNum = start/length + 1;

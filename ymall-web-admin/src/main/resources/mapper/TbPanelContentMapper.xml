@@ -87,6 +87,7 @@
                 OR a.pic_url like concat('%', #{search}, '%'))
             </if>
         </where>
+        order by sort_order
     </select>
 
     <!-- 条件查询板块内容总数 -->
