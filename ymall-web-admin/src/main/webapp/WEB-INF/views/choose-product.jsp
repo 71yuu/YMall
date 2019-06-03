@@ -31,9 +31,8 @@
 
 <jsp:include page="../includes/footer.jsp"/>
 
-<!--请在下方写此页面业务相关的脚本-->
+<!-- DataTables -->
 <script type="text/javascript" src="/static/assets/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/static/assets/lib/common.js"></script>
 <script type="text/javascript">
 
     /**

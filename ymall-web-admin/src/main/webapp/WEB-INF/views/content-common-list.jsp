@@ -57,8 +57,6 @@
 <!-- iCheck -->
 <script type="text/javascript" src="/static/assets/plugins/iCheck/icheck.min.js"></script>
 
-<!-- App -->
-<script type="text/javascript" src="/static/assets/lib/common.js"></script>
 <script type="text/javascript">
 
     /**
