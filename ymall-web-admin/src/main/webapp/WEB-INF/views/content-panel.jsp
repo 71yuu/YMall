@@ -181,7 +181,7 @@
     function successMethod(data) {
         layer.alert(data.message, {icon: 1}, function (index) {
             App.initZtree("/panel/common/list/1", callback);
-            App.msgSuccess("编辑成功");
+            layer.close(index);
         });
     }
     Validate.validate("/panel/update", beforeSubmit, successMethod);

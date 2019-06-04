@@ -1,5 +1,6 @@
 package com.yuu.ymall.web.admin.commons.utils;
 
+import com.yuu.ymall.domain.TbItemCat;
 import com.yuu.ymall.domain.TbPanel;
 import com.yuu.ymall.web.admin.commons.dto.ZTreeNode;
 import org.slf4j.Logger;
@@ -31,6 +32,25 @@ public class DtoUtil {
         zTreeNode.setRemark(tbPanel.getRemark());
         zTreeNode.setLimitNum(tbPanel.getLimitNum());
         zTreeNode.setType(tbPanel.getType());
+        return zTreeNode;
+    }
+
+
+    /**
+     * 商品分类封装 ZTreeNode 对象
+     *
+     * @param tbItemCat 商品分类
+     * @return
+     */
+    public static ZTreeNode TbItemCat2ZTreeNode(TbItemCat tbItemCat) {
+        ZTreeNode zTreeNode = new ZTreeNode();
+        zTreeNode.setId(Math.toIntExact(tbItemCat.getId()));
+        zTreeNode.setStatus(tbItemCat.getStatus());
+        zTreeNode.setSortOrder(tbItemCat.getSortOrder());
+        zTreeNode.setName(tbItemCat.getName());
+        zTreeNode.setPId(Math.toIntExact(tbItemCat.getParentId()));
+        zTreeNode.setIsParent(tbItemCat.getIsParent());
+        zTreeNode.setRemark(tbItemCat.getRemark());
         return zTreeNode;
     }
 }

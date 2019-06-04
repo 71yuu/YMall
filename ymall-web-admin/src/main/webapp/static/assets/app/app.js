@@ -87,13 +87,23 @@ var App = function () {
                 // 禁止多选
                 selectedMulti: false
             },
+            data: {
+                simpleData: {
+                    enable:true,
+                    idKey: "id",
+                    pIdKey: "pId",
+                    rootPId: ""
+                }
+            },
             async: {
                 // 开启异步加载
                 enable: true,
                 // 远程访问地址
                 url: url,
                 // 请求方式
-                type: "GET"
+                type: "GET",
+                contentType: "application/json",
+                autoParam: ["id"]
             },
             callback: callback
         };

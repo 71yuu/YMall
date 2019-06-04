@@ -67,15 +67,6 @@
                 </ul>
             </dd>
         </dl>
-        <dl id="menu-picture">
-            <dt><i class="Hui-iconfont">&#xe634;</i> 缓存管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a data-href="refresh-index-redis" data-title="首页缓存管理" href="javascript:void(0)">首页缓存管理</a></li>
-                    <li><a data-href="refresh-other-redis" data-title="其它板块缓存管理" href="javascript:void(0)">其它板块缓存管理</a></li>
-                </ul>
-            </dd>
-        </dl>
         <dl id="menu-product">
             <dt><i class="Hui-iconfont">&#xe620;</i> 商品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>

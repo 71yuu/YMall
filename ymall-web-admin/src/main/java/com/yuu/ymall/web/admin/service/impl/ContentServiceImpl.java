@@ -10,6 +10,8 @@ import com.yuu.ymall.web.admin.commons.redis.RedisCacheManager;
 import com.yuu.ymall.web.admin.mapper.TbItemMapper;
 import com.yuu.ymall.web.admin.mapper.TbPanelContentMapper;
 import com.yuu.ymall.web.admin.service.ContentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class ContentServiceImpl implements ContentService {
 
+    private final static Logger log = LoggerFactory.getLogger(ContentServiceImpl.class);
+
     @Autowired
     private TbPanelContentMapper tbPanelContentMapper;
 
@@ -39,6 +43,9 @@ public class ContentServiceImpl implements ContentService {
     @Autowired
     private RedisCacheManager redisCacheManager;
 
+    /**
+     * 首页商品缓存 key
+     */
     @Value("PRODUCT_HOME")
     private String PRODUCT_HOME;
 

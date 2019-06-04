@@ -54,4 +54,16 @@
     updated
     from tb_item_cat
   </select>
+
+    <!-- 根据父 id 查询分类 id -->
+    <select id="getItemCatList" resultType="tbItemCat">
+        select * from tb_item_cat
+        where parent_id = #{parentId}
+        order by sort_order
+    </select>
+
+    <!-- 查询该分类下的最分类最大的排序值 -->
+    <select id="getMaxSortOrder" resultType="int">
+        select IFNULL(max(sort_order), 0) from tb_item_cat where parent_id = #{parentId}
+    </select>
 </mapper>
