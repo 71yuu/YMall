@@ -191,6 +191,16 @@
 
 
     /**
+     * 提交之前触发的方法
+     */
+    function beforeMethod() {
+        if (id == "-1") {
+            layer.alert("此分类不允许修改", {title: "警告", icon: 2});
+            return false;
+        }
+        return true;
+    }
+    /**
      * 验证成功触发的方法
      *
      * @param data
@@ -201,7 +211,7 @@
             layer.close(index);
         });
     }
-    Validate.validate("/item/cat/save", "", successMethod);
+    Validate.validate("/item/cat/save", beforeMethod, successMethod);
 
 
 

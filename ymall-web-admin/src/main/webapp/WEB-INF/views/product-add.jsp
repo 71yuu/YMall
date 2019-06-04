@@ -3,7 +3,6 @@
     request.setCharacterEncoding("UTF-8");
     String htmlData = request.getParameter("detail") != null ? request.getParameter("detail") : "";
 %>
-<!--_meta 作为公共模版分离出去-->
 <!DOCTYPE HTML>
 <html>
 <head>
