@@ -8,8 +8,6 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
     <result column="is_parent" jdbcType="BIT" property="isParent" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="created" jdbcType="TIMESTAMP" property="created" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
@@ -22,12 +20,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_item_cat (parent_id, name, status, 
-      sort_order, is_parent, icon, 
-      remark, created, updated
+      sort_order, is_parent, created, updated
       )
     values (#{parentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{sortOrder,jdbcType=INTEGER}, #{isParent,jdbcType=BIT}, #{icon,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
+      #{sortOrder,jdbcType=INTEGER}, #{isParent,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbItemCat">
@@ -37,20 +33,18 @@
       status = #{status,jdbcType=INTEGER},
       sort_order = #{sortOrder,jdbcType=INTEGER},
       is_parent = #{isParent,jdbcType=BIT},
-      icon = #{icon,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, parent_id, name, status, sort_order, is_parent, icon, remark, created, 
+    select id, parent_id, name, status, sort_order, is_parent, created,
     updated
     from tb_item_cat
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, parent_id, name, status, sort_order, is_parent, icon, remark, created, 
+    select id, parent_id, name, status, sort_order, is_parent, created,
     updated
     from tb_item_cat
   </select>

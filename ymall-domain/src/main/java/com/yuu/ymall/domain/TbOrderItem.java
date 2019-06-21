@@ -1,17 +1,15 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * 订单项实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbOrderItem extends BaseEntity {
+public class TbOrderItem implements Serializable {
     /**
      * 订单项 id
      */

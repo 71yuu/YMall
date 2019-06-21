@@ -4,6 +4,16 @@
 var Validate = function () {
 
     /**
+     * 增加自定义验证规则
+     */
+    var handlerInitDecimalsValidate = function () {
+        jQuery.validator.addMethod("decimalsValue",function(value, element) {
+            var decimalsValue =/^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/ ;
+            return this.optional(element) || (decimalsValue.test(value));
+        }, "金额必须大于0并且只能精确到分");
+    };
+
+    /**
      * 初始化 Validae
      */
     var handlerInitValidate = function (url, beforeSubmit, successMethod) {
@@ -33,6 +43,43 @@ var Validate = function () {
                     required: true,
                     digits: true,
                     maxlength: 3
+                },
+                title: {
+                    required: true
+                },
+                sellPoint: {
+                    required: true
+                },
+                cname: {
+                    required: true
+                },
+                price: {
+                    decimalsValue: true,
+                    required: true,
+                    maxlength: 10
+                },
+                num: {
+                    digits: true,
+                    required: true,
+                    maxlength: 5
+                },
+                shippingName: {
+                    required: true
+                },
+                shippingCode: {
+                    required: true
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                },
+                password2: {
+                    required: true,
+                    minlength: 6,
+                    equalTo: "#password"
+                },
+                expressName:{
+                    required:true,
                 }
             },
             messages: {
@@ -49,7 +96,32 @@ var Validate = function () {
                     required: "板块名称不能为空"
                 },
                 limitNum: {
-                    required: " 最大容纳内容(商品)数不能为空"
+                    required: "限制数量不能为空"
+                },
+                cname: {
+                    required: "商品分类不能"
+                },
+                price: {
+                    required: "产品展示价格不能为空"
+                },
+                num: {
+                    required: "库存数量不能为空"
+                },
+                shippingName: {
+                    required: "请选择快递名称"
+                },
+                shippingCode: {
+                    required: "请填写快递单号"
+                },
+                password: {
+                    required: "请填写密码",
+                },
+                password2: {
+                    required: "请确认密码",
+                    equalTo: "两次密码输入不一致"
+                },
+                expressName:{
+                    required: "快递名称不能为空"
                 }
             },
             submitHandler: function (form) {
@@ -84,6 +156,7 @@ var Validate = function () {
          * 验证
          */
         validate: function (url, beforeSubmit, successMethod) {
+            handlerInitDecimalsValidate();
             handlerInitValidate(url, beforeSubmit, successMethod);
         }
     }

@@ -19,3 +19,7 @@
 <script type="text/javascript" src="/static/assets/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
+
+<!-- iCheck -->
+<link rel="stylesheet" href="/static/assets/plugins/iCheck/all.css">
+

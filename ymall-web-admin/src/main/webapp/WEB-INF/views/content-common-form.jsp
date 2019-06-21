@@ -76,10 +76,6 @@
 
 <jsp:include page="../includes/footer.jsp"/>
 
-<!-- jQuery Validation -->
-<script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
-<script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/validate-methods.js"></script>
-<script type="text/javascript" src="/static/assets/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <!-- DropZone -->
 <script src="/static/assets/plugins/dropzone/min/dropzone.min.js"></script>
 
@@ -193,7 +189,7 @@
     var myDropzone = new Dropzone("#dropz", {
         url: "/upload", // 文件提交地址
         method: "post",  // 也可用put
-        paramName: "dropzFile", // 默认为file
+        paramName: "dropFile", // 默认为file
         maxFiles: 1,// 一次性上传的文件数量上限
         maxFilesize: 10, // 文件大小，单位：MB
         acceptedFiles: ".jpg,.gif,.png,.jpeg", // 上传的类型
@@ -208,11 +204,11 @@
         dictRemoveLinks: "删除",
         dictCancelUpload: "取消",
         init: function () {
-            this.emit("initimage", picUrl);
+            this.emit("initimage", picUrl); // 以逗号分开
             this.on("success", function (file, data) {
                 if (data.status == 200) {
                     // 上传成功触发的事件
-                    $("#picUrl").val(data.result);
+                    $("#picUrl").val(data.fileName);
                 } else {
                     layer.alert(data.message, {title: "错误信息", icon: 2});
                 }

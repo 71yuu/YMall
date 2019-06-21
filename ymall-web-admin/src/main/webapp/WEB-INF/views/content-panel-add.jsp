@@ -56,12 +56,6 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">备注：</label>
-            <div class="formControls col-xs-6 col-sm-6">
-                <textarea name="remark" id="remark" cols="" rows="" class="textarea"  placeholder="说点什么...最多输入100个字符"></textarea>
-            </div>
-        </div>
-        <div class="row cl">
             <div class="col-9 col-offset-2">
                 <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交并保存&nbsp;&nbsp;">
             </div>
@@ -99,7 +93,7 @@
     // 新增提交验证
     function successMethod(data) {
         layer.alert(data.message, {icon: 1}, function (index) {
-            parent.App.initZtree("/panel/indexAll/list", parent.callback);
+            parent.App.initZtree("/panel/common/list/1", parent.callback);
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
         });

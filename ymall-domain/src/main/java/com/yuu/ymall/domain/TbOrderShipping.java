@@ -1,19 +1,19 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 订单物流信息实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbOrderShipping extends BaseEntity {
+public class TbOrderShipping implements Serializable {
     /**
      * 订单物流 id
      */
-    private String id;
+    private String orderId;
 
     /**
      * 收货人全名
@@ -33,7 +33,7 @@ public class TbOrderShipping extends BaseEntity {
     /**
      * 省份
      */
-    private String receiverState;
+    private String receiverProvince;
 
     /**
      * 城市
@@ -54,4 +54,14 @@ public class TbOrderShipping extends BaseEntity {
      * 邮政编码
      */
     private String receiverZip;
+
+    /**
+     * 创建时间
+     */
+    private Date created;
+
+    /**
+     * 更新时间
+     */
+    private Date updated;
 }

@@ -1,15 +1,15 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 板块实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbPanel extends BaseEntity {
+public class TbPanel implements Serializable {
     /**
      * 板块 id
      */
@@ -46,8 +46,13 @@ public class TbPanel extends BaseEntity {
     private Integer status;
 
     /**
-     * 板块备注
+     * 创建时间
      */
-    private String remark;
+    private Date created;
+
+    /**
+     * 更新时间
+     */
+    private Date updated;
 
 }

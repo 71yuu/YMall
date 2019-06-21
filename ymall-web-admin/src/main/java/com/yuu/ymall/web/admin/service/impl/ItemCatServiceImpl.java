@@ -27,13 +27,18 @@ public class ItemCatServiceImpl implements ItemCatService {
     private TbItemCatMapper tbItemCatMapper;
 
     @Override
-    public List<ZTreeNode> getItemCatList(Long parentId) {
+    public List<ZTreeNode> getItemCatList(Long parentId, int type) {
 
         // 根据父 id 查询分类列表
         List<TbItemCat> tbItemCats = tbItemCatMapper.getItemCatList(parentId);
 
         // 转换成 ZTreeNode
         List<ZTreeNode> resultList = new ArrayList<>();
+
+        // 如果 type = -1 不展示所有商品，type = 0 展示所有商品
+        if (type == -1 && parentId == 0) {
+            tbItemCats.remove(0);
+        }
         for (TbItemCat tbItemCat : tbItemCats) {
             ZTreeNode node = DtoUtil.TbItemCat2ZTreeNode(tbItemCat);
             resultList.add(node);
@@ -77,7 +82,7 @@ public class ItemCatServiceImpl implements ItemCatService {
     public BaseResult deleteItemCat(Long id) {
 
         // 查询该节点所有子节点
-        List<ZTreeNode> nodes = getItemCatList(id);
+        List<ZTreeNode> nodes = getItemCatList(id, -1);
         if (nodes.size() > 0) {
             // 如果有子节点，则遍历删除子节点
             for (ZTreeNode node : nodes) {

@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yuu.ymall.web.admin.mapper.TbUserMapper">
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbUser">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="sex" jdbcType="VARCHAR" property="sex" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="state" jdbcType="INTEGER" property="state" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="role_id" jdbcType="INTEGER" property="roleId" />
-    <result column="file" jdbcType="VARCHAR" property="file" />
-    <result column="created" jdbcType="TIMESTAMP" property="created" />
-    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
-  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tb_user
     where id = #{id,jdbcType=BIGINT}
@@ -23,43 +8,27 @@
   <insert id="insert" parameterType="com.yuu.ymall.domain.TbUser">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into tb_user (username, password, phone, 
-      email, sex, address, 
-      state, description, role_id, 
-      file, created, updated
-      )
-    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{state,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, 
-      #{file,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
+  </selectKey>
+    insert into tb_user (username, password, created, updated)
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+     #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbUser">
     update tb_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      state = #{state,jdbcType=INTEGER},
-      description = #{description,jdbcType=VARCHAR},
-      role_id = #{roleId,jdbcType=INTEGER},
-      file = #{file,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, username, password, phone, email, sex, address, state, description, role_id, 
-    file, created, updated
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="tbUser">
+    select id, username, password, created, updated
     from tb_user
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, username, password, phone, email, sex, address, state, description, role_id, 
-    file, created, updated
+  <select id="selectAll" resultType="tbUser">
+    select id, username, password, created, updated
     from tb_user
   </select>
 
@@ -68,35 +37,9 @@
         a.id,
         a.username,
         a.password,
-        a.phone,
-        a.email,
-        a.sex,
-        a.address,
-        a.state,
-        a.description,
-        a.role_id,
-        a.file,
         a.created,
         a.updated
     </sql>
-
-    <!-- 获取用户所拥有的角色 -->
-    <select id="getRoles" resultType="string">
-        select r.name
-        from tb_user u
-        join tb_role r on u.role_id = r.id
-        where u.username = #{username}
-    </select>
-
-    <!-- 获取用户的所有权限 -->
-    <select id="getPermissions" resultType="string">
-        select p.permission
-        from tb_user u
-        join tb_role r on u.role_id = r.id
-        join tb_role_perm rp on rp.role_id = u.role_id
-        join tb_permission p on rp.permission_id = p.id
-        where u.username = #{username}
-    </select>
 
     <!-- 根据用户名获取用户 -->
     <select id="getUserByUsername" resultType="TbUser">
@@ -104,4 +47,29 @@
         from tb_user as a
         where username = #{username}
     </select>
+
+    <!-- 获取用户列表 -->
+    <select id="getUserList" resultType="tbUser">
+        select <include refid="tbUserColumns"/>
+        from tb_user as a
+        <where>
+            <if test="search != null and search != ''">
+                AND username like concat(concat('%', #{search} ), '%')
+                OR id like concat(concat('%', #{search} ), '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取用户总数 -->
+    <select id="getUserListCount" resultType="int">
+        select count(*)
+        from tb_user
+        <where>
+            <if test="search != null and search != ''">
+                AND username like concat(concat('%', #{search} ), '%')
+                OR id like concat(concat('%', #{search} ), '%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

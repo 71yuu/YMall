@@ -29,4 +29,11 @@ public interface TbPanelContentMapper extends BaseMapper<TbPanelContent> {
      * @return
      */
     int getTbPanelContentCount(Map<String, Object> params);
+
+    /**
+     * 根据商品 ID 查询商品是否关联首页内容
+     * @param id 商品 id
+     * @return
+     */
+    int selectContentByIid(Long id);
 }

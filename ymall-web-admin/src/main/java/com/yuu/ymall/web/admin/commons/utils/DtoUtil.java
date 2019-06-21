@@ -29,7 +29,6 @@ public class DtoUtil {
         zTreeNode.setName(tbPanel.getName());
         zTreeNode.setSortOrder(tbPanel.getSortOrder());
         zTreeNode.setStatus(tbPanel.getStatus());
-        zTreeNode.setRemark(tbPanel.getRemark());
         zTreeNode.setLimitNum(tbPanel.getLimitNum());
         zTreeNode.setType(tbPanel.getType());
         return zTreeNode;
@@ -50,7 +49,6 @@ public class DtoUtil {
         zTreeNode.setName(tbItemCat.getName());
         zTreeNode.setPId(Math.toIntExact(tbItemCat.getParentId()));
         zTreeNode.setIsParent(tbItemCat.getIsParent());
-        zTreeNode.setRemark(tbItemCat.getRemark());
         return zTreeNode;
     }
 }

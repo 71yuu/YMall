@@ -971,15 +971,33 @@ var Dropzone = function (_Emitter) {
             for( var i in info_array )
             {
                 var hidefileval_str = info_array[i];
-                var hidefileval_arr = hidefileval_str.split("/");
-                var mockfile_object = { name: hidefileval_arr[hidefileval_arr.length-1], accepted:true }
-                this.emit('addedfile', mockfile_object);
-                this.emit('thumbnail', mockfile_object, hidefileval_str);
-                this.emit('success', mockfile_object);
-                this.emit('processing', mockfile_object);
-                this.emit('complete', mockfile_object);
-                this.files.push( mockfile_object );
-                mockfile_object = null;
+                var mockfile_object = { name: hidefileval_str, accepted:true }
+
+                function getBase64Image(img) {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = 120;
+                    canvas.height = 120;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
+                    var dataURL = canvas.toDataURL("image/"+ext);
+                    return dataURL;
+                }
+                var image = new Image();
+                image.crossOrigin = '';
+                image.src = hidefileval_str;
+                var base64;
+                var me = this;
+                image.onload = function(){
+                     base64 = getBase64Image(image);
+                    me.emit('addedfile', mockfile_object);
+                    me.emit('thumbnail', mockfile_object, base64);
+                    me.emit('success', mockfile_object);
+                    me.emit('processing', mockfile_object);
+                    me.emit('complete', mockfile_object);
+                    me.files.push( mockfile_object );
+                    mockfile_object = null;
+                }
          }},
         completemultiple: function completemultiple() {},
         maxfilesexceeded: function maxfilesexceeded() {},

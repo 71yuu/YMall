@@ -27,12 +27,6 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">备注：</label>
-            <div class="formControls col-xs-6 col-sm-6">
-                <textarea name="remark" id="remark" cols="" rows="" class="textarea"  placeholder="说点什么...最多输入100个字符"></textarea>
-            </div>
-        </div>
-        <div class="row cl">
             <div class="col-7 col-offset-4">
                 <input id="saveButton" class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;保存并提交&nbsp;&nbsp;">
             </div>
@@ -88,7 +82,7 @@
      * @param data
      */
     function successMethod(data) {
-        parent.App.initZtree("/item/cat/list", parent.callback);
+        parent.App.initZtree("/item/cat/list/-1", parent.callback);
         parent.App.msgSuccess(data.message);
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index);

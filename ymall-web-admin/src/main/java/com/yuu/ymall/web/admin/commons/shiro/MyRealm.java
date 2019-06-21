@@ -7,11 +7,8 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -21,30 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class MyRealm extends AuthorizingRealm {
 
-    private static final Logger log = LoggerFactory.getLogger(MyRealm.class);
-
     @Autowired
     private UserService userService;
 
-    /**
-     * 返回权限信息
-     *
-     * @param principalCollection
-     * @return
-     */
-    @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        // 获取用户名
-        String username = principalCollection.getPrimaryPrincipal().toString();
-        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-
-        // 获得授权角色
-        authorizationInfo.setRoles(userService.getRoles(username));
-
-        // 获取授权权限
-        authorizationInfo.setStringPermissions(userService.getPermissions(username));
-        return authorizationInfo;
-    }
 
     /**
      * 先执行登录验证
@@ -64,6 +40,11 @@ public class MyRealm extends AuthorizingRealm {
                     tbUser.getUsername());
             return authenticationInfo;
         }
+        return null;
+    }
+
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         return null;
     }
 }

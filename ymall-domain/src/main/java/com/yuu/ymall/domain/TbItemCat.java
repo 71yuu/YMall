@@ -1,15 +1,15 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 商品类目实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbItemCat extends BaseEntity {
+public class TbItemCat implements Serializable {
     /**
      * 类目 id
      */
@@ -41,13 +41,13 @@ public class TbItemCat extends BaseEntity {
     private Boolean isParent;
 
     /**
-     * 分类图标
+     * 创建时间
      */
-    private String icon;
+    private Date created;
 
     /**
-     * 分类备注
+     * 更新时间
      */
-    private String remark;
+    private Date updated;
 
 }

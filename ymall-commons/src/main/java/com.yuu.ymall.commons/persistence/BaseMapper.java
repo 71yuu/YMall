@@ -1,5 +1,6 @@
 package com.yuu.ymall.commons.persistence;
 
+
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @Date 2019/5/22 11:14
  * @Created by Yuu
  */
-public interface BaseMapper<T extends BaseEntity> {
+public interface BaseMapper<T> {
 
     /**
      * 新增

@@ -143,6 +143,11 @@ public class ContentServiceImpl implements ContentService {
         return BaseResult.success("保存导航栏成功！");
     }
 
+    @Override
+    public int selectContentByIid(Long id) {
+        return tbPanelContentMapper.selectContentByIid(id);
+    }
+
     /**
      * 删除导航栏缓存
      */

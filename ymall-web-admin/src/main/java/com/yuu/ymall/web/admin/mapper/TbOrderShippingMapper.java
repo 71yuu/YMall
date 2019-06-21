@@ -12,4 +12,12 @@ public interface TbOrderShippingMapper extends BaseMapper<TbOrderShipping> {
      * @return
      */
     int deleteByPrimaryKey(String id);
+
+    /**
+     * 根据主键 id 查询
+     *
+     * @param id
+     * @return
+     */
+    TbOrderShipping selectByPrimaryKey(String id);
 }

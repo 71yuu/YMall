@@ -28,12 +28,13 @@ public class ItemCatController {
      * 通过父 ID 获取商品分类列表
      *
      * @param parentId 父 ID
+     * @param type zTree 展示数据类型 -1 不展示所有商品，0 展示所有商品
      * @return
      */
-    @GetMapping("list")
+    @GetMapping("list/{type}")
     @ApiOperation(value = "通过父 ID 获取商品分类列表")
-    public List<ZTreeNode> getItemCatList(@RequestParam(name = "id", defaultValue = "0") Long parentId) {
-        List<ZTreeNode> list = itemCatService.getItemCatList(parentId);
+    public List<ZTreeNode> getItemCatList(@RequestParam(name = "id", defaultValue = "0") Long parentId, @PathVariable int type) {
+        List<ZTreeNode> list = itemCatService.getItemCatList(parentId, type);
         return list;
     }
 

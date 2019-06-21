@@ -1,16 +1,15 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
 
-import lombok.EqualsAndHashCode;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 快递实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbExpress extends BaseEntity {
+public class TbExpress implements Serializable {
     /**
      * 快递 id
      */
@@ -25,5 +24,15 @@ public class TbExpress extends BaseEntity {
      * 排列序号
      */
     private Integer sortOrder;
+
+    /**
+     * 创建时间
+     */
+    private Date created;
+
+    /**
+     * 更新时间
+     */
+    private Date updated;
 
 }

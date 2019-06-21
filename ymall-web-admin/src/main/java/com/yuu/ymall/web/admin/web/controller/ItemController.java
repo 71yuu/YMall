@@ -3,11 +3,12 @@ package com.yuu.ymall.web.admin.web.controller;
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.domain.TbItem;
 import com.yuu.ymall.web.admin.commons.dto.DataTablesResult;
+import com.yuu.ymall.web.admin.commons.dto.ItemDto;
+import com.yuu.ymall.web.admin.mapper.TbOrderItemMapper;
+import com.yuu.ymall.web.admin.service.ContentService;
 import com.yuu.ymall.web.admin.service.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +24,15 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("item")
 public class ItemController {
 
-    private final static Logger log = LoggerFactory.getLogger(ItemController.class);
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private ContentService contentService;
+
+    @Autowired
+    private TbOrderItemMapper tbOrderItemMapper;
 
     /**
      * 获取商品总数目
@@ -43,7 +49,7 @@ public class ItemController {
     /**
      * 通过 Cid 获取商品列表
      *
-     * @param  cid 分类 id
+     * @param cid 分类 id
      * @param request 请求
      * @param search 查询条件
      * @return
@@ -55,5 +61,81 @@ public class ItemController {
         return result;
     }
 
+    /**
+     * 删除商品
+     *
+     * @param ids 商品 id 集合
+     * @return
+     */
+    @DeleteMapping("delete/{ids}")
+    @ApiOperation(value = "删除商品")
+    public BaseResult deleteItem(@PathVariable Long[] ids) {
+        // 判断首页是否关联
+        for (Long id : ids) {
+            int result = contentService.selectContentByIid(id);
+            if (result > 0) {
+                return BaseResult.fail("删除商品失败！包含首页展示关联的商品,商品ID："+ id +"，请先从首页配置中删除该商品关联");
+            }
+            // 判断商品是否已有订单，有订单则不能删除
+            result = tbOrderItemMapper.selectByItemId(id);
+            if (result > 0) {
+                return BaseResult.fail("删除商品失败！包含已有订单的商品,商品ID："+ id +"，请使用下架处理该商品！");
+            }
+        }
+        BaseResult baseResult = itemService.deleteItem(ids);
+        return baseResult;
+    }
+
+    /**
+     * 下架商品
+     *
+     * @param id 商品 id
+     * @return
+     */
+    @DeleteMapping("stop/{id}")
+    @ApiOperation(value = "下架商品")
+    public BaseResult stopItem(@PathVariable Long id) {
+        BaseResult baseResult = itemService.stopItem(id);
+        return baseResult;
+    }
+
+    /**
+     * 发布商品
+     *
+     * @param id 商品 id
+     * @return
+     */
+    @DeleteMapping("start/{id}")
+    @ApiOperation(value = "发布商品")
+    public BaseResult startItem(@PathVariable Long id) {
+        BaseResult baseResult = itemService.startItem(id);
+        return baseResult;
+    }
+
+    /**
+     * 保存商品：有 id 编辑商品，无 id 新增商品
+     *
+     * @param itemDto 商品 DTO
+     * @return
+     */
+    @PostMapping("save")
+    @ApiOperation(value = "保存商品")
+    public BaseResult saveItem(ItemDto itemDto) {
+        BaseResult baseResult = itemService.saveItem(itemDto);
+        return baseResult;
+    }
+
+    /**
+     * 根据商品 ID 获取商品
+     *
+     * @param itemId 商品 ID
+     * @return
+     */
+    @GetMapping("{itemId}")
+    @ApiOperation(value = "通过商品ID获取商品")
+    public BaseResult getItemById(@PathVariable Long itemId) {
+        BaseResult baseResult = itemService.getItemById(itemId);
+        return baseResult;
+    }
 
 }

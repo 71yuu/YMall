@@ -158,7 +158,7 @@ var App = function () {
                     if (data.status == 200) {
                         successMethod(data);
                     } else {
-                        layer.alert("删除失败！", {title: "错误信息", icon: 2});
+                        layer.alert(data.message, {title: "错误信息", icon: 2});
                     }
                 },
                 error: function () {
@@ -202,9 +202,9 @@ var App = function () {
                 success: function (data) {
                     layer.close(index);
                     if (data.status == 200) {
-                        successMethod();
+                        successMethod(data);
                     } else {
-                        layer.alert("删除导航栏失败！", {title: "错误信息", icon: 2});
+                        layer.alert(data.message, {title: "错误信息", icon: 2});
                     }
                 },
                 error: function () {
@@ -263,6 +263,31 @@ var App = function () {
             },
             error:function(){
                 layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息',icon: 2});
+            }
+        });
+    };
+
+    /**
+     * 图片预览
+     *
+     * @param obj
+     */
+    var handlerPreviewImg= function (obj, w, h) {
+        var img = new Image();
+        img.src = obj.src;
+        var imgHtml = "<img src='" + obj.src + "' width='100%' height='100%'/>";
+        //弹出层
+        layer.open({
+            type: 1,
+            shade: 0.8,
+            offset: 'auto',
+            area: [w + 'px',h+'px'],
+            shadeClose:true,
+            scrollbar: false,
+            title: "图片预览", //不显示标题
+            content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            cancel: function () {
+                //layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
             }
         });
     };
@@ -371,6 +396,15 @@ var App = function () {
          */
         ajaxWithData: function (url, type, data, successMethod) {
             handlerAjaxWithData(url, type, data, successMethod);
+        },
+
+        /**
+         * 图片预览
+         *
+         * @param obj
+         */
+        previewImg: function (obj, w, h) {
+            handlerPreviewImg(obj, w, h);
         }
     }
 }();

@@ -101,4 +101,11 @@
         </where>
     </select>
 
+    <!-- 查询商品是否关联首页商品 -->
+    <select id="selectContentByIid" resultType="int">
+        select count(*)
+        from tb_panel_content
+        where product_id = #{id}
+    </select>
+
 </mapper>

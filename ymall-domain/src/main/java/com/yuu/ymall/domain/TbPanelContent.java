@@ -1,17 +1,16 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 板块内容实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbPanelContent extends BaseEntity {
+public class TbPanelContent implements Serializable {
     /**
      * 板块内容 id
      */
@@ -58,6 +57,16 @@ public class TbPanelContent extends BaseEntity {
     private String picUrl3;
 
     /**
+     * 创建时间
+     */
+    private Date created;
+
+    /**
+     * 更新时间
+     */
+    private Date updated;
+
+    /**
      * 关联商品价格
      */
     private BigDecimal salePrice;
@@ -71,4 +80,5 @@ public class TbPanelContent extends BaseEntity {
      * 关联商品标题
      */
     private String subTitle;
+
 }

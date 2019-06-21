@@ -8,12 +8,9 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="file" jdbcType="VARCHAR" property="file" />
     <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="points" jdbcType="INTEGER" property="points" />
-    <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="created" jdbcType="TIMESTAMP" property="created" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
@@ -26,15 +23,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_member (username, password, phone, 
-      email, sex, address, 
+      email, sex,
       state, file, description, 
-      points, balance, created, 
-      updated)
+      created, updated)
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
       #{state,jdbcType=INTEGER}, #{file,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{points,jdbcType=INTEGER}, #{balance,jdbcType=DECIMAL}, #{created,jdbcType=TIMESTAMP}, 
-      #{updated,jdbcType=TIMESTAMP})
+      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbMember">
     update tb_member
@@ -43,30 +38,121 @@
       phone = #{phone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
       file = #{file,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
-      points = #{points,jdbcType=INTEGER},
-      balance = #{balance,jdbcType=DECIMAL},
       created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, username, password, phone, email, sex, address, state, file, description, 
-    points, balance, created, updated
+    select id, username, password, phone, email, sex, state, file, description,
+    created, updated
     from tb_member
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, username, password, phone, email, sex, address, state, file, description, 
-    points, balance, created, updated
+    select id, username, password, phone, email, sex, state, file, description,
+    created, updated
     from tb_member
   </select>
+
+    <!-- sql 片断 -->
+    <sql id="tbMemberBaseColumns">
+        a.id,
+        a.username,
+        a.password,
+        a.phone,
+        a.email,
+        a.sex,
+        a.state,
+        a.file,
+        a.description,
+        a.created,
+        a.updated
+    </sql>
 
     <!-- 获取会员总数 -->
     <select id="getAllMemberCount" resultType="java.lang.Integer">
         select count(*) from tb_member;
+    </select>
+
+    <!-- 获取会员列表 -->
+    <select id="getMemberList" resultMap="BaseResultMap">
+        select <include refid="tbMemberBaseColumns"/>
+        from tb_member as a
+        <where>
+            <if test="search != null and search != ''">
+                AND id like concat('%', #{search}, '%')
+                OR username like concat('%', #{search}, '%')
+                OR phone like concat('%', #{search}, '%')
+                OR email like concat('%', #{search}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取会员列表总数 -->
+    <select id="getMemberListCount" resultType="int">
+        select count(*)
+        from tb_member
+        <where>
+            <if test="search != null and search != ''">
+                AND id like concat('%', #{search}, '%')
+                OR username like concat('%', #{search}, '%')
+                OR phone like concat('%', #{search}, '%')
+                OR email like concat('%', #{search}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据会员名查询会员 -->
+    <select id="getMemberByUsername" resultMap="BaseResultMap" parameterType="string">
+        select <include refid="tbMemberBaseColumns"/>
+        from tb_member as a
+        where username = #{username}
+    </select>
+
+    <!-- 根据手机号查询会员 -->
+    <select id="getMemberByPhone" resultMap="BaseResultMap" parameterType="string">
+        select <include refid="tbMemberBaseColumns"/>
+        from tb_member as a
+        where phone = #{phone}
+    </select>
+
+    <!-- 根据邮箱查询会员 -->
+    <select id="getMemberByEmail" resultMap="BaseResultMap" parameterType="string">
+        select <include refid="tbMemberBaseColumns"/>
+        from tb_member as a
+        where email = #{email}
+    </select>
+
+    <!-- 获取被封禁的会员列表 -->
+    <select id="getMemberBanList" resultMap="BaseResultMap">
+        select <include refid="tbMemberBaseColumns"/>
+        from tb_member as a
+        <where>
+            a.state = 2
+            <if test="search != null and search != ''">
+                AND (id like concat('%', #{search}, '%')
+                OR username like concat('%', #{search}, '%')
+                OR phone like concat('%', #{search}, '%')
+                OR email like concat('%', #{search}, '%'))
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取被封禁的会员总数 -->
+    <select id="getMemberBanListCount" resultType="int">
+        select count(*)
+        from tb_member
+        <where>
+            state = 2
+            <if test="search != null and search != ''">
+                AND (id like concat('%', #{search}, '%')
+                OR username like concat('%', #{search}, '%')
+                OR phone like concat('%', #{search}, '%')
+                OR email like concat('%', #{search}, '%'))
+            </if>
+        </where>
     </select>
 </mapper>

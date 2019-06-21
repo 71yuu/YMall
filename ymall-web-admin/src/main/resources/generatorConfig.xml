@@ -25,14 +25,14 @@
         </jdbcConnection>
 
         <!-- 配置实体类存放路径 -->
-        <javaModelGenerator targetPackage="com.yuu.ymall.domain" targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.yuu.ymall.demo.domain" targetProject="src/main/java"/>
 
         <!-- 配置 XML 存放路径 -->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+        <sqlMapGenerator targetPackage="demo" targetProject="src/main/resources"/>
 
         <!-- 配置 DAO 存放路径 -->
         <javaClientGenerator
-                targetPackage="com.yuu.ymall.web.admin.mapper"
+                targetPackage="com.yuu.ymall.web.admin.demo.mapper"
                 targetProject="src/main/java"
                 type="XMLMAPPER"/>
 

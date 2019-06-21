@@ -21,4 +21,20 @@ public interface TbOrderItemMapper extends BaseMapper<TbOrderItem> {
      * @return
      */
     List<TbOrderItem> getWeekHot();
+
+    /**
+     * 查看商品是否有订单项
+     *
+     * @param id 商品 id
+     * @return
+     */
+    int selectByItemId(Long id);
+
+    /**
+     * 根据订单 id，查询所有订单项
+     *
+     * @param id 订单 id
+     * @return
+     */
+    List<TbOrderItem> selectOrderItemByOrderId(String orderId);
 }

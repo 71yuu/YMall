@@ -7,14 +7,11 @@
     <!-- Meta tag Keywords -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="YMall后台管理系统 v1.0,YMall,YMall购物商城后台管理系统">
-    <meta name="description" content="YMall后台管理系统 v1.0，是一款电商后台管理系统，适合中小型CMS后台系统。">
 
     <!-- css files -->
     <link rel="stylesheet" href="/static/assets/lib/login/style.css" type="text/css" media="all" /> <!-- Style-CSS -->
     <link rel="stylesheet" href="/static/assets/lib/login/font-awesome.css"> <!-- Font-Awesome-Icons-CSS -->
     <link rel="stylesheet" href="/static/assets/lib/layer/2.4/skin/layer.css"> <!-- Font-Awesome-Icons-CSS -->
-
     <!-- js -->
     <script type="text/javascript" src="/static/assets/lib/jquery/jquery-2.1.4.min.js"></script>
     <script src="/static/assets/lib/login/jquery.vide.min.js"></script>
@@ -44,7 +41,7 @@
             top: 23%;
         }
         span.icon2 {
-            top: 42%;
+            top: 44%;
         }
         #wait {
             text-align: left;
@@ -53,6 +50,7 @@
             font-family: "黑体";
         }
     </style>
+
 </head>
 <body>
 <!-- main -->
@@ -79,7 +77,6 @@
                     </div>
 
                     <div class="sub-w3l">
-                        <h6 onclick="forgetPass()" style="cursor: pointer"><a>游客体验账号密码?</a></h6>
                         <div class="right-w3l">
                             <input id="loginButton" type="button" class="login" value="登录">
                         </div>
@@ -184,23 +181,6 @@
         }
     });
 
-    // 提示测试账号密码
-    function forgetPass() {
-        layer.alert('体验测试账号密码: test | test', {
-            icon: 4,
-            title: "提示"
-        });
-    }
-
-    // 获取系统基本信息
-    function successMethod(data) {
-        if (data.result.hasLogNotice == 1) {
-            layer.alert(data.result.logNotice, {
-                title: "通知"
-            });
-        }
-    }
-    App.ajax("/sys/base", "GET", successMethod);
 </script>
 </body>
 </html>

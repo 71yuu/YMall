@@ -8,8 +8,6 @@
     <meta name="author" content="Yuu">
     <link rel="Shortcut Icon" href="/static/assets/icon/logo.png" />
     <title>YMall后台管理系统 v1.0</title>
-    <meta name="keywords" content="YMall后台管理系统 v1.0,YMall,YMall购物商城后台管理系统">
-    <meta name="description" content="YMall后台管理系统 v1.0，是一款电商后台管理系统，适合中小型CMS后台系统。">
 
     <!-- Bootstrap core CSS -->
     <link href="/static/assets/lib/flatlab/css/bootstrap.min.css" rel="stylesheet">
@@ -185,9 +183,7 @@
                                                 尊敬的 <span id="username"></span>，
                                                 <span id="hello"></span>
                                                 现在时间是：<span id="currentTime"></span></a>
-                                            <p style="font-size: 20px;"><br>YMall 是一个电商B2C购物商城，前后端开发分离,前台
-                                                基于Vue全家桶开发后台几乎完成所有功能开发，你所看到的几乎皆为真实后台数据，为避免数据遭恶意修改，测试体验账号只具备查看权限。 后台主要使用技术有SSM/Elasticsearch/Redis/MySQL/ActiveMQ/Shiro等。<br><br>
-                                                此项目主要仅用于学习、练习使用。<br/>
+                                            <p style="font-size: 20px;"><br>YMALL商城系统是基于 SSM 的电商 B2C 购物商城系统。前后端开发分离，前台基于 Vue 开发，主要功能有会员登录注册、首页管理、分类商品页、商品详情页、购物车、订单、在线支付、会员中心等。后台管理系统主要包括登录、首页管理、分类管理、商品管理、订单管理、会员管理、管理员管理、报表管理、快递管理等等。<br><br>
                                                 By: Yuu
                                             </p>
                                         </div>
@@ -205,19 +201,19 @@
                     <section class="panel">
                         <div class="panel-body">
                             <div class="text-center mbot30">
-                                <h3 class="timeline-title">YMall更新日志</h3>
+                                <h3 class="timeline-title">YMall项目日志</h3>
                                 <p class="t-info">This is a project timeline</p>
                             </div>
 
                             <div class="timeline">
-                               <%-- <article class="timeline-item">
+                                <article class="timeline-item">
                                     <div class="timeline-desk">
                                         <div class="panel">
                                             <div class="panel-body">
                                                 <span class="arrow"></span>
                                                 <span class="timeline-icon red"></span>
-                                                <span class="timeline-date">11:25 am</span>
-                                                <h1 class="red">22 Oct | Sunday</h1>
+                                                <span class="timeline-date">07:00 am</span>
+                                                <h1 class="red">2019年6月21日</h1>
                                                 <p>待更新</p>
                                             </div>
                                         </div>
@@ -229,9 +225,10 @@
                                             <div class="panel-body">
                                                 <span class="arrow-alt"></span>
                                                 <span class="timeline-icon green"></span>
-                                                <span class="timeline-date">17:00 pm</span>
-                                                <h1 class="green">22 Oct | Sunday</h1>
-                                                <p><a href="http://blog.Yuu.cn" target="_blank">Yuu</a> 完成目前所有功能开发 <span><a href="https://github.com/Yuu/YMall" class="green" target="_blank">v1.0发布</a></span></p>
+                                                <span class="timeline-date">07:00 pm</span>
+                                                <h1 class="green">2019年6月20日</h1>
+                                                <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 启动
+                                                    <a href="https://github.com/71yuu/YMall" target="_blank">YMall</a> 项目
                                             </div>
                                         </div>
                                     </div>
@@ -242,26 +239,10 @@
                                             <div class="panel-body">
                                                 <span class="arrow"></span>
                                                 <span class="timeline-icon blue"></span>
-                                                <span class="timeline-date">11:35 pm</span>
-                                                <h1 class="blue">13 Oct | Friday</h1>
-                                                <p><a href="http://blog.Yuu.cn" target="_blank">Yuu</a> 完成后端接口改造二次开发 <span><a class="blue" href="https://github.com/Yuu/YMall-front" target="_blank">YMall-Front</a></span></p>
-                                                <div class="album">
-                                                 &lt;%&ndash;   <a href="#">
-                                                        <img alt="" width="48px" height="32px" src="http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170915134720.png">
-                                                    </a>
-                                                    <a href="#">
-                                                        <img alt="" width="48px" height="32px" src="http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170925230559.png">
-                                                    </a>
-                                                    <a href="#">
-                                                        <img alt="" width="48px" height="32px" src="http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170915135622.png">
-                                                    </a>
-                                                    <a href="#">
-                                                        <img alt="" width="48px" height="32px" src="http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022112023.jpg">
-                                                    </a>
-                                                    <a href="#">
-                                                        <img alt="" width="48px" height="32px" src="http://oweupqzdv.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20171022112048.jpg">
-                                                    </a>&ndash;%&gt;
-                                                </div>
+                                                <span class="timeline-date">05:00 pm</span>
+                                                <h1 class="blue">2019年6月20日</h1>
+                                                <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 完成了
+                                                    数据库设计文档
                                             </div>
                                         </div>
                                     </div>
@@ -272,31 +253,24 @@
                                             <div class="panel-body">
                                                 <span class="arrow-alt"></span>
                                                 <span class="timeline-icon purple"></span>
-                                                <span class="timeline-date">3:00 pm</span>
-                                                <h1 class="purple">14 Sep | Saturday</h1>
-                                                <p>
-                                                    感谢 <a href="https://github.com/yucccc" target="_blank">yucccc</a> 的开源
-                                                    <a href="https://github.com/yucccc/vue-mall" target="_blank">vue-mall</a> 项目提供前端页面及框架支持
-                                                </p>
-                                                <div class="notification">
-                                                    <i class=" icon-exclamation-sign"></i> 启动了前台项目
-                                                    <a href="https://github.com/Yuu/YMall-front" target="_blank">YMall-Front</a>
-                                                </div>
+                                                <span class="timeline-date">02:30 pm</span>
+                                                <h1 class="purple">2019年6月19日</h1>
+                                                <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 完成了
+                                                    需求分析文档
                                             </div>
                                         </div>
                                     </div>
-                                </article>--%>
+                                </article>
                                 <article class="timeline-item">
                                 <div class="timeline-desk">
                                     <div class="panel">
                                         <div class="panel-body">
                                             <span class="arrow"></span>
                                             <span class="timeline-icon light-green"></span>
-                                            <span class="timeline-date">09:00 pm</span>
-                                            <h1 class="light-green">10 May | Friday</h1>
-                                            <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 启动了
-                                                <span><a href="https://github.com/Yuu/YMall" target="_blank" class="light-green">YMall</a></span>
-                                                项目，并完成第一次提交</p>
+                                            <span class="timeline-date">05:00 pm</span>
+                                            <h1 class="light-green">2019年6月18日</h1>
+                                            <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 完成了
+                                                项目计划文档
                                         </div>
                                     </div>
                                 </div>
@@ -546,10 +520,14 @@
         url:"/sys/weekHot",
         type: 'GET',
         success:function (data) {
-            $("#hot-title").html(data.result.title);
-            $("#hot-num").html(data.result.total);
-            if(data.result.picPath != "" && data.result.picPath != null) {
-                $("#hot-img").attr("src", data.result.picPath);
+            if (data.status == 200) {
+                $("#hot-title").html(data.result.title);
+                $("#hot-num").html(data.result.total);
+                if(data.result.picPath != "" && data.result.picPath != null) {
+                    $("#hot-img").attr("src", data.result.picPath);
+                }
+            } else {
+                layer.alert(data.message, {title: '错误信息',icon: 2});
             }
         },
         error:function(){
@@ -560,39 +538,6 @@
     // 如果标题太长，截取前 18 个
     if($("#hot-title").text().length > 18){
         $("#hot-title").text($("#hot-title").text().substring(0,18) + "...");
-    }
-
-    // 获取系统基本信息
-    $.ajax({
-        url:"/sys/base",
-        type: 'GET',
-        success:function (data) {
-            if(data.status == 200){
-                if(data.result.hasAllNotice == 1){
-                    allNotice(data.result.allNotice);
-                }
-            } else {
-                layer.alert(data.message,{title: '错误信息',icon: 2});
-            }
-        },
-        error:function(){
-            layer.alert(ERROR_REQUEST_MESSAGE, {title: '错误信息',icon: 2});
-        }
-    });
-
-    // 弹出通知窗口
-    function allNotice(data){
-        layer.open({
-            type: 1
-            ,title:'通知'
-            ,area: ['350px', '230px']
-            ,content: '<div style="margin: 10px 20px 10px 20px;">'+data+'</div>'
-            ,btn: ['知道了']
-            ,shade: 0 //不显示遮罩
-            ,yes: function(){
-                layer.closeAll();
-            }
-        });
     }
 
 </script>

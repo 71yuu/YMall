@@ -1,17 +1,16 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 商品实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbItem extends BaseEntity {
+public class TbItem implements Serializable {
     /**
      * 商品 id
      */
@@ -56,5 +55,15 @@ public class TbItem extends BaseEntity {
      * 商品状态
      */
     private Integer status;
+
+    /**
+     * 创建时间
+     */
+    private Date created;
+
+    /**
+     * 更新时间
+     */
+    private Date updated;
 
 }

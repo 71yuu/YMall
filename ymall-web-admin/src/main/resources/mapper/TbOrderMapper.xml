@@ -75,8 +75,77 @@
     from tb_order
   </select>
 
+    <sql id="tbOrderBaseColumns">
+        a.id,
+        a.payment,
+        a.payment_type,
+        a.post_fee,
+        a.status,
+        a.created,
+        a.updated,
+        a.payment_time,
+        a.consign_time,
+        a.end_time,
+        a.close_time,
+        a.shipping_name,
+        a.shipping_code,
+        a.user_id,
+        a.buyer_message,
+        a.buyer_nick,
+        a.buyer_comment
+    </sql>
+
     <!-- 获取订单总数 -->
-    <select id="getAllOrderCount" resultType="java.lang.Integer">
+    <select id="getAllOrderCount" resultType="int">
         select count(*) from tb_order;
     </select>
+
+
+    <!-- 获取订单列表 -->
+    <select id="getOrderList" resultType="tbOrder" parameterType="map">
+        select <include refid="tbOrderBaseColumns"/>
+        from tb_order as a
+        <where>
+            <if test="search != null and search != ''">
+                AND (id like concat('%', #{search}, '%'))
+                OR (buyer_nick like concat('%', #{search}, '%'))
+            </if>
+        </where>
+        order by created desc
+    </select>
+
+    <!-- 获取订单列表数量 -->
+    <select id="getTbOrderCount" resultType="int">
+        select count(*)
+        from tb_order
+        <where>
+            <if test="search != null and search != ''">
+                AND (id like concat('%', #{search}, '%'))
+                OR (buyer_nick like concat('%', #{search}, '%'))
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询图表数据 -->
+    <select id="selectOrderChart" resultType="com.yuu.ymall.web.admin.commons.dto.OrderChartData">
+      select
+      sum(payment) money, DATE(created) time
+      from tb_order
+      where
+      created BETWEEN #{startTime} and #{endTime}
+      and status = 4
+      GROUP BY DAY(created)
+    </select>
+
+    <!-- 按年份查询图表数据 -->
+    <select id="selectOrderChartByYear" resultType="com.yuu.ymall.web.admin.commons.dto.OrderChartData">
+      select
+      sum(payment) money, DATE(created) time
+      from tb_order
+      where
+      year(created) = #{year}
+      and status = 4
+      group by month(created)
+    </select>
+
 </mapper>

@@ -66,12 +66,6 @@
                         </div>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">备注：</label>
-                        <div class="formControls col-xs-6 col-sm-6">
-                            <textarea name="remark" id="remark" cols="" rows="" class="textarea"  placeholder="说点什么...最多输入100个字符"></textarea>
-                        </div>
-                    </div>
-                    <div class="row cl">
                         <div class="col-9 col-offset-2">
                             <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交修改&nbsp;&nbsp;">
                         </div>
@@ -119,7 +113,6 @@
             $("#name").val(treeNode.name);
             $("#id").val(treeNode.id);
             $("#sortOrder").val(treeNode.sortOrder);
-            $("#remark").val(treeNode.remark);
             $("#parentId").val(treeNode.pid);
             $("#parentName").val(treeNode.parentName);
             if($("#parentId").val() == ""){
@@ -143,7 +136,7 @@
             }
         }
     };
-    App.initZtree("/item/cat/list" , callback);
+    App.initZtree("/item/cat/list/-1" , callback);
 
     /**
      * 是否为父节点
@@ -194,8 +187,8 @@
      * 提交之前触发的方法
      */
     function beforeMethod() {
-        if (id == "-1") {
-            layer.alert("此分类不允许修改", {title: "警告", icon: 2});
+        if (id == "") {
+            layer.alert("请选择要修改的分类", {title: "警告", icon: 2});
             return false;
         }
         return true;
@@ -207,7 +200,7 @@
      */
     function successMethod(data) {
         layer.alert(data.message, {icon: 1}, function (index) {
-            App.initZtree("/item/cat/list", callback);
+            App.initZtree("/item/cat/list/-1", callback);
             layer.close(index);
         });
     }
@@ -256,7 +249,7 @@
 
         // 成功回调方法
         function successMethod(data) {
-            App.initZtree("/item/cat/list/", callback);
+            App.initZtree("/item/cat/list/-1", callback);
             App.msgSuccess(data.message);
         }
 

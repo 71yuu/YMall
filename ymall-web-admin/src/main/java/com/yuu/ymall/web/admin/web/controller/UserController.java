@@ -2,7 +2,7 @@ package com.yuu.ymall.web.admin.web.controller;
 
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.domain.TbUser;
-import com.yuu.ymall.web.admin.commons.annotation.SystemControllerLog;
+import com.yuu.ymall.web.admin.commons.dto.DataTablesResult;
 import com.yuu.ymall.web.admin.commons.utils.GeetestLib;
 import com.yuu.ymall.web.admin.service.UserService;
 import io.swagger.annotations.Api;
@@ -14,11 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
@@ -75,7 +73,6 @@ public class UserController {
      */
     @PostMapping("login")
     @ApiOperation(value = "用户登录")
-    @SystemControllerLog(description = "登录系统")
     public BaseResult login(String username, String password, String challenge, String validate, String seccode, HttpSession session) {
 
         // 极验验证
@@ -92,7 +89,6 @@ public class UserController {
         if (gt_server_status_code == 1) {
             // gt-server 正常，向 gt-server 进行二次验证
             gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, param);
-            System.out.println(gtResult);
         } else {
             // gt-server 非正常情况下，进行 failback 模式验证
             gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
@@ -127,7 +123,7 @@ public class UserController {
      * @return
      */
     @GetMapping("logout")
-    @ApiOperation("退出登录")
+    @ApiOperation(value = "退出登录")
     public BaseResult logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
@@ -140,7 +136,7 @@ public class UserController {
      * @return
      */
     @GetMapping("userInfo")
-    @ApiOperation("获取用户信息")
+    @ApiOperation(value = "获取用户信息")
     public BaseResult getUserInfo() {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         TbUser tbUser = userService.getUserByUsername(username);
@@ -158,7 +154,7 @@ public class UserController {
      * @return
      */
     @GetMapping("unlock")
-    @ApiOperation("用户解锁")
+    @ApiOperation(value = "用户解锁")
     public BaseResult unlock(String password) {
         String username = SecurityUtils.getSubject().getPrincipal().toString();
         TbUser tbUser = userService.getUserByUsername(username);
@@ -172,5 +168,100 @@ public class UserController {
         return BaseResult.success();
     }
 
+    /**
+     * 获取用户列表
+     *
+     * @param request 请求
+     * @param search 搜索条件
+     * @return
+     */
+    @GetMapping("list")
+    @ApiOperation(value = "获取用户列表")
+    public DataTablesResult<TbUser> getUserList(HttpServletRequest request, @RequestParam("search[value]") String search) {
+        DataTablesResult<TbUser> dataTablesResult = userService.getUserList(request, search);
+        return dataTablesResult;
+    }
+
+    /**
+     * 验证用户名是否存在
+     *
+     * @param id 用户 id
+     * @param username 用户名
+     * @return
+     */
+    @GetMapping("username/{id}")
+    @ApiOperation(value = "验证用户名是否存在")
+    public Boolean validateUsername(@PathVariable Long id, String username) {
+        Boolean flag = userService.validateUsername(id, username);
+        return flag;
+    }
+
+    /**
+     * 验证手机号是否存在
+     *
+     * @param id 用户 id
+     * @param phone 手机号
+     * @return
+     */
+    @GetMapping("phone/{id}")
+    @ApiOperation(value = "验证手机号是否存在")
+    public Boolean validatePhone(@PathVariable Long id, String phone) {
+        Boolean flag = userService.validatePhone(id, phone);
+        return flag;
+    }
+
+    /**
+     * 验证邮箱是否存在
+     *
+     * @param id 用户 id
+     * @param email 邮箱
+     * @return
+     */
+    @GetMapping("email/{id}")
+    @ApiOperation(value = "验证邮箱是否存在")
+    public Boolean validateEmail(@PathVariable Long id, String email) {
+        Boolean flag = userService.validateEmail(id, email);
+        return flag;
+    }
+
+    /**
+     * 保存用户
+     *
+     * @param tbUser 用户
+     * @return
+     */
+    @PostMapping("save")
+    @ApiOperation(value = "保存用户")
+    public BaseResult save(TbUser tbUser) {
+        BaseResult baseResult = userService.save(tbUser);
+        return baseResult;
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param id 用户 id
+     * @param password 用户密码
+     * @return
+     */
+    @PostMapping("changePass")
+    @ApiOperation(value = "修改密码")
+    public BaseResult changePass(Long id, String password) {
+        BaseResult baseResult = userService.changePass(id, password);
+        return baseResult;
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param ids
+     * @return
+     */
+    @DeleteMapping("delete/{ids}")
+    @ApiOperation(value = "删除用户")
+    public BaseResult delete(@PathVariable Long[] ids) {
+        BaseResult baseResult = userService.delete(ids);
+        return baseResult;
+    }
 
 }

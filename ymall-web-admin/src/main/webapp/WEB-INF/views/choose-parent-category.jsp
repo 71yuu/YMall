@@ -20,11 +20,20 @@
 
 <script type="text/javascript">
 
+    var oldCid = parent.id;
+
+
     /**
      * ZTree 回调函数
      * */
     var callback = {
         beforeClick: function(treeId, treeNode) {
+            if(treeNode.id == oldCid) {
+                layer.confirm('不能选择自己', {
+                    btn: ['知道了'], icon: 2
+                });
+                return false;
+            }
             if (treeNode.isParent) {
                 parent.setParentId(treeNode.id, treeNode.name);
                 var index = parent.layer.getFrameIndex(window.name);
@@ -37,7 +46,7 @@
             }
         }
     };
-    App.initZtree("/item/cat/list" , callback);
+    App.initZtree("/item/cat/list/0" , callback);
 </script>
 </body>
 </html>

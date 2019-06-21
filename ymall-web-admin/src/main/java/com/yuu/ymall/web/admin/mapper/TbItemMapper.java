@@ -46,4 +46,18 @@ public interface TbItemMapper extends BaseMapper<TbItem> {
      * @return
      */
     int getTbItemByCidCount(Map<String, Object> params);
+
+    /**
+     * 下架商品
+     *
+     * @param id 商品 id
+     */
+    int stopItemById(Long id);
+
+    /**
+     * 发布商品
+     *
+     * @param id 商品 id
+     */
+    int startItemById(Long id);
 }

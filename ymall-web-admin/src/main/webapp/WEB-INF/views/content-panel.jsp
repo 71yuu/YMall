@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商城管理 <span class="c-gray en">&gt;</span> 首页板块 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div style="margin-left: 1vw;margin-right: 1vw" class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="delSingle()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除所选板块</a> <a class="btn btn-primary radius" onclick="panel_add()" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加首页板块</a></span> </div>
+<div style="margin-left: 1vw;margin-right: 1vw" class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="delSingle()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除所选板块</a> <a class="btn btn-primary radius" onclick="App.openAndFull('添加板块', 'content-panel-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加首页板块</a></span> </div>
 <table class="table">
     <tr>
         <td style="padding-left: 4vw" width="200" class="va-t"><ul id="myTree" class="ztree"></ul></td>
@@ -65,12 +65,6 @@
                         </div>
                     </div>
                     <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2">备注：</label>
-                        <div class="formControls col-xs-6 col-sm-6">
-                            <textarea name="remark" id="remark" cols="" rows="" class="textarea"  placeholder="说点什么...最多输入100个字符"></textarea>
-                        </div>
-                    </div>
-                    <div class="row cl">
                         <div class="col-9 col-offset-2">
                             <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交修改&nbsp;&nbsp;">
                         </div>
@@ -114,7 +108,6 @@
             $("#id").val(treeNode.id);
             $("#type").val(treeNode.type);
             $("#sortOrder").val(treeNode.sortOrder);
-            $("#remark").val(treeNode.remark);
             $("#limitNum").val(treeNode.limitNum);
             changeSwitch(treeNode.status);
             id = treeNode.id;

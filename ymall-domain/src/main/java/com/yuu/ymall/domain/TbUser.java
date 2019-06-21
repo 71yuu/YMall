@@ -1,15 +1,15 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 用户实体
  */
 @Data
-@EqualsAndHashCode
-public class TbUser extends BaseEntity {
+public class TbUser implements Serializable {
     /**
      * 用户 id
      */
@@ -26,43 +26,12 @@ public class TbUser extends BaseEntity {
     private String password;
 
     /**
-     * 用户手机号
+     * 创建时间
      */
-    private String phone;
+    private Date created;
 
     /**
-     * 用户邮箱
+     * 更新时间
      */
-    private String email;
-
-    /**
-     * 用户性别
-     */
-    private String sex;
-
-    /**
-     * 用户地址
-     */
-    private String address;
-
-    /**
-     * 用户状态
-     */
-    private Integer state;
-
-    /**
-     * 用户描述
-     */
-    private String description;
-
-    /**
-     * 用户对应的角色 id
-     */
-    private Integer roleId;
-
-    /**
-     * 用户头像
-     */
-    private String file;
-
+    private Date updated;
 }

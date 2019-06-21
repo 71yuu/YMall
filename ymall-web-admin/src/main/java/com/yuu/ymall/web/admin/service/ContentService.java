@@ -40,4 +40,10 @@ public interface ContentService {
      */
     BaseResult saveContent(TbPanelContent tbPanelContent);
 
+    /**
+     * 查询商品是否关联首页板块内容
+     *
+     * @param id 商品 id
+     */
+    int selectContentByIid(Long id);
 }

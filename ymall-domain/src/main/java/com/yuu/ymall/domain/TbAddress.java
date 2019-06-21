@@ -1,15 +1,15 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 地址实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbAddress extends BaseEntity {
+public class TbAddress implements Serializable {
     /**
      * 地址 id
      */
@@ -40,4 +40,13 @@ public class TbAddress extends BaseEntity {
      */
     private Boolean isDefault;
 
+    /**
+     * 创建日期
+     */
+    private Date created;
+
+    /**
+     * 更新日期
+     */
+    private Date updated;
 }

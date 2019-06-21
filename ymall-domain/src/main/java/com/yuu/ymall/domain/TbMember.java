@@ -1,17 +1,15 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 会员实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbMember extends BaseEntity {
+public class TbMember implements Serializable {
     /**
      * 会员 id
      */
@@ -43,11 +41,6 @@ public class TbMember extends BaseEntity {
     private String sex;
 
     /**
-     * 会员地址
-     */
-    private String address;
-
-    /**
      * 会员状态
      */
     private Integer state;
@@ -63,13 +56,12 @@ public class TbMember extends BaseEntity {
     private String description;
 
     /**
-     * 会员积分
+     * 创建时间
      */
-    private Integer points;
+    private Date created;
 
     /**
-     * 会员余额
+     * 更新时间
      */
-    private BigDecimal balance;
-
+    private Date updated;
 }

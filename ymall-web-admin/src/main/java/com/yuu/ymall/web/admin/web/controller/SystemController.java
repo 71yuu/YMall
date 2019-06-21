@@ -1,8 +1,6 @@
 package com.yuu.ymall.web.admin.web.controller;
 
 import com.yuu.ymall.commons.dto.BaseResult;
-import com.yuu.ymall.domain.TbBase;
-import com.yuu.ymall.domain.TbOrderItem;
 import com.yuu.ymall.web.admin.commons.utils.IPInfoUtil;
 import com.yuu.ymall.web.admin.service.SystemService;
 import io.swagger.annotations.Api;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 系统Controller
+ *
  * @Classname SystemController
  * @Date 2019/5/12 21:54
  * @Created by Yuu
@@ -26,21 +26,6 @@ public class SystemController {
 
     @Autowired
     private SystemService systemService;
-
-    /**
-     * 获取系统基本配置
-     *
-     * @return
-     */
-    @GetMapping("base")
-    @ApiOperation(value = "获取系统基本配置")
-    public BaseResult getBase() {
-        TbBase tbBase = systemService.getBase();
-        if (tbBase == null) {
-            return BaseResult.fail("获取系统基本配置失败");
-        }
-        return BaseResult.success(tbBase);
-    }
 
     /**
      * 获取天气信息
@@ -65,7 +50,7 @@ public class SystemController {
     @GetMapping("weekHot")
     @ApiOperation(value = "获取本周热销商品数据")
     public BaseResult getWeekHot() {
-        TbOrderItem tbOrderItem = systemService.getWeekHot();
-        return BaseResult.success(tbOrderItem);
+        BaseResult baseResult = systemService.getWeekHot();
+        return baseResult;
     }
 }

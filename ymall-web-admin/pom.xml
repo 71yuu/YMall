@@ -124,6 +124,14 @@
             <artifactId>qiniu-java-sdk</artifactId>
         </dependency>
         <!-- QiNiuYun End -->
+
+        <!-- Hutool Begin -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <!-- Hutool End -->
     </dependencies>
 
     <build>

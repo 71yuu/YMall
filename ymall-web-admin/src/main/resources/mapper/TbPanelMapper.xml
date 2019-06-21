@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yuu.ymall.web.admin.mapper.TbPanelMapper">
-  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbPanel">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
-    <result column="position" jdbcType="INTEGER" property="position" />
-    <result column="limit_num" jdbcType="INTEGER" property="limitNum" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="created" jdbcType="TIMESTAMP" property="created" />
-    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
-  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_panel
     where id = #{id,jdbcType=INTEGER}
@@ -23,11 +11,11 @@
     </selectKey>
     insert into tb_panel (name, type, sort_order, 
       position, limit_num, status, 
-      remark, created, updated
+       created, updated
       )
     values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{sortOrder,jdbcType=INTEGER}, 
       #{position,jdbcType=INTEGER}, #{limitNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
+       #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbPanel">
@@ -38,19 +26,18 @@
       position = #{position,jdbcType=INTEGER},
       limit_num = #{limitNum,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, type, sort_order, position, limit_num, status, remark, created, 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="tbPanel">
+    select id, name, type, sort_order, position, limit_num, status, created,
     updated
     from tb_panel
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, type, sort_order, position, limit_num, status, remark, created, 
+  <select id="selectAll" resultType="tbPanel">
+    select id, name, type, sort_order, position, limit_num, status, created,
     updated
     from tb_panel
   </select>
@@ -64,13 +51,12 @@
         a.position,
         a.limit_num,
         a.status,
-        a.remark,
         a.created,
         a.updated
     </sql>
 
     <!-- 根据条件查询所有板块 -->
-    <select id="getPanelList" parameterType="map" resultMap="BaseResultMap">
+    <select id="getPanelList" parameterType="map" resultType="tbPanel">
         SELECT
         <include refid="tbPanelColumns" />
         FROM
@@ -88,7 +74,7 @@
     </select>
 
     <!-- 根据板块的类型查询板块 -->
-    <select id="getPanelByType" resultMap="BaseResultMap">
+    <select id="getPanelByType" resultType="tbPanel">
         SELECT
         <include refid="tbPanelColumns" />
         FROM

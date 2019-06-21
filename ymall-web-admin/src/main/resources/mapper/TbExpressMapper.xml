@@ -38,4 +38,25 @@
     select id, express_name, sort_order, created, updated
     from tb_express
   </select>
+
+    <sql id="tbExpressBaseColumns">
+        a.id,
+        a.express_name,
+        a.sort_order,
+        a.created,
+        a.updated
+    </sql>
+
+    <!-- 获取快递列表 -->
+    <select id="getExpressList" resultMap="BaseResultMap" parameterType="map">
+      select <include refid="tbExpressBaseColumns"/>
+      from tb_express as a
+      order by sort_order asc
+    </select>
+
+    <!-- 获取快递总数 -->
+    <select id="getTbExpressCount" resultType="int" parameterType="map">
+        select count(*)
+        from tb_express as a
+    </select>
 </mapper>

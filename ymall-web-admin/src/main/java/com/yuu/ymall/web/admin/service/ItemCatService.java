@@ -17,9 +17,10 @@ public interface ItemCatService {
      * 根据父类 id 查询分类列表
      *
      * @param parentId 根据父类 id 查询分类列表
+     * @param type zTree 展示数据类型 -1 不展示所有商品，0 展示所有商品
      * @return
      */
-    List<ZTreeNode> getItemCatList(Long parentId);
+    List<ZTreeNode> getItemCatList(Long parentId, int type);
 
     /**
      * 添加编辑商品分类

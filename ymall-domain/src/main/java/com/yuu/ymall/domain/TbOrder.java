@@ -1,9 +1,8 @@
 package com.yuu.ymall.domain;
 
-import com.yuu.ymall.commons.persistence.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,8 +10,7 @@ import java.util.Date;
  * 订单实体
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TbOrder extends BaseEntity {
+public class TbOrder implements Serializable {
     /**
      * 订单 id
      */
@@ -93,5 +91,15 @@ public class TbOrder extends BaseEntity {
      * 买家是否已经评论
      */
     private Boolean buyerComment;
+
+    /**
+     * 创建时间
+     */
+    private Date created;
+
+    /**
+     * 更新时间
+     */
+    private Date updated;
 
 }

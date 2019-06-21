@@ -58,17 +58,14 @@
 <script type="text/javascript" src="/static/assets/plugins/iCheck/icheck.min.js"></script>
 
 <script type="text/javascript">
-
     /**
      * 初始化
      * */
     var index = layer.load(3);
-
     /**
      * panelType = 0 时，为轮播图板块内容管理，type = -1 时，为其他板块内容管理
      * */
     var panelType = $("#type").val();
-
     /**
      * 初始化类别数据
      * */
@@ -93,12 +90,10 @@
             layer.alert(ERROR_REQUEST_MESSAGE, {title: "错误信息", icon: 2});
         }
     });
-
     /**
      * 初始化 iCheck
      */
     App.initICheck();
-
     /**
      * 初始化 DataTables
      */
@@ -126,12 +121,36 @@
             },
             { "data": "picUrl",
                 render: function(data, type, row, meta) {
-                    return '<img id="picUrl" src="'+ data +'" style="width: 80px;height: 60px" alt="" />';
+                    return '<img id="picUrl" src="'+ data +'" style="width: 80px;height: 60px" alt="" onclick="App.previewImg(this, 700, 400)" />';
                 }
             },
-            {"data": "fullUrl"},
-            { "data": "productId"},
-            { "data": "productName"},
+            {"data": "fullUrl",
+                render: function(data, type, row, meta) {
+                    if (data == null || data == "") {
+                        return "无";
+                    } else {
+                        return data;
+                    }
+                }
+            },
+            { "data": "productId",
+                render: function(data, type, row, meta) {
+                    if (data == null || data == "") {
+                        return "无";
+                    } else {
+                        return data;
+                    }
+                }
+            },
+            { "data": "productName",
+                render: function(data, type, row, meta) {
+                    if (data == null || data == "") {
+                        return "无";
+                    } else {
+                        return data;
+                    }
+                }
+            },
             {"data": "sortOrder"},
             { "data": "updated",
                 render : function(data,type, row, meta) {
@@ -146,10 +165,8 @@
                 }
             }
         ];
-
         _dataTable = App.initDataTables(url, _columns);
     }
-
     /**
      * ZTree 回调函数
      * */
@@ -174,7 +191,6 @@
         }
     };
     App.initZtree("/panel/common/list/" + panelType, callback);
-
     /**
      * 更新当前数量
      * */
@@ -191,7 +207,6 @@
             }
         })
     }
-
     /**
      * 判断是否有封面
      * */
@@ -205,8 +220,6 @@
         });
         return cover;
     }
-
-
     /**
      * 编辑板块内容
      */
@@ -232,7 +245,6 @@
         });
         layer.full(index);
     }
-
     /**
      * 添加板块内容
      * */
@@ -253,46 +265,36 @@
         });
         layer.full(index);
     }
-
-
     /**
      * 删除单个板块内容
      *
      * @param id 板块内容 id
      */
     function deleteSinge(id) {
-
         // 确认消息
         var confirmMsg = '确定要删除ID为\''+ id +'\'的数据吗？';
-
         // 提交请求
         var url = '/content/delete/' + id;
-
         // 成功回调方法
         function successMethod() {
             updateCurrentCount('/content/delete/' + id);
             refresh();
             layer.msg("删除成功！", {icon:2, time:1000});
         }
-
         App.deleteSinge(confirmMsg, url, successMethod);
     }
-
     /**
      * 批量删除
      * */
     function deleteMulti() {
-
         // 请求路径
         var url = "/content/delete/";
-
         // 请求成功执行方法
         function successMethod() {
             updateCurrentCount();
             refresh();
             layer.msg("删除成功！", {icon:1, time:1000});
         }
-
         App.deleteMulti(url, successMethod);
     }
 </script>
