@@ -14,5 +14,6 @@
         <module>ymall-commons</module>
         <module>ymall-domain</module>
         <module>ymall-web-admin</module>
+		<module>ymall-web-api</module>
     </modules>
 </project>
