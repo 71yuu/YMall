@@ -24,6 +24,7 @@
 
         <!-- 统一的依赖管理 -->
         <alibaba-druid.version>1.1.6</alibaba-druid.version>
+        <aliyun-sms.version>4.1.0</aliyun-sms.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-io.version>1.3.2</commons-io.version>
         <commons-net.version>3.3</commons-net.version>
@@ -342,6 +343,14 @@
                 <version>${qiniuyun.version}</version>
             </dependency>
             <!-- QiNiuYun End -->
+
+            <!-- AliYun SMS Begin -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun-sms.version}</version>
+            </dependency>
+            <!-- AliYun SMS End-->
         </dependencies>
     </dependencyManagement>
 

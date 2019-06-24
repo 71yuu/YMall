@@ -794,7 +794,7 @@ var config = {
         // customInsert: function (insertLinkImg, result, editor) {
         //     console.log('customInsert')
         //     // 图片上传并返回结果，自定义插入图片的事件，而不是编辑器自动插入图片
-        //     const data = result.data1 || []
+        //     consts data = result.data1 || []
         //     data.forEach(link => {
         //         insertLinkImg(link)
         //     })

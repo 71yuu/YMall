@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuu.ymall.web.api.mapper.TbPanelContentMapper" >
+  <resultMap id="BaseResultMap" type="com.yuu.ymall.domain.TbPanelContent" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="panel_id" property="panelId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
+    <result column="full_url" property="fullUrl" jdbcType="VARCHAR" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="pic_url2" property="picUrl2" jdbcType="VARCHAR" />
+    <result column="pic_url3" property="picUrl3" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_panel_content
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yuu.ymall.domain.TbPanelContent" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_panel_content (panel_id, type, product_id, 
+      sort_order, full_url, pic_url, 
+      pic_url2, pic_url3, created, 
+      updated)
+    values (#{panelId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{productId,jdbcType=BIGINT}, 
+      #{sortOrder,jdbcType=INTEGER}, #{fullUrl,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
+      #{picUrl2,jdbcType=VARCHAR}, #{picUrl3,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbPanelContent" >
+    update tb_panel_content
+    set panel_id = #{panelId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=BIGINT},
+      sort_order = #{sortOrder,jdbcType=INTEGER},
+      full_url = #{fullUrl,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      pic_url2 = #{picUrl2,jdbcType=VARCHAR},
+      pic_url3 = #{picUrl3,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, panel_id, type, product_id, sort_order, full_url, pic_url, pic_url2, pic_url3, 
+    created, updated
+    from tb_panel_content
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, panel_id, type, product_id, sort_order, full_url, pic_url, pic_url2, pic_url3, 
+    created, updated
+    from tb_panel_content
+  </select>
+</mapper>

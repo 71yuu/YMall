@@ -206,6 +206,20 @@
                             </div>
 
                             <div class="timeline">
+                                <article class="timeline-item alt">
+                                    <div class="timeline-desk">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <span class="arrow-alt"></span>
+                                                <span class="timeline-icon purple"></span>
+                                                <span class="timeline-date">08:00 am</span>
+                                                <h1 class="purple">2019年6月22日</h1>
+                                                <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 启动
+                                                    <a href="https://github.com/71yuu/YMall" target="_blank">ymall-web-ui</a>项目
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
                                 <article class="timeline-item">
                                     <div class="timeline-desk">
                                         <div class="panel">
@@ -214,7 +228,8 @@
                                                 <span class="timeline-icon red"></span>
                                                 <span class="timeline-date">07:00 am</span>
                                                 <h1 class="red">2019年6月21日</h1>
-                                                <p>待更新</p>
+                                                <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 完成
+                                                    <a href="https://github.com/71yuu/YMall" target="_blank">YMall 后台管理系统</a>
                                             </div>
                                         </div>
                                     </div>

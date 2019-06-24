@@ -6061,7 +6061,7 @@
                         writeBits(bitcode[pos]);
                     }
                     //Encode ACs
-                    var end0pos = 63; // was const... which is crazy
+                    var end0pos = 63; // was consts... which is crazy
                     for (; (end0pos>0)&&(DU[end0pos]==0); end0pos--) {};
                     //end0pos = first element in reverse order !=0
                     if ( end0pos == 0) {

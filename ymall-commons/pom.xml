@@ -102,6 +102,13 @@
             <artifactId>spring-context</artifactId>
         </dependency>
         <!-- Spring End -->
+
+        <!-- AliYun SMS Begin -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+        </dependency>
+        <!-- AliYun SMS End-->
     </dependencies>
 
 </project>
