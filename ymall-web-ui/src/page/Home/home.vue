@@ -94,7 +94,7 @@
         home: [],
         loading: true,
         notify: '1',
-        dialogVisible: false,z
+        dialogVisible: false,
         timer: ''
       }
     },
