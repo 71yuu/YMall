@@ -60,7 +60,7 @@
                         <router-link to="/user/coupon">我的优惠</router-link>
                       </li>
                       <li>
-                        <a href="javascript:;" @click="_loginOut">退出</a>
+                        <a href="javascript:;" @click="_logout">退出</a>
                       </li>
                     </ul>
                   </div>
@@ -151,7 +151,7 @@
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
   import { getCartList, cartDel, getQuickSearch } from '/api/goods'
-  import { loginOut, navList } from '/api/index'
+  import { logout, navList } from '/api/index'
   import { setStore, getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
   import 'element-ui/lib/theme-default/index.css'
@@ -334,16 +334,24 @@
           return
         }
       },
-      // 退出登陆
-      _loginOut () {
+      // 退出登录
+      _logout () {
+        console.log('test')
+        console.log(this.token)
         let params = {
           params: {
             token: this.token
           }
         }
-        loginOut(params).then(res => {
-          removeStore('buyCart')
-          window.location.href = '/'
+        removeStore('token')
+        logout(params).then(res => {
+          if (res.status === 200) {
+            removeStore('buyCart')
+            window.location.href = '/'
+          } else {
+            this.message('请求服务器失败，请检查您的网络信息')
+            return false
+          }
         })
       },
       // 通过路由改变导航文字样式

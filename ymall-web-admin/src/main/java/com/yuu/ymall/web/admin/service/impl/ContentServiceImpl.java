@@ -3,15 +3,13 @@ package com.yuu.ymall.web.admin.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yuu.ymall.commons.dto.BaseResult;
+import com.yuu.ymall.commons.redis.RedisCacheManager;
 import com.yuu.ymall.domain.TbItem;
 import com.yuu.ymall.domain.TbPanelContent;
 import com.yuu.ymall.web.admin.commons.dto.DataTablesResult;
-import com.yuu.ymall.web.admin.commons.redis.RedisCacheManager;
 import com.yuu.ymall.web.admin.mapper.TbItemMapper;
 import com.yuu.ymall.web.admin.mapper.TbPanelContentMapper;
 import com.yuu.ymall.web.admin.service.ContentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,8 +29,6 @@ import java.util.Map;
 @Service
 @Transactional(readOnly = true)
 public class ContentServiceImpl implements ContentService {
-
-    private final static Logger log = LoggerFactory.getLogger(ContentServiceImpl.class);
 
     @Autowired
     private TbPanelContentMapper tbPanelContentMapper;

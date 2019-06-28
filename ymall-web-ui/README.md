@@ -3,10 +3,10 @@
 ### [宣传视频](https://www.bilibili.com/video/av23121122/)
 - 作者亲自制作 [点我观看](https://www.bilibili.com/video/av23121122/)
 ### 项目已部署，在线Demo
-- 前台商城：http://YMall.exrick.cn/
-- 后台管理系统：http://xmadmin.exrick.cn/
+- 前台商城：http://YMall.yuu.cn/
+- 后台管理系统：http://xmadmin.yuu.cn/
 ### 感谢 [yucccc](https://github.com/yucccc) 的开源 [vue-mall](https://github.com/yucccc/vue-mall) 项目提供前端页面及框架支持
-### 后端全部重新开发接口，实现后台系统管理，后端接口项目请跳转至 [YMall](https://github.com/Exrick/YMall) 项目仓库查看
+### 后端全部重新开发接口，实现后台系统管理，后端接口项目请跳转至 [YMall](https://github.com/yuu/YMall) 项目仓库查看
 ### 新增与优化
 - [x] 优化页脚、增加商品搜索框组件
 - [x] 优化登录注册界面
@@ -16,7 +16,7 @@
 - [x] 优化订单详情，实现查看订单进度，可对订单进行处理
 - [x] 实现生成订单接口、优化地址管理编辑选择
 - [x] 实现查看个人订单分页
-- [x] 接入[XPay个人免签收款支付系统](https://github.com/Exrick/xpay)
+- [x] 接入[XPay个人免签收款支付系统](https://github.com/yuu/xpay)
 - [x] 首页升级！重构首页，后台可配置，包括3D轮播图
 - [x] 新增分类查看品牌周边等
     
@@ -49,13 +49,13 @@
 - 第三方SDK
     - [极验Test-button人机验证码](http://www.geetest.com/Test-button.html)
 - 第三方插件
-    - [hotjar](https://github.com/Exrick/YMall/blob/master/study/hotjar.md)：一体化分析和反馈
+    - [hotjar](https://github.com/yuu/YMall/blob/master/study/hotjar.md)：一体化分析和反馈
     - ~~[搜狐畅言评论插件](http://changyan.kuaizhan.com/)~~ 垃圾广告评论插件 现已更换 [Gitment](https://github.com/imsun/gitment)
 
 ### 本地开发运行
-- 启动后端 [YMall](https://github.com/Exrick/YMall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
+- 启动后端 [YMall](https://github.com/yuu/YMall) 项目后，在 `config/index.js` 中修改你的后端接口地址配置
 - Gitment评论配置见 [Gitment](https://github.com/imsun/gitment) 使用到的页面为 `thanks.vue`
-- `index.html` 中复制粘贴替换你的 [hotjar](https://github.com/Exrick/YMall/blob/master/study/hotjar.md) 代码
+- `index.html` 中复制粘贴替换你的 [hotjar](https://github.com/yuu/YMall/blob/master/study/hotjar.md) 代码
 - 若不启动后端项目，勉强预览运行此前端项目可尝试注释掉 `src/main.js` 中第 `8、10、39-61` 行代码
 - 在项目根文件夹下先后执行命令 `npm install` 、 `npm run dev`
 - 商城前台端口默认9999 http://localhost:9999
@@ -65,29 +65,29 @@
 - QQ交流群 `475743731(付费)`，可获取各项目详细图文文档、疑问解答 [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=7b60cec12ba93ebed7568b0a63f22e6e034c0d1df33125ac43ed753342ec6ce7)
 - 免费交流群 `562962309` [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=52f6003e230b26addeed0ba6cf343fcf3ba5d97829d17f5b8fa5b151dba7e842)
 
-- 个人博客：[http://blog.exrick.cn](http://blog.exrick.cn)
+- 个人博客：[http://blog.yuu.cn](http://blog.yuu.cn)
 
 ### 开源协议
 - 请遵循原作者MIT开源协议
 
 ### 作者其他项目推荐
-- [X-Boot前后端分离开发平台](https://github.com/Exrick/x-boot)
+- [X-Boot前后端分离开发平台](https://github.com/yuu/x-boot)
 
     ![](https://i.loli.net/2018/07/21/5b52e274d2085.png)
 
-- [XPay个人免签收款支付系统v1.2](https://github.com/Exrick/xpay)
+- [XPay个人免签收款支付系统v1.2](https://github.com/yuu/xpay)
 
     - 现已支持移动端支付 手机扫码体验
 
     ![](http://p77xsahe9.bkt.clouddn.com/18-7-21/16350122.jpg)
 
 - 微信小程序APP 
-    - [前台源码点我提前获取](http://xpay.exrick.cn/pay) [预览视频](https://v.qq.com/x/page/f0627kf4x1e.html)
+    - [前台源码点我提前获取](http://xpay.yuu.cn/pay) [预览视频](https://v.qq.com/x/page/f0627kf4x1e.html)
 
     ![](https://i.loli.net/2018/07/21/5b52e1de385e7.png)
 
 - 机器学习笔记
-    - [Machine-Learning](https://github.com/Exrick/Machine-Learning)
+    - [Machine-Learning](https://github.com/yuu/Machine-Learning)
 
 ### 捐赠
 ![](http://p77xsahe9.bkt.clouddn.com/18-7-20/54731550.jpg)

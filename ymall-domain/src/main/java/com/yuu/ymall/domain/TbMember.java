@@ -64,4 +64,9 @@ public class TbMember implements Serializable {
      * 更新时间
      */
     private Date updated;
+
+    /**
+     * 前台登录 Token
+     */
+    private String token;
 }

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 const Index = () => import('/page/index.vue')
 const Login = () => import('/page/Login/login.vue')
 const Register = () => import('/page/Login/register.vue')
+const forgetPassword = () => import('/page/Login/forgetPassword.vue')
 const Home = () => import('/page/Home/home.vue')
 const GoodS = () => import('/page/Goods/goods.vue')
 const goodsDetails = () => import('/page/Goods/goodsDetails.vue')
@@ -45,6 +46,7 @@ export default new Router({
     },
     {path: '/login', name: 'login', component: Login},
     {path: '/register', name: 'register', component: Register},
+    {path: '/forgetPassword', name: 'forgetPassword', component: forgetPassword},
     {path: '/cart', name: 'cart', component: Cart},
     {path: '/refreshsearch', name: 'refreshsearch', component: RefreshSearch},
     {

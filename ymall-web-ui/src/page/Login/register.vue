@@ -1,73 +1,47 @@
 <template>
   <div class="login v2">
     <div class="wrapper">
-      <div class="dialog dialog-shadow" style="display: block; margin-top: -362px;">
+      <div class="dialog dialog-shadow" style="display: block; margin-top: -318px;">
         <div class="registered">
           <h4>注册 YMall 账号</h4>
           <div class="content" style="margin-top: 20px;">
-            <ul class="common-form">
-              <li class="username border-1p">
-                <div style="margin-top: 40px;" class="input">
-                  <input type="text"
-                         v-model="registered.phone" placeholder="手机号">
-                </div>
-              </li>
-              <li class="verification border-1p">
-                <div class="input">
-                  <input type="text"
-                         v-model="registered.verCode" style="width: 100%;"  placeholder="输入验证码" />
-                  <y-button
-                    :classStyle="registered.phone&&vercodetxt==='发送验证码'?'main-btn':'disabled-btn'"
-                    :text="vercodetxt"
-                    style="width: 50%"
-                    @btnClick="getAutoCode"
-                    v-show="sendAuthCode" class="sendVercode"></y-button>
-                  <y-button
-                    :classStyle="'disabled-btn'"
-                    :text="authStr"
-                    style="width: 50%"
-                    v-show="!sendAuthCode" class="sendVercode"></y-button>
-                </div>
-              </li>
-              <li>
-                <div class="input">
-                  <input type="password"
-                         v-model="registered.userPwd"
-                         placeholder="密码, 由六到十六位字母或数字组成">
-                </div>
-              </li>
-              <li>
-                <div class="input">
-                  <input type="password"
-                         v-model="registered.userPwd2"
-                         placeholder="重复密码, 由六到十六位字母或数字组成组成">
-                </div>
-              </li>
-            </ul>
-            <el-checkbox class="agree" v-model="agreement">
-              我已阅读并同意遵守 
-              <a @click="open('法律声明','此仅为个人练习项目，仅供学习参考，承担不起任何法律问题')">法律声明</a> 和
-              <a @click="open('隐私条款','本网站将不会严格遵守有关法律法规和本隐私政策所载明的内容收集、使用您的信息')">隐私条款</a>
-            </el-checkbox>
-            <div style="margin-bottom: 30px;">
-              <y-button
-                :classStyle="registered.phone&&registered.verCode&&registered.userPwd&&registered.userPwd2&&agreement&registxt=='注册'?'main-btn':'disabled-btn'"
-                :text="registxt"
-                style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"
-                @btnClick="regist"
-              >
-              </y-button>
-            </div>
-            <div class="border" style="margin-bottom: 10px;"></div>
-            <ul class="common-form pr">
-              <!-- <li class="pa" style="left: 0;top: 0;margin: 0;color: #d44d44">{{registered.errMsg}}</li> -->
-              <li style="text-align: center;line-height: 48px;margin-bottom: 0;font-size: 12px;color: #999;">
-                <span>如果您已拥有 YMall 账号，则可在此</span>
-                <a href="javascript:;"
-                   style="margin: 0 5px"
-                   @click="toLogin">登陆</a>
-              </li>
-            </ul>
+            <el-form :model="registered" :rules="rules" ref="registered" class="register-form">
+              <el-form-item prop="phone">
+                <el-input v-model="registered.phone" size="large" placeholder="手机号" auto-complete="off" ></el-input>
+              </el-form-item>
+              <el-form-item >
+                <el-col :span="14">
+                  <el-form-item prop="verCode">
+                    <el-input v-model="registered.verCode" size="large" placeholder="验证码" style="width: 188px;" auto-complete="off"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item>
+                    <el-button @click="sendVerCode" type="primary" size="large" :disabled="verPhone && sendAuthCode ? false : true"  style="width: 154px; height: 50px;">
+                      <span v-show="sendAuthCode">获取验证码</span>
+                      <span v-show="!sendAuthCode">重新发送({{authTime}})</span>
+                    </el-button>
+                  </el-form-item>
+                </el-col>
+              </el-form-item>
+              <el-form-item prop="pass">
+                <el-input type="password" v-model="registered.pass" size="large"  placeholder="密码" auto-complete="off" style="height: 50px;"></el-input>
+              </el-form-item>
+              <el-form-item prop="pass2">
+                <el-input type="password" v-model="registered.pass2" size="large"  placeholder="确认密码" auto-complete="off" style="height: 50px;"></el-input>
+              </el-form-item>
+                <el-checkbox class="agree" v-model="agreement">
+                  我已阅读并同意遵守
+                  <a @click="open('法律声明','此仅为个人练习项目，不承担任何法律问题')">法律声明</a> 和
+                  <a @click="open('隐私条款','本网站将不会严格遵守有关法律法规和本隐私政策所载明的内容收集、使用您的信息')">隐私条款</a>
+                </el-checkbox>
+                <el-button type="primary" @click="regist" :disabled="verPhone && verVerCode && verPass && verPass2 && agreement ? false : true" style="width: 370px; height: 48px;">{{registerTxt}}</el-button>
+              <div class="border"></div>
+              <span class="agree" style="margin-left: 50px;">
+                如果您已拥有 YMall 账号，可在此
+                <a @click="toLogin">登录</a>
+              </span>
+            </el-form>
           </div>
         </div>
       </div>
@@ -77,41 +51,145 @@
 <script>
 import YFooter from '/common/footer'
 import YButton from '/components/YButton'
-import {register, vercode, checkPhone} from '/api/index.js'
+import {checkPhone, vercode, register} from '/api/index.js'
 export default {
   data () {
+    let vPhone = async (rule, value, callback) => {
+      const phoneReg = /^1[3|4|5|7|8][0-9]\d{8}$/
+      if (!value) {
+        this.verPhone = false
+        return callback(new Error('请输入手机号'))
+      }
+      if (!phoneReg.test(value)) {
+        this.verPhone = false
+        return callback(new Error('请输入正确的手机号'))
+      }
+      await checkPhone({
+        value
+      }).then(res => {
+        if (res.result === true) {
+          this.verPhone = false
+          this.existPhone = true
+        } else {
+          this.verPhone = true
+          this.existPhone = false
+        }
+      })
+      if (this.existPhone) {
+        return callback(new Error('此手机号已注册'))
+      }
+      this.$refs.registered.validateField('verCode')
+      return callback()
+    }
+    let vVerCode = (rule, value, callback) => {
+      let phone = this.registered.phone
+      if (value !== this.verCode) {
+        this.verVerCode = false
+        return callback(new Error('验证码错误'))
+      } else if (phone !== this.codePhone) {
+        this.verVerCode = false
+        return callback(new Error('验证码错误'))
+      }
+      this.verVerCode = true
+      return callback()
+    }
+    let vPass = (rule, value, callback) => {
+      const passReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
+      if (!value) {
+        this.verPass = false
+        return callback(new Error('请输入密码'))
+      } else if (!passReg.test(value)) {
+        this.verPass = false
+        return callback(new Error('密码长度 6-16 位，数字字母至少包含两种'))
+      } else {
+        this.$refs.registered.validateField('pass2')
+      }
+      this.verPass = true
+      return callback()
+    }
+    let vPass2 = (rule, value, callback) => {
+      if (!value) {
+        this.verPass2 = false
+        return callback(new Error('请再次输入密码'))
+      } else if (value !== this.registered.pass) {
+        this.verPass2 = false
+        return callback(new Error('两次输入密码不一致!'))
+      }
+      this.verPass2 = true
+      return callback()
+    }
     return {
-      cart: [],
-      loginPage: true,
-      verCode: '',
-      ruleForm: {
-        phone: '',
-        verCode: '',
-        userPwd: '',
-        errMsg: ''
-      },
       registered: {
         phone: '',
         verCode: '',
-        userPwd: '',
-        userPwd2: '',
-        errMsg: ''
+        pass: '',
+        pass2: ''
       },
-      agreement: false,
-      registxt: '注册',
-      vercodetxt: '发送验证码',
-      statusKey: '',
+      rules: {
+        phone: [
+          {validator: vPhone, trigger: 'change,blur'}
+        ],
+        verCode: [
+          {validator: vVerCode, trigger: 'blur'}
+        ],
+        pass: [
+          {validator: vPass, trigger: 'change,blur'}
+        ],
+        pass2: [
+          {validator: vPass2, trigger: 'change,blur'}
+        ]
+      },
+      verPhone: false,
+      verVerCode: false,
+      verPass: false,
+      verPass2: false,
+      existPhone: false,
       sendAuthCode: true,
-      authTime: 0,
-      authStr: '重新发送 60'
-    }
-  },
-  computed: {
-    count () {
-      return this.$store.state.login
+      authTime: 60,
+      verCode: '',
+      codePhone: '',
+      agreement: false,
+      registerTxt: '注册',
+
+      cart: []
     }
   },
   methods: {
+    sendVerCode () {
+      let phone = this.registered.phone
+      this.sendAuthCode = false
+      let authTimetimer = setInterval(() => {
+        this.authTime--
+        if (this.authTime <= 0) {
+          this.sendAuthCode = true
+          clearInterval(authTimetimer)
+        }
+      }, 1000)
+      vercode({
+        phone
+      }).then(res => {
+        console.log(res.result)
+        this.codePhone = phone
+        this.verCode = res.result
+      })
+    },
+    regist () {
+      let phone = this.registered.phone
+      let password = this.registered.pass
+      this.registerTxt = '注册中...'
+      register({
+        phone,
+        password
+      }).then(res => {
+        if (res.status === 200) {
+          this.messageSuccess()
+          this.toLogin()
+        } else {
+          this.message(res.message)
+          this.registerTxt = '注册'
+        }
+      })
+    },
     open (t, m) {
       this.$notify.info({
         title: t,
@@ -120,111 +198,13 @@ export default {
     },
     messageSuccess () {
       this.$message({
-        message: '恭喜您，注册成功！赶紧登录体验吧',
+        message: '恭喜您，注册成功！赶紧区登录体验吧',
         type: 'success'
-      })
-    },
-    message (m) {
-      this.$message.error({
-        message: m
       })
     },
     toLogin () {
       this.$router.push({
         path: '/login'
-      })
-    },
-    regist () {
-      let phone = this.registered.phone
-      let verCode = this.registered.verCode
-      let password = this.registered.userPwd
-      let userPwd2 = this.registered.userPwd2
-      this.registxt = '注册中...'
-      const phoneReg = /^1[3|4|5|7|8][0-9]\d{8}$/
-      const passReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
-      if (!phoneReg.test(phone)) {
-        this.message('请填写正确的手机号')
-        this.registxt = '注册'
-        return false
-      }
-      checkPhone({
-        phone
-      }).then(res => {
-        if (res.result === true) {
-          console.log('此手机号已注册')
-          this.message('此手机号已注册')
-          this.registxt = '注册'
-          return false
-        } else {
-          if (verCode !== this.verCode) {
-            this.message('验证码输入错误！')
-            this.registxt = '注册'
-            return false
-          }
-          if (!passReg.test(password)) {
-            this.message('请输入正确的密码格式')
-            this.registxt = '注册'
-            return false
-          }
-          if (userPwd2 !== password) {
-            this.message('两次输入的密码不相同!')
-            this.registxt = '注册'
-            return false
-          }
-          if (!this.agreement) {
-            this.message('您未勾选同意我们的相关注册协议!')
-            this.registxt = '注册'
-            return false
-          }
-          console.log(phone)
-          register({
-            phone,
-            password
-          }).then(res => {
-            if (res.status === 200) {
-              this.messageSuccess()
-              this.toLogin()
-            } else {
-              this.message(res.message)
-              this.regist = '注册'
-              return false
-            }
-          })
-        }
-      })
-    },
-    getAutoCode: function () {
-      const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-      let phone = this.registered.phone
-      if (!reg.test(phone)) {
-        this.message('请填写正确的手机号')
-        return false
-      }
-      checkPhone({
-        phone
-      }).then(res => {
-        console.log(res.result)
-        if (res.result === true) {
-          this.message('此手机号已注册')
-          return false
-        } else {
-          this.sendAuthCode = false
-          this.authTime = 60
-          let authTimetimer = setInterval(() => {
-            this.authTime--
-            this.authStr = '重新发送' + this.authTime
-            if (this.authTime <= 0) {
-              this.sendAuthCode = true
-              clearInterval(authTimetimer)
-            }
-          }, 1000)
-          vercode({
-            phone
-          }).then(res => {
-            console.log(res.result)
-            this.verCode = res.result
-          })
-        }
       })
     }
   },
@@ -234,15 +214,13 @@ export default {
   }
 }
 </script>
-<style lang="scss" rel="stylesheet/scss" scoped>
-
+<style lang="scss" rel="stylesheet/scss">
 * {
   box-sizing: content-box;
 }
 
-
-.sendVercode {
-  margin-left: 5px;
+.register-form .el-input__inner {
+  height: 50px;
 }
 
 .login {
@@ -364,26 +342,6 @@ export default {
     left: 50%;
     top: 50%;
   }
-  .dialog .title h4 {
-    border-bottom: #d1d1d1 solid 1px;
-    box-shadow: 0 2px 6px #d1d1d1;
-    color: #666;
-    font-size: 20px;
-    height: 61px;
-    line-height: 61px;
-    padding: 0 0 0 35px;
-  }
-  .common-form li {
-    clear: both;
-    margin-bottom: 15px;
-    position: relative;
-  }
-  .auto-login {
-    position: absolute;
-    top: 0px;
-    left: 2px;
-    color: #999;
-  }
   .register {
     padding: 1px 10px 0;
     border-right: 1px solid #ccc;
@@ -391,6 +349,7 @@ export default {
   .border {
     margin-top: 10px;
     border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
   }
   .other {
     margin: 20px 5px 0 0;
@@ -425,11 +384,4 @@ export default {
     line-height: 60px;
   }
 }
-
-#wait {
-  text-align: left;
-  color: #999;
-  margin: 0;
-}
-
 </style>

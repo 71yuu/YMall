@@ -1,4 +1,4 @@
-package com.yuu.ymall.web.admin.commons.redis;
+package com.yuu.ymall.commons.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -8,13 +8,14 @@ import org.springframework.util.CollectionUtils;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Classname RedisCacheManager
- * @Date 2019/5/19 14:02
- * @Created by Yuu
+ * 缓存管理
+ *
+ * @author by Yuu
+ * @classname RegisCacheManager
+ * @date 2019/6/26 8:23
  */
 @Component
 public class RedisCacheManager {
-
     @Autowired
     private RedisTemplate redisTemplate;
 

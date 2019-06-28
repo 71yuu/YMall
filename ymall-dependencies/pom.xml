@@ -351,6 +351,7 @@
                 <version>${aliyun-sms.version}</version>
             </dependency>
             <!-- AliYun SMS End-->
+
         </dependencies>
     </dependencyManagement>
 

@@ -1,11 +1,11 @@
 import http from './public'
 // 登陆
-export const userLogin = (params) => {
+export const memberLogin = (params) => {
   return http.fetchPost('/api/member/login', params)
 }
 // 退出登陆
-export const loginOut = (params) => {
-  return http.fetchGet('/api/member/loginOut', params)
+export const logout = (params) => {
+  return http.fetchGet('/api/member/logout', params)
 }
 // 用户信息
 export const userInfo = (params) => {
@@ -53,5 +53,17 @@ export const vercode = (params) => {
 }
 // 验证手机号是否存在
 export const checkPhone = (params) => {
-  return http.fetchGet('/api/member/checkphone/' + params.phone, null)
+  return http.fetchGet('/api/member/checkphone/' + params.value, null)
+}
+// 验证手机号或邮箱是存在
+export const checkAccount = (params) => {
+  return http.fetchGet('/api/member/checkAccount', params)
+}
+// 发送手机或邮箱验证码
+export const forgetVerCode = (params) => {
+  return http.fetchGet('/api/member/forgetVerCode', params)
+}
+// 修改密码
+export const updatePassword = (params) => {
+  return http.fetchPost('/api/member/updatePassword', params)
 }

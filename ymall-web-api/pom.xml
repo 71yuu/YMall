@@ -133,6 +133,25 @@
         </dependency>
         <!-- Hutool End -->
 
+        <!-- Mail Begin -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${mail.version}</version>
+        </dependency>
+        <!-- Mail End -->
+
+        <!-- Thymeleaf Begin -->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring4</artifactId>
+        </dependency>
+        <!-- Thymeleaf End -->
     </dependencies>
 
     <build>

@@ -97,7 +97,7 @@
       initGitment () {
         const gitment = new Gitment({
           id: '1',
-          owner: 'Exrick',
+          owner: 'yuu',
           repo: 'YMall-comments',
           oauth: {
             client_id: 'd52e48ce99ee4e8fb412',

@@ -1,6 +1,6 @@
 <template>
   <div class="w" style="padding-bottom: 100px;">
-    <y-shelf title="XPay收银台 收款方: Exrick">
+    <y-shelf title="XPay收银台 收款方: yuu">
       <div slot="content">
         <div class="box-inner order-info">
           <p class="payment-detail">扫一扫付款（元）</p>

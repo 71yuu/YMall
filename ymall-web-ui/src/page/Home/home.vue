@@ -1,55 +1,55 @@
 <template>
   <div class="home">
-    
-  <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;" v-if="!error">
-    <div class="banner" >
-      <div class="bg" ref="bg"
-        @mouseover="bgOver($refs.bg)" @mousemove="bgMove($refs.bg,$event)" @mouseout="bgOut($refs.bg)">
-        <transition name="fade">
-          <div v-for="(item, i) in banner" v-if="i===mark" :key="i" style="position:absolute" @click="linkTo(item)" @mouseover="stopTimer" @mouseout="startTimer">
-            <img v-if="item.picUrl" class="img1" :src="item.picUrl"/>
-            <img v-if="item.picUrl2"  class="img2 a" :src="item.picUrl2"/>
-            <img v-if="item.picUrl3"  class="img3 b" :src="item.picUrl3"/>
-          </div>
-        </transition>
-      </div>
-      <div class="page">
-        <ul class="dots">
-          <li class="dot-active" v-for="(item, i) in banner" :class="{ 'dot':i!=mark }" :key="i" @click="change(i)"></li>
-        </ul>
-      </div>
-    </div>
 
-    <div v-for="(item,i) in home" :key="i">
-
-      <div class="activity-panel" v-if="item.type === 1">
-        <ul class="box">
-          <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
-            <img class="i" :src="iitem.picUrl">
-            <a class="cover-link"></a>
-          </li>
-        </ul>
-      </div>
-
-      <section class="w mt30 clearfix" v-if="item.type === 2">
-        <y-shelf :title="item.name">
-          <div slot="content" class="hot">
-            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j"></mall-goods>
-          </div>
-        </y-shelf>
-      </section>
-
-      <section class="w mt30 clearfix" v-if="item.type === 3">
-        <y-shelf :title="item.name">
-          <div slot="content" class="floors" >
-            <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2 || iitem.type === 3" @click="linkTo(iitem)">
-              <img v-lazy="iitem.picUrl">
-              <a class="cover-link"></a>
+    <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;" v-if="!error">
+      <div class="banner" >
+        <div class="bg" ref="bg"
+             @mouseover="bgOver($refs.bg)" @mousemove="bgMove($refs.bg,$event)" @mouseout="bgOut($refs.bg)">
+          <transition name="fade">
+            <div v-for="(item, i) in banner" v-if="i===mark" :key="i" style="position:absolute" @click="linkTo(item)" @mouseover="stopTimer" @mouseout="startTimer">
+              <img v-if="item.picUrl" class="img1" :src="item.picUrl"/>
+              <img v-if="item.picUrl2"  class="img2 a" :src="item.picUrl2"/>
+              <img v-if="item.picUrl3"  class="img3 b" :src="item.picUrl3"/>
             </div>
-            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j+'key'" v-if="iitem.type != 2 && iitem.type != 3"></mall-goods>
-          </div>
-        </y-shelf>
-      </section>
+          </transition>
+        </div>
+        <div class="page">
+          <ul class="dots">
+            <li class="dot-active" v-for="(item, i) in banner" :class="{ 'dot':i!=mark }" :key="i" @click="change(i)"></li>
+          </ul>
+        </div>
+      </div>
+
+      <div v-for="(item,i) in home" :key="i">
+
+        <div class="activity-panel" v-if="item.type === 1">
+          <ul class="box">
+            <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
+              <img class="i" :src="iitem.picUrl">
+              <a class="cover-link"></a>
+            </li>
+          </ul>
+        </div>
+
+        <section class="w mt30 clearfix" v-if="item.type === 2">
+          <y-shelf :title="item.name">
+            <div slot="content" class="hot">
+              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j"></mall-goods>
+            </div>
+          </y-shelf>
+        </section>
+
+        <section class="w mt30 clearfix" v-if="item.type === 3">
+          <y-shelf :title="item.name">
+            <div slot="content" class="floors" >
+              <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2 || iitem.type === 3" @click="linkTo(iitem)">
+                <img v-lazy="iitem.picUrl">
+                <a class="cover-link"></a>
+              </div>
+              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j+'key'" v-if="iitem.type != 2 && iitem.type != 3"></mall-goods>
+            </div>
+          </y-shelf>
+        </section>
 
       </div>
     </div>
@@ -94,7 +94,7 @@
         home: [],
         loading: true,
         notify: '1',
-        dialogVisible: false,
+        dialogVisible: false,z
         timer: ''
       }
     },
@@ -220,27 +220,27 @@
     opacity: 0;
   }
 
-  .page { 
-    position: absolute; 
+  .page {
+    position: absolute;
     width: 100%;
     top: 470px;
-    z-index: 30; 
+    z-index: 30;
     .dots {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      .dot-active { 
-        display: inline-block; 
-        width: 15px; 
-        height: 15px; 
-        background-color: whitesmoke; 
-        border-radius: 8px; 
-        margin-right: 10px; 
-        cursor: pointer; 
+      .dot-active {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background-color: whitesmoke;
+        border-radius: 8px;
+        margin-right: 10px;
+        cursor: pointer;
       }
-      .dot { 
-        opacity: 0.2; 
+      .dot {
+        opacity: 0.2;
       }
     }
   }
@@ -477,7 +477,7 @@
     align-items: center;
     .imgbanner {
       width: 50%;
-      height: 430px; 
+      height: 430px;
       .cover-link {
         cursor: pointer;
         display: block;
@@ -485,7 +485,7 @@
         top: 60px;
         left: 0;
         width: 50%;
-        height: 430px; 
+        height: 430px;
         z-index: 4;
         background: url(data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEHAAEALAAAAAABAAEAAAICTAEAOw==) repeat;
       }

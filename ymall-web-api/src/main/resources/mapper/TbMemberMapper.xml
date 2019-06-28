@@ -22,13 +22,13 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_member (username, password, phone, 
-      email, sex, state, 
-      file, description, created, 
+    insert into tb_member (username, password, phone,
+      email, sex, state,
+      file, description, created,
       updated)
-    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
-      #{file,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+      #{email,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
+      #{file,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP},
       #{updated,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbMember" >
@@ -45,14 +45,22 @@
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select id, username, password, phone, email, sex, state, file, description, created, 
+
+    <!-- 会员根据手机号或邮箱修改密码 -->
+    <update id="updatePassword">
+      update tb_member
+      set password = #{password}
+      where phone = #{account} OR email = #{account}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, username, password, phone, email, sex, state, file, description, created,
     updated
     from tb_member
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, username, password, phone, email, sex, state, file, description, created, 
+    select id, username, password, phone, email, sex, state, file, description, created,
     updated
     from tb_member
   </select>
@@ -84,4 +92,18 @@
         insert into tb_member(phone, password, state, created, updated)
         values (#{phone}, #{password}, #{state}, #{created}, #{updated})
     </insert>
+
+    <!-- 根据邮箱查询会员 -->
+    <select id="selectByEmail" resultMap="BaseResultMap">
+      select <include refid="tbMemberBaseColumns"/>
+      from tb_member as a
+      where email = #{email}
+    </select>
+
+    <!-- 根据手机号或邮箱查询会员 -->
+    <select id="selectByPhoneOrEmail" resultType="com.yuu.ymall.domain.TbMember">
+        select <include refid="tbMemberBaseColumns"/>
+        from tb_member as a
+        where phone = #{account} or email = #{account}
+    </select>
 </mapper>

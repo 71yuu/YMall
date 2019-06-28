@@ -1,4 +1,4 @@
-package com.yuu.ymall.web.admin.commons.utils;
+package com.yuu.ymall.commons.geetest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,8 +13,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 /**
- * Java SDK
+ * 极验 SDK
  *
+ * @author by Yuu
+ * @classname GeetestLib
+ * @date 2019/6/26 8:17
  */
 public class GeetestLib {
 

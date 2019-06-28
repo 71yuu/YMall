@@ -13,25 +13,25 @@
         <ul class="c0">
           <h3 class="c1">服务支持</h3>
           <ul>
-            <li class="c2"><a class="c3" target="_blank" href="https://github.com/Exrick">官方开源</a></li>
-            <li class="c2"><a class="c3" target="_blank" href="https://github.com/Exrick/YMall-front">项目前端</a></li>
-            <li class="c2"><a class="c3" target="_blank" href="https://github.com/Exrick/YMall">项目后端</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="https://github.com/yuu">官方开源</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="https://github.com/yuu/YMall-front">项目前端</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="https://github.com/yuu/YMall">项目后端</a></li>
           </ul>
         </ul>
         <ul class="c0">
           <h3 class="c1">自助服务</h3>
           <ul>
-            <li class="c2"><a class="c3" target="_blank" href="http://blog.exrick.cn">个人博客</a></li>
-            <li class="c2"><a class="c3" target="_blank" href="http://blog.exrick.cn/intro/">个人简介</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="http://blog.yuu.cn">个人博客</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="http://blog.yuu.cn/intro/">个人简介</a></li>
             <li class="c2"><a class="c3" target="_blank" href="https://www.bilibili.com/video/av15860053/">个人视频</a></li>
           </ul>
         </ul>
         <ul class="c0">
           <h3 class="c1">其他项目</h3>
           <ul>
-            <li class="c2"><a class="c3" target="_blank" href="http://xpay.exrick.cn">XPay支付系统</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="http://xpay.yuu.cn">XPay支付系统</a></li>
             <li class="c2"><a class="c3" target="_blank" href="http://shouji.baidu.com/software/11783429.html">数据共享</a></li>
-            <li class="c2"><a class="c3" target="_blank" href="https://github.com/Exrick">待开发...</a></li>
+            <li class="c2"><a class="c3" target="_blank" href="https://github.com/yuu">待开发...</a></li>
           </ul>
         </ul>
         <ul class="c0">
@@ -61,11 +61,11 @@
       </div>
 
       <div class="copyright">
-        <h4 class="content-c2">Copyright ©2017, exrick.cn Co., Ltd. All Rights Reserved.本网站设计内容大部分属锤子科技</h4>
+        <h4 class="content-c2">Copyright ©2017, yuu.cn Co., Ltd. All Rights Reserved.本网站设计内容大部分属锤子科技</h4>
         <ul class="privacy">
           <li class="content-c1"><a class="content-c0" @click="open1">法律声明</a></li>
           <li class="content-c1"><a class="content-c0" @click="open2">隐私条款</a></li>
-          <li class="content-c1"><a class="content-c0" target="_blank" href="https://github.com/Exrick">开发者中心</a></li>
+          <li class="content-c1"><a class="content-c0" target="_blank" href="https://github.com/yuu">开发者中心</a></li>
         </ul>
       </div>
       <div class="cop">

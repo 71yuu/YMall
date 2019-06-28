@@ -1,9 +1,9 @@
 package com.yuu.ymall.web.admin.web.controller;
 
 import com.yuu.ymall.commons.dto.BaseResult;
+import com.yuu.ymall.commons.geetest.GeetestLib;
 import com.yuu.ymall.domain.TbUser;
 import com.yuu.ymall.web.admin.commons.dto.DataTablesResult;
-import com.yuu.ymall.web.admin.commons.utils.GeetestLib;
 import com.yuu.ymall.web.admin.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

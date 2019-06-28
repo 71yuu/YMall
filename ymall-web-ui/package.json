@@ -15,6 +15,7 @@
     "element-ui": "^1.4.13",
     "geetest3": "^1.0.0",
     "gitment": "0.0.3",
+    "v-vuerify-next": "^0.2.0",
     "vue": "^2.5.16",
     "vue-axios": "^2.1.4",
     "vue-content-placeholders": "^0.2.1",
@@ -23,6 +24,7 @@
     "vue-infinite-scroll": "^2.0.2",
     "vue-lazyload": "^1.2.2",
     "vue-router": "^2.8.1",
+    "vuerify": "^0.4.0",
     "vuex": "^2.5.0"
   },
   "devDependencies": {
