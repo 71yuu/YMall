@@ -20,12 +20,12 @@
         </div>
       </div>
 
-      <div v-for="(item,i) in home" :key="i">
+      <div v-for="(item, i) in home" :key="i">
 
         <div class="activity-panel" v-if="item.type === 1">
           <ul class="box">
-            <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
-              <img class="i" :src="iitem.picUrl">
+            <li class="content" v-for="(iitem, j) in item.panelContentDtos" :key="j" @click="linkTo(iitem)">
+              <img :src="iitem.picUrl" class="i"/>
               <a class="cover-link"></a>
             </li>
           </ul>
@@ -34,7 +34,7 @@
         <section class="w mt30 clearfix" v-if="item.type === 2">
           <y-shelf :title="item.name">
             <div slot="content" class="hot">
-              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j"></mall-goods>
+              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContentDtos" :key="j"></mall-goods>
             </div>
           </y-shelf>
         </section>
@@ -42,15 +42,14 @@
         <section class="w mt30 clearfix" v-if="item.type === 3">
           <y-shelf :title="item.name">
             <div slot="content" class="floors" >
-              <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2 || iitem.type === 3" @click="linkTo(iitem)">
+              <div class="imgbanner" v-for="(iitem,j) in item.panelContentDtos" :key="j" v-if="iitem.type === 2 || iitem.type === 3" @click="linkTo(iitem)">
                 <img v-lazy="iitem.picUrl">
                 <a class="cover-link"></a>
               </div>
-              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j+'key'" v-if="iitem.type != 2 && iitem.type != 3"></mall-goods>
+              <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContentDtos" :key="j+'key'" v-if="iitem.type != 2 && iitem.type != 3"></mall-goods>
             </div>
           </y-shelf>
         </section>
-
       </div>
     </div>
 
@@ -60,42 +59,35 @@
         <br> 抱歉！出错了...
       </div>
     </div>
-
-    <el-dialog
-      title="通知"
-      :visible.sync="dialogVisible"
-      width="30%"
-      style="width:70%;margin:0 auto">
-      <span>【捐赠获取文档或单体版】在本商城登录后随意测试商品成功支付后，文档或单体版源码将自动发至您在支付页面填写的邮箱中</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">知道了</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
   import { productHome } from '/api/index.js'
   import YShelf from '/components/shelf'
-  import product from '/components/product'
   import mallGoods from '/components/mallGoods'
-  import { setStore, getStore } from '/utils/storage.js'
+
   export default {
     data () {
       return {
+        // 默认加载中...
+        loading: true,
+        // 出现错误时显示
         error: false,
+        // 轮播图
         banner: [],
+        // 记录第几张轮播图
         mark: 0,
+        // 3d
         bgOpt: {
           px: 0,
           py: 0,
           w: 0,
           h: 0
         },
-        home: [],
-        loading: true,
-        notify: '1',
-        dialogVisible: false,
-        timer: ''
+        // 轮播时间
+        timer: '',
+        // 板块
+        home: []
       }
     },
     methods: {
@@ -118,20 +110,6 @@
       },
       stopTimer () {
         clearInterval(this.timer)
-      },
-      linkTo (item) {
-        if (item.type === 0 || item.type === 2) {
-          // 关联商品
-          this.$router.push({
-            path: '/goodsDetails',
-            query: {
-              productId: item.productId
-            }
-          })
-        } else {
-          // 完整链接
-          window.location.href = item.fullUrl
-        }
       },
       bgOver (e) {
         this.bgOpt.px = e.offsetLeft
@@ -161,17 +139,24 @@
         dom.style['transform'] = 'rotateY(0deg) rotateX(0deg)'
         dom.style.transform = 'rotateY(0deg) rotateX(0deg)'
       },
-      showNotify () {
-        var value = getStore('notify')
-        if (this.notify !== value) {
-          this.dialogVisible = true
-          setStore('notify', this.notify)
+      linkTo (item) {
+        if (item.type === 0 || item.type === 2) {
+          // 关联商品
+          this.$router.push({
+            path: '/goodsDetails',
+            query: {
+              productId: item.productId
+            }
+          })
+        } else {
+          // 其他链接
+          window.location.href = item.fullUrl
         }
       }
     },
     mounted () {
       productHome().then(res => {
-        if (res.success === false) {
+        if (res.status === 500) {
           this.error = true
           return
         }
@@ -179,19 +164,18 @@
         this.home = data
         this.loading = false
         for (let i = 0; i < data.length; i++) {
+          // type:0 轮播图 type:1 其他板块
           if (data[i].type === 0) {
-            this.banner = data[i].panelContents
+            this.banner = data[i].panelContentDtos
           }
         }
       })
-      this.showNotify()
     },
     created () {
       this.play()
     },
     components: {
       YShelf,
-      product,
       mallGoods
     }
   }

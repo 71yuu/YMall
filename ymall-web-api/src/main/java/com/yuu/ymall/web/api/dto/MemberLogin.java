@@ -1,4 +1,4 @@
-package com.yuu.ymall.web.api.common.dto;
+package com.yuu.ymall.web.api.dto;
 
 import java.io.Serializable;
 

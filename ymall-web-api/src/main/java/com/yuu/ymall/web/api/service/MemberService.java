@@ -2,7 +2,7 @@ package com.yuu.ymall.web.api.service;
 
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.domain.TbMember;
-import com.yuu.ymall.web.api.common.dto.MemberLogin;
+import com.yuu.ymall.web.api.dto.MemberLogin;
 
 import javax.servlet.http.HttpSession;
 

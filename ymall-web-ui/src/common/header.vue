@@ -13,22 +13,17 @@
               <el-autocomplete
                 placeholder="请输入商品信息"
                 icon="search"
-                v-model="input"
+                v-model="key"
                 minlength=1
                 maxlength=100
                 :fetch-suggestions="querySearchAsync"
-                @select="handleSelect"
-                :on-icon-click="handleIconClick"
-                @keydown.enter.native="handleIconClick">
+                @select="handleSearch"
+                :on-icon-click="handleSearch"
+                @keydown.enter.native="handleSearch">
               </el-autocomplete>
               <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
-              <router-link to="/thanks"><a @click="changePage(4)">捐赠</a></router-link>
-              <!-- <router-link to="/">Smartisan M1 / M1L</router-link>
-              <router-link to="/">Smartisan OS</router-link>
-              <router-link to="/">欢喜云</router-link>
-              <router-link to="/">应用下载</router-link>
-              <router-link to="/">官方论坛</router-link> -->
             </div>
+
             <div class="nav-aside" ref="aside" :class="{fixed:st}">
               <div class="user pr">
                 <router-link to="/user">个人中心</router-link>
@@ -70,7 +65,8 @@
                    ref="positionMsg">
                 <router-link to="/cart"></router-link>
                 <span class="cart-num">
-                  <i class="num" :class="{no:totalNum <= 0,move_in_cart:receiveInCart}">{{totalNum}}</i></span>
+                  <i class="num" :class="{no:totalNum <= 0,move_in_cart:receiveInCart}">{{totalNum}}</i>
+                </span>
                 <!--购物车显示块-->
                 <div class="nav-user-wrapper pa active" v-show="showCart">
                   <div class="nav-user-list">
@@ -125,163 +121,68 @@
       </header>
       <slot name="nav">
         <div class="nav-sub" :class="{fixed:st}">
-          <div class="nav-sub-bg"></div>
           <div class="nav-sub-wrapper" :class="{fixed:st}">
-            <div class="w">
-              <ul class="nav-list2">
-                <li>
-                  <router-link to="/"><a @click="changGoods(-1)" :class="{active:choosePage===-1}">首页</a></router-link>
-                </li>
-                <li>
-                  <a @click="changGoods(-2)" :class="{active:choosePage===-2}">全部</a>
-                </li>
-                <li v-for="(item,i) in navList" :key="i">
-                  <a @click="changGoods(i, item)" :class="{active:i===choosePage}">{{item.picUrl}}</a>
-                </li>
-              </ul>
-              <div></div>
+              <el-menu style="background-color: #f7f7f7; width: 100%; " mode="horizontal" @select="handleSelect">
+                <el-menu-item index="1"><a @click="toHome">首页</a></el-menu-item>
+                <el-submenu v-for="(cate,i) in cateList" :index="i+1 + ''" :key="i" >
+                  <template slot="title"><span @click="toCategory(cate.id)">{{cate.name}}</span></template>
+                  <el-menu-item :index="i + '-' + j" v-for="(cateSon,j) in cate.catesons" @click="toCategory(cateSon.id)" :key="j">{{cateSon.name}}</el-menu-item>
+                </el-submenu>
+              </el-menu>
             </div>
-          </div>
         </div>
       </slot>
+      <!--<div class="nav">
+        <el-menu class="el-menu" mode="horizontal" @select="handleSelect">
+          <el-menu-item index="1"><a @click="toHome">首页</a></el-menu-item>
+          <el-submenu v-for="(cate,i) in cateList" :index="i+1 + ''" :key="i" >
+            <template slot="title"><span @click="toCategory(cate.id)">{{cate.name}}</span></template>
+            <el-menu-item :index="i + '-' + j" v-for="(cateSon,j) in cate.catesons" @click="toCategory(cateSon.id)" :key="j">{{cateSon.name}}</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </div>-->
     </div>
   </div>
 </template>
 <script>
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
-  import { getCartList, cartDel, getQuickSearch } from '/api/goods'
-  import { logout, navList } from '/api/index'
-  import { setStore, getStore, removeStore } from '/utils/storage'
-  // import store from '../store/'
-  import 'element-ui/lib/theme-default/index.css'
-  export default{
+  import { getQuickSearch } from '../api/goods'
+  import { logout, cateList } from '../api/index'
+  import { getStore, removeStore } from '../utils/storage'
+
+  export default {
     data () {
       return {
-        user: {},
-        // 查询数据库的商品
         st: false,
-        // 头部购物车显示
-        cartShow: false,
-        positionL: 0,
-        positionT: 0,
-        timerCartShow: null, // 定时隐藏购物车
-        input: '',
+        // 导航栏文字样式改变
         choosePage: -1,
+        // 搜索框的值
+        key: '',
+        // 搜索联想的值
         searchResults: [],
-        timeout: null,
-        token: '',
-        navList: []
-      }
-    },
-    computed: {
-      ...mapState([
-        'cartList', 'login', 'receiveInCart', 'showCart', 'userInfo'
-      ]),
-      // 计算价格
-      totalPrice () {
-        var totalPrice = 0
-        this.cartList && this.cartList.forEach(item => {
-          totalPrice += (item.productNum * item.salePrice)
-        })
-        return totalPrice
-      },
-      // 计算数量
-      totalNum () {
-        var totalNum = 0
-        this.cartList && this.cartList.forEach(item => {
-          totalNum += (item.productNum)
-        })
-        return totalNum
+        option: 'xxxx',
+        activeIndex: '1',
+        cateList: [],
+        // 购物车位置
+        positionL: 0,
+        positionT: 0
       }
     },
     methods: {
-      ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART']),
-      handleIconClick (ev) {
-        if (this.$route.path === '/search') {
-          this.$router.push({
-            path: '/refreshsearch',
-            query: {
-              key: this.input
-            }
-          })
-        } else {
-          this.$router.push({
-            path: '/search',
-            query: {
-              key: this.input
-            }
-          })
-        }
-      },
-      showError (m) {
-        this.$message.error({
-          message: m
-        })
-      },
-      // 导航栏文字样式改变
+      ...mapMutations(['INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'EDIT_CART']),
+      // 更改导航栏文字样式
       changePage (v) {
-        this.choosePage = v
+        this.changePage = v
       },
-      changGoods (v, item) {
-        this.changePage(v)
-        if (v === -1) {
-          this.$router.push({
-            path: '/'
-          })
-        } else if (v === -2) {
-          this.$router.push({
-            path: '/refreshgoods'
-          })
-        } else {
-          // 站内跳转
-          if (item.type === 1) {
-            window.location.href = item.fullUrl
-          } else {
-            // 站外跳转
-            window.open(item.fullUrl)
-          }
-        }
-      },
-      // 搜索框提示
-      loadAll () {
-        let params = {
-          params: {
-            key: this.input
-          }
-        }
-        getQuickSearch(params).then(res => {
-          if (res === null || res === '') {
-            return
-          }
-          if (res.error) {
-            this.showError(res.error.reason)
-            return
-          }
-          var array = []
-          var maxSize = 5
-          if (res.hits.hits.length <= 5) {
-            maxSize = res.hits.hits.length
-          }
-          for (var i = 0; i < maxSize; i++) {
-            var obj = {}
-            obj.value = res.hits.hits[i]._source.productName
-            array.push(obj)
-          }
-          if (array.length !== 0) {
-            this.searchResults = array
-          } else {
-            this.searchResults = []
-          }
-        })
-      },
+      // 异步查询
       querySearchAsync (queryString, cb) {
-        if (this.input === undefined) {
+        if (this.key === undefined) {
           cb([])
           return
         }
-        this.input = this.input.trim()
-        if (this.input === '') {
+        this.key = this.key.trim()
+        if (this.key === '') {
           cb([])
           return
         } else {
@@ -291,34 +192,66 @@
           }, 300)
         }
       },
-      handleSelect (item) {
-        this.input = item.value
-      },
-      // 购物车显示
-      cartShowState (state) {
-        this.SHOW_CART({showCart: state})
-      },
-      // 登陆时获取一次购物车商品
-      _getCartList () {
-        getCartList({userId: getStore('userId')}).then(res => {
-          if (res.success === true) {
-            setStore('buyCart', res.result)
+      // 搜索框提示
+      loadAll () {
+        let params = {
+          params: {
+            key: this.key
           }
-          // 重新初始化一次本地数据
-        }).then(this.INIT_BUYCART)
+        }
+        getQuickSearch(params).then(res => {
+          if (res.status === 200) {
+            let array = []
+            for (let i = 0; i < res.result.length; i++) {
+              let obj = {}
+              obj.value = res.result[i].title
+              array.push(obj)
+            }
+            if (array.length !== 0) {
+              this.searchResults = array
+            } else {
+              this.searchResults = []
+            }
+          }
+        })
       },
-      // 删除商品
-      delGoods (productId) {
-        if (this.login) { // 登陆了
-          cartDel({userId: getStore('userId'), productId}).then(res => {
-            this.EDIT_CART({productId})
+      // 点击搜索事件
+      handleSearch (item) {
+        this.input = item.value
+        if (this.$route.path === '/search') {
+          this.$router.push({
+            path: '/refreshsearch',
+            query: {
+              key: this.key
+            }
           })
         } else {
-          this.EDIT_CART({productId})
+          this.$router.push({
+            path: '/search',
+            query: {
+              key: this.key
+            }
+          })
         }
       },
-      toCart () {
-        this.$router.push({path: '/cart'})
+      // 退出登录
+      _logout () {
+        let params = {
+          params: {
+            token: this.token
+          }
+        }
+        logout(params).then(res => {
+          removeStore('token')
+          removeStore('userId')
+          window.location.href = '/'
+        })
+      },
+      // 去首页
+      toHome () {
+        this.$router.push({
+          path: '/home'
+        })
       },
       // 控制顶部
       navFixed () {
@@ -334,71 +267,101 @@
           return
         }
       },
-      // 退出登录
-      _logout () {
-        console.log('test')
-        console.log(this.token)
-        let params = {
-          params: {
-            token: this.token
-          }
+      // 选择事件
+      handleSelect () {
+      },
+      // 显示购物车
+      cartShowState (state) {
+        this.SHOW_CART({showCart: state})
+      },
+      // 查看商品详细信息
+      openProduct (productId) {
+        window.open('//' + window.location.host + '/goodsDetails?productId=' + productId)
+      },
+      // 删除商品
+      delGoods (productId) {
+        if (this.login) {
+          // 登录了
+          // todo
+        } else {
+          this.EDIT_CART({productId})
         }
-        removeStore('token')
-        logout(params).then(res => {
+      },
+      // 路由到购物车组件
+      toCart () {
+        this.$router.push({
+          path: '/cart'
+        })
+      },
+      // 获取分类信息
+      _getCateList () {
+        cateList().then(res => {
           if (res.status === 200) {
-            removeStore('buyCart')
-            window.location.href = '/'
-          } else {
-            this.message('请求服务器失败，请检查您的网络信息')
-            return false
+            this.cateList = res.result
           }
         })
       },
-      // 通过路由改变导航文字样式
-      getPage () {
-        let path = this.$route.path
-        // let fullPath = this.$route.fullPath
-        if (path === '/' || path === '/home') {
-          this.changePage(-1)
-        } else if (path === '/goods') {
-          this.changePage(-2)
-        } else {
-          this.changePage(0)
-        }
-      },
-      openProduct (productId) {
-        window.open('//' + window.location.host + '/#/goodsDetails?productId=' + productId)
-      },
-      _getNavList () {
-        navList().then(res => {
-          this.navList = res.result
+      // 跳转到分类商品页
+      toCategory (id) {
+        this.$router.push({
+          path: '/goods',
+          query: {
+            category: id
+          }
         })
       }
     },
+    computed: {
+      ...mapState([
+        'cartList', 'login', 'receiveInCart', 'userInfo', 'showCart'
+      ]),
+      // 计算价格
+      totalPrice () {
+        let totalPrice = 0
+        this.cartList && this.cartList.forEach(item => {
+          totalPrice += (item.productNum * item.salePrice)
+        })
+        return totalPrice
+      },
+      // 计算数量
+      totalNum () {
+        let totalNum = 0
+        this.cartList && this.cartList.forEach(item => {
+          totalNum += (item.productNum)
+        })
+        return totalNum
+      }
+    },
     mounted () {
-      this._getNavList()
+      this._getCateList()
       this.token = getStore('token')
+      this.navFixed()
       if (this.login) {
-        this._getCartList()
+        // 登录获取购物车
+        // todo
       } else {
         this.INIT_BUYCART()
       }
-      this.navFixed()
-      this.getPage()
       window.addEventListener('scroll', this.navFixed)
       window.addEventListener('resize', this.navFixed)
       if (typeof (this.$route.query.key) !== undefined) {
-        this.input = this.$route.query.key
+        this.key = this.$route.query.key
       }
     },
     components: {
       YButton
     }
   }
+
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
   @import "../assets/style/theme";
   @import "../assets/style/mixin";
+
+  .el-menu {
+    padding-left: 17%;
+    height: 69px;
+  }
 
   .move_in_cart {
     animation: mymove .5s ease-in-out;
@@ -973,6 +936,7 @@
     height: 90px;
     background: #f7f7f7;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .04);
+    border-bottom: 1px solid #e1e1e1;
     &.fixed {
       position: fixed;
       z-index: 21;
@@ -985,7 +949,7 @@
       background-image: linear-gradient(#fff, #f1f1f1);
     }
     .nav-sub-wrapper {
-      padding: 31px 0;
+      padding: 14px 0;
       height: 90px;
       position: relative;
       &.fixed {
@@ -1026,7 +990,92 @@
         }
       }
       li {
-        position: relative;
+        float: left;
+        padding-left: 2px;
+        a {
+          display: block;
+          padding: 0 10px;
+          color: #666;
+          &.active {
+            font-weight: bold;
+          }
+        }
+        a:hover {
+          color: #5683EA;
+        }
+      }
+      li:before {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        top: 13px;
+        width: 2px;
+        height: 2px;
+        background: #bdbdbd;
+      }
+    }
+  }
+
+  .nav-sub-son {
+    position: relative;
+    z-index: 20;
+    height: 200px;
+    background: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .04);
+    border-bottom: 1px solid #e1e1e1;
+    &.fixed {
+      position: fixed;
+      z-index: 21;
+      height: 60px;
+      top: 0;
+      left: 0;
+      right: 0;
+      border-bottom: 1px solid #dadada;
+      background-image: -webkit-linear-gradient(#fff, #f1f1f1);
+      background-image: linear-gradient(#fff, #f1f1f1);
+    }
+    .nav-sub-wrapper {
+      padding: 14px 0;
+      height: 90px;
+      position: relative;
+      &.fixed {
+        padding: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+      &:after {
+        content: " ";
+        position: absolute;
+        top: 89px;
+        left: 50%;
+        margin-left: -610px;
+        width: 1220px;
+        background: #000;
+        height: 1px;
+        display: none;
+        opacity: 0;
+        -webkit-transition: opacity .3s ease-in;
+        transition: opacity .3s ease-in;
+      }
+    }
+    .w {
+      display: flex;
+      justify-content: space-between;
+    }
+    .nav-list2 {
+      height: 28px;
+      line-height: 28px;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      li:first-child {
+        padding-left: 0;
+        a {
+          padding-left: 10px;
+        }
+      }
+      li {
         float: left;
         padding-left: 2px;
         a {
@@ -1081,6 +1130,92 @@
     background: url("/static/images/cart-empty-new.png") no-repeat;
     background-size: cover;
 
+  }
+
+  .nav-goods-panel {
+    margin: 0 auto;
+    min-width: 1220px;
+    visibility: hidden;
+  }
+
+  .nav-goods-panel ul {
+    opacity: 0;
+  }
+
+  .nav-category-list {
+    display: flex;
+    justify-content: center;
+  }
+
+  .nav-category-list li {
+    padding-top: 28px;
+    min-width: 202px;
+  }
+
+  .nav-category-list li {
+    padding-top: 28px;
+    min-width: 202px;
+  }
+
+  .nav-category-item, .nav-category-item > span {
+    display: flex;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+
+  .nav-category-item, .nav-category-item > span {
+    display: flex;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+
+  .nav-category-item > span {
+    position: relative;
+    align-items: center;
+    -webkit-writing-mode: horizontal-tb;
+    writing-mode: horizontal-tb;
+    -webkit-writing-mode: lr-tb;
+    writing-mode: lr-tb;
+    margin: 0 0 10px 22px;
+    height: 40px;
+    white-space: nowrap;
+  }
+
+  .nav-category-item, .nav-category-item > span {
+    display: flex;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+
+  .nav-category-list img {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .nav-category-item > span span {
+    display: inline-block;
+    width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 700;
+    color: rgba(0,0,0,.8);
+  }
+
+  .nav-category-item a {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  a {
+    color: #5079d9;
+    cursor: pointer;
+    transition: all .15s ease-out;
+    text-decoration: none;
   }
 </style>
 

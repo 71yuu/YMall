@@ -17,6 +17,19 @@
     <description>General Tool Class</description>
 
     <dependencies>
+        <!-- Test Begin -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- Test End -->
+
         <!-- Commons Begin -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -120,6 +133,21 @@
             <artifactId>spring-data-redis</artifactId>
         </dependency>
         <!-- Redis End -->
+
+        <!-- Elasticsearch Begin-->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+        </dependency>
+        <!-- Elasticsearch End -->
     </dependencies>
 
 </project>

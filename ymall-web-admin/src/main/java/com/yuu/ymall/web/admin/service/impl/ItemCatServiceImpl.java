@@ -1,12 +1,14 @@
 package com.yuu.ymall.web.admin.service.impl;
 
 import com.yuu.ymall.commons.dto.BaseResult;
+import com.yuu.ymall.commons.redis.RedisCacheManager;
 import com.yuu.ymall.domain.TbItemCat;
 import com.yuu.ymall.web.admin.commons.dto.ZTreeNode;
 import com.yuu.ymall.web.admin.commons.utils.DtoUtil;
 import com.yuu.ymall.web.admin.mapper.TbItemCatMapper;
 import com.yuu.ymall.web.admin.service.ItemCatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,12 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     @Autowired
     private TbItemCatMapper tbItemCatMapper;
+
+    @Autowired
+    private RedisCacheManager redisCacheManager;
+
+    @Value("${HEADER_CATE}")
+    private String HEADER_CATE;
 
     @Override
     public List<ZTreeNode> getItemCatList(Long parentId, int type) {
@@ -69,6 +77,9 @@ public class ItemCatServiceImpl implements ItemCatService {
             tbItemCat.setCreated(new Date());
             result = tbItemCatMapper.insert(tbItemCat);
         }
+
+        // 删除 Redis 缓存
+        redisCacheManager.del(HEADER_CATE);
 
         if (result != 1) {
             return BaseResult.fail("保存商品分类失败");

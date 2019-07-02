@@ -22,13 +22,13 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_panel_content (panel_id, type, product_id, 
-      sort_order, full_url, pic_url, 
-      pic_url2, pic_url3, created, 
+    insert into tb_panel_content (panel_id, type, product_id,
+      sort_order, full_url, pic_url,
+      pic_url2, pic_url3, created,
       updated)
-    values (#{panelId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{productId,jdbcType=BIGINT}, 
-      #{sortOrder,jdbcType=INTEGER}, #{fullUrl,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
-      #{picUrl2,jdbcType=VARCHAR}, #{picUrl3,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+    values (#{panelId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{productId,jdbcType=BIGINT},
+      #{sortOrder,jdbcType=INTEGER}, #{fullUrl,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR},
+      #{picUrl2,jdbcType=VARCHAR}, #{picUrl3,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP},
       #{updated,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbPanelContent" >
@@ -46,14 +46,22 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, panel_id, type, product_id, sort_order, full_url, pic_url, pic_url2, pic_url3, 
+    select id, panel_id, type, product_id, sort_order, full_url, pic_url, pic_url2, pic_url3,
     created, updated
     from tb_panel_content
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, panel_id, type, product_id, sort_order, full_url, pic_url, pic_url2, pic_url3, 
+    select id, panel_id, type, product_id, sort_order, full_url, pic_url, pic_url2, pic_url3,
     created, updated
     from tb_panel_content
   </select>
+
+    <!-- 根据板块 id，获取板块内容 -->
+    <select id="selectContentByPid" resultType="com.yuu.ymall.web.api.dto.TbPanelContentDto">
+      select id, type, product_id, full_Url, pic_url, pic_url2, pic_url3
+      from tb_panel_content
+      where panel_id = #{id}
+      order by sort_order
+    </select>
 </mapper>

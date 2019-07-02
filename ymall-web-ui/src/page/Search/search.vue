@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    
+
     <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
       <div  class="img-item" v-if="!noResult" >
         <!--商品-->
@@ -174,7 +174,9 @@
     mounted () {
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
+      // console.log(this.$route.query.key)
       this.key = this.$route.query.key
+      console.log(this.key)
       this._getSearch()
       recommend().then(res => {
         let data = res.result

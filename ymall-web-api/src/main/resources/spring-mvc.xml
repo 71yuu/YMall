@@ -8,11 +8,8 @@
 
     <description>Spring MVC Configuration</description>
 
-    <!-- 启动对@AspectJ注解的支持 -->
-    <aop:aspectj-autoproxy/>
-
     <!-- 加载配置属性文件 -->
-    <context:property-placeholder ignore-unresolvable="true" location="classpath:ymall.properties"/>
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:*.properties"/>
 
     <!-- 使用 Annotation 自动注册 Bean,只扫描 @Controller -->
     <context:component-scan base-package="com.yuu.ymall.web.api" use-default-filters="false">

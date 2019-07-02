@@ -4,7 +4,7 @@ import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.commons.geetest.GeetestLib;
 import com.yuu.ymall.commons.redis.RedisCacheManager;
 import com.yuu.ymall.domain.TbMember;
-import com.yuu.ymall.web.api.common.dto.MemberLogin;
+import com.yuu.ymall.web.api.dto.MemberLogin;
 import com.yuu.ymall.web.api.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

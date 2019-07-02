@@ -44,7 +44,7 @@
 import YFooter from '/common/footer'
 import YButton from '/components/YButton'
 import {memberLogin, geetest} from '/api/index.js'
-import {setStore} from '../../utils/storage'
+import { setStore, getStore } from '../../utils/storage'
 require('../../../static/geetest/gt.js')
 var captcha
 export default {
@@ -88,7 +88,6 @@ export default {
       },
       verAccount: false,
       verPassword: false,
-      autoLogin: false,
       loginTxt: '登录'
     }
   },
@@ -132,8 +131,16 @@ export default {
         })
       })
     },
+    autoLogin () {
+      if (this.login.auto === true) {
+        setStore('autoLogin', 'true')
+      } else {
+        setStore('autoLogin', 'false')
+      }
+    },
     toLogin () {
       this.loginTxt = '登录中...'
+      this.autoLogin()
       let result = captcha.getValidate()
       if (!result) {
         this.message('请完成验证')
@@ -165,6 +172,15 @@ export default {
     }
   },
   mounted () {
+    let autoLogin = getStore('autoLogin')
+    console.log(autoLogin)
+    if (autoLogin === 'true') {
+      this.login.auto = true
+    } else if (autoLogin === 'false') {
+      this.login.auto = false
+    } else {
+      this.login.auto = true
+    }
     this.initGeetest()
   },
   components: {

@@ -19,11 +19,11 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_item_cat (parent_id, name, status, 
-      sort_order, is_parent, created, 
+    insert into tb_item_cat (parent_id, name, status,
+      sort_order, is_parent, created,
       updated)
-    values (#{parentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{sortOrder,jdbcType=INTEGER}, #{isParent,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP}, 
+    values (#{parentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+      #{sortOrder,jdbcType=INTEGER}, #{isParent,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP},
       #{updated,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbItemCat" >
@@ -42,8 +42,18 @@
     from tb_item_cat
     where id = #{id,jdbcType=BIGINT}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, parent_id, name, status, sort_order, is_parent, created, updated
+    select id, parent_id, name
     from tb_item_cat
+    where status != 0
+    order by sort_order
   </select>
+
+    <!-- 根据分类 id, 获取所有子分类 -->
+    <select id="selectTbCatByPid" resultType="tbItemCat">
+        select id, name
+        from tb_item_cat
+        where parent_id = #{id}
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.yuu.ymall.web.api.common.dto;
+package com.yuu.ymall.web.api.dto;
 
 /**
  * 邮箱随机验证码

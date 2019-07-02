@@ -41,6 +41,7 @@
         <joda-time.version>2.9.9</joda-time.version>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
+        <log4j-core.version>2.9.1</log4j-core.version>
         <lombok.version>1.16.18</lombok.version>
         <mail.version>1.5.0-b01</mail.version>
         <mybaits-spring.version>1.3.1</mybaits-spring.version>
@@ -51,11 +52,12 @@
         <qiniuyun.version>[7.2.0, 7.2.99]</qiniuyun.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <slf4j.version>1.8.0-alpha2</slf4j.version>
-        <spring.version>4.3.24.RELEASE</spring.version>
+        <spring.version>5.0.4.RELEASE</spring.version>
         <spring-data-redis.version>1.8.22.RELEASE</spring-data-redis.version>
+        <spring-data-elasticsearch.version>3.0.5.RELEASE</spring-data-elasticsearch.version>
         <shiro.version>1.4.0</shiro.version>
         <swegger2.version>2.9.2</swegger2.version>
-        <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
+        <thymeleaf.version>3.0.5.RELEASE</thymeleaf.version>
     </properties>
 
     <dependencyManagement>
@@ -72,6 +74,11 @@
                 <version>${spring.version}</version>
             </dependency>
             <!-- Test End -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
             <!-- joda-time Begin -->
             <dependency>
@@ -264,10 +271,27 @@
 
             <!-- Elasticsearch Begin-->
             <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>transport</artifactId>
                 <version>${elasticsearch.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-elasticsearch</artifactId>
+                <version>${spring-data-elasticsearch.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.elasticsearch.plugin</groupId>
+                        <artifactId>transport-netty3-clientn</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <!-- Elasticsearch End -->
 
             <!-- Shiro Begin -->

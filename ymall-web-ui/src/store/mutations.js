@@ -20,7 +20,7 @@ export default {
   // 加入购物车
   [ADD_CART] (state, {productId, salePrice, productName, productImg, productNum = 1}) {
     let cart = state.cartList // 购物车
-    let falg = true
+    let flag = true
     let goods = {
       productId,
       salePrice,
@@ -31,13 +31,13 @@ export default {
       cart.forEach(item => {
         if (item.productId === productId) {
           if (item.productNum >= 0) {
-            falg = false
+            flag = false
             item.productNum += productNum
           }
         }
       })
     }
-    if (!cart.length || falg) {
+    if (!cart.length || flag) {
       goods.productNum = productNum
       goods.checked = '1'
       cart.push(goods)

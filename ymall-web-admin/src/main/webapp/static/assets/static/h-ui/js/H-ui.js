@@ -182,7 +182,7 @@ function stopDefault(e) {
  * Requires jQuery v1.5 or later
  * Copyright (c) 2014 M. Alsup
  * Examples and documentation at: http://malsup.com/jquery/form/
- * Project repository: https://github.com/malsup/form
+ * Project repositories: https://github.com/malsup/form
  * Dual licensed under the MIT and GPL licenses.
  * https://github.com/malsup/form#copyright-and-license
  * ======================================================================== */
@@ -204,7 +204,7 @@ function stopDefault(e) {
 			Do not use both ajaxSubmit and ajaxForm on the same form.  These
 			functions are mutually exclusive.  Use ajaxSubmit if you want
 			to bind your own submit handler to the form.  For example,
-		
+
 			$(document).ready(function() {
 				$('#myForm').on('submit', function(e) {
 					e.preventDefault(); // <-- important
@@ -213,24 +213,24 @@ function stopDefault(e) {
 					});
 				});
 			});
-		
+
 			Use ajaxForm when you want the plugin to manage all the event binding
 			for you.  For example,
-		
+
 			$(document).ready(function() {
 				$('#myForm').ajaxForm({
 					target: '#output'
 				});
 			});
-		
+
 			You can also use ajaxForm with delegation (requires jQuery v1.7+), so the
 			form does not have to exist when you invoke ajaxForm:
-		
+
 			$('#myForm').ajaxForm({
 				delegation: true,
 				target: '#output'
 			});
-		
+
 			When using ajaxForm, the ajaxSubmit function will be invoked for you
 			at the appropriate time.
 		*/
@@ -242,7 +242,7 @@ function stopDefault(e) {
 	feature.formdata = window.FormData !== undefined;
 	var hasProp = !!$.fn.prop;
 	// attr2 uses prop when it can but checks the return type for
-	// an expected string.  this accounts for the case where a form 
+	// an expected string.  this accounts for the case where a form
 	// contains inputs with names like "action" or "method"; in those
 	// cases "prop" returns the element
 	$.fn.attr2 = function() {
@@ -2569,7 +2569,7 @@ function stopDefault(e) {
  * ======================================================================== */
 !function($) {
 	var
-	// 插件名 
+	// 插件名
 	plugin = 'emailsuggest',
 
 	// 默认参数配置
@@ -2626,7 +2626,7 @@ function stopDefault(e) {
 			width,
 			height,
 			style,
-			// 左右边框 
+			// 左右边框
 			borderWidth = 2;
 
 			elem = $(elem);
@@ -2710,7 +2710,7 @@ function stopDefault(e) {
 
 				elems.removeClass('active').eq(this.selectedIndex).addClass('active');
 				break;
-				// 向下 
+				// 向下
 			case 40:
 				this.selectedIndex++;
 
@@ -2773,7 +2773,7 @@ function stopDefault(e) {
  * Licensed under MIT license.
  * http://opensource.org/licenses/MIT
  * ========================================================================*/
-!function($) {	
+!function($) {
 	$.fn.Huispinner = function(options, callback) {
 		var defaults = {
 			value : 1,
@@ -4339,7 +4339,7 @@ function displaynavbar(obj){
 			className:"hover",
 		}
 		var options = $.extend(defaults, options);
-		this.each(function(){			
+		this.each(function(){
 			var that = $(this);
 			that.hover(function() {
 				that.addClass(options.className);
@@ -4367,11 +4367,11 @@ function displaynavbar(obj){
 			className:"focus",
 		}
 		var options = $.extend(defaults, options);
-		this.each(function(){			
+		this.each(function(){
 			var that = $(this);
 			that.focus(function() {
 				that.addClass(options.className).removeClass("inputError");
-			});			
+			});
 			that.blur(function() {
 				that.removeClass(options.className);
 			});
@@ -4428,7 +4428,7 @@ function displaynavbar(obj){
 			that.find(options.tabBar).eq(options.index).addClass(options.className);
 			that.find(options.tabCon).hide();
 			that.find(options.tabCon).eq(options.index).show();
-			
+
 			that.find(options.tabBar).on(options.tabEvent,function(){
 				that.find(options.tabBar).removeClass(options.className);
 				$(this).addClass(options.className);
@@ -4461,7 +4461,7 @@ function displaynavbar(obj){
 			speed:'first',
 		}
 		var options = $.extend(defaults, options);
-		this.each(function(){	
+		this.each(function(){
 			var that = $(this);
 			that.find(options.titCell).on(options.trigger,function(){
 				if ($(this).next().is(":visible")) {
@@ -4492,7 +4492,7 @@ function displaynavbar(obj){
 					}
 				}
 			});
-			
+
 		});
 	}
 } (window.jQuery);
@@ -4523,7 +4523,7 @@ function displaynavbar(obj){
 		}
 		this.each(function(){
 			var that = $(this);
-			var str = 
+			var str =
 			'<div class="Huitags-wraper">'+
 				'<div class="Huitags-editor cl"></div>'+
 				'<div class="Huitags-input-wraper">'+
@@ -4542,9 +4542,9 @@ function displaynavbar(obj){
 			var list = that.find(".Huitags-list");
 			var has = that.find(".Huitags-has");
 			var val = that.find(".Huitags-val");
-			
 
-			
+
+
 			if(options.tagsDefault){
 				var tagsDefaultLength = (options.tagsDefault).length;
 				for(var i = 0;i< tagsDefaultLength; i++){
@@ -4558,7 +4558,7 @@ function displaynavbar(obj){
 					$(this).remove();
 				});
 			}
-			
+
 			function gettagval(obj) {
 				var str = "";
 				var token = that.find(".Huitags-token");
@@ -4599,7 +4599,7 @@ function displaynavbar(obj){
 				}
 				return n;
 			}
-			
+
 			input.on("keydown",function(e){
 				var evt = e || window.event;
 				if (evt.keyCode == keyCodes.Enter || evt.keyCode == keyCodes.Enter2 || evt.keyCode == keyCodes.Spacebar) {
@@ -4614,7 +4614,7 @@ function displaynavbar(obj){
 					}
 				}
 			});
-			
+
 			input.on("change",function(){
 				var v1 = input.val();
 				var v2 = val.val();
@@ -4632,7 +4632,7 @@ function displaynavbar(obj){
 					}
 				}
 			});
-					
+
 			$(document).on("click",".Huitags-token",function(){
 				$(this).remove();
 				var str ="";
@@ -4646,7 +4646,7 @@ function displaynavbar(obj){
 					str = str.substring(0,str.length-1);
 					val.val(str);
 				}
-			});						
+			});
 			input.change();
 		});
 	}
@@ -4682,19 +4682,19 @@ function displaynavbar(obj){
 			minlength:0,
 			maxlength:140,
 			errorClass:"error",
-			exceed:true,			
+			exceed:true,
 		}
 		var options = $.extend(defaults, options);
-		this.each(function(){			
+		this.each(function(){
 			var that = $(this);
 			var v = that.val();
 			var l = v.length;
 			var str = '<p class="textarea-numberbar"><em class="textarea-length">'+l+'</em>/'+options.maxlength+'</p>';
 			that.parent().append(str);
-			
+
 			that.on("keyup",function(){
 				v = that.val();
-				l = v.length;				
+				l = v.length;
 				if (l > options.maxlength) {
 					if(options.exceed){
 						that.addClass(options.errorClass);
@@ -4702,7 +4702,7 @@ function displaynavbar(obj){
 						v = v.substring(0, options.maxlength);
 						that.val(v);
 						that.removeClass(options.errorClass);
-					}					
+					}
 				}
 				else if(l<options.minlength){
 					that.addClass(options.errorClass);
@@ -4710,8 +4710,8 @@ function displaynavbar(obj){
 					that.removeClass(options.errorClass);
 				}
 				that.parent().find(".textarea-length").text(v.length);
-			});		
-			
+			});
+
 		});
 	}
 } (window.jQuery);
@@ -4758,12 +4758,12 @@ function displaynavbar(obj){
 						} else {
 							tooltipRight = (winW - imgL) + "px";
 						}
-						
-						that.addClass(options.className);				
+
+						that.addClass(options.className);
 						if (bigImg == '') {
 							return false;
-						} else {						
-							var tooltip_keleyi_com = 
+						} else {
+							var tooltip_keleyi_com =
 							'<div id="preview-wraper" style="position: absolute;width:'+options.bigImgWidth+'px;height:auto;top:' + imgT + 'px;right:' + tooltipRight + ';left:' + tooltipLeft + '">'+
 								'<img src="'+smallImg+'" width="'+options.bigImgWidth+'">'+
 							'</div>';
@@ -4785,7 +4785,7 @@ function displaynavbar(obj){
 				}
 			);
 		});
-	}	
+	}
 } (window.jQuery);
 
 /* =======================================================================
@@ -4842,7 +4842,7 @@ function displaynavbar(obj){
  * ========================================================================*/
 !function($) {
 	//bottom 距离底部高度
-	$.Huitotop = function(bottom){		
+	$.Huitotop = function(bottom){
 		if(!bottom){
 			bottom = 60;
 		}
@@ -4865,9 +4865,9 @@ function displaynavbar(obj){
 			if (!window.XMLHttpRequest) {
 				$(".toTop").css("top", st + winh - 166);
 			}
-			
-		}		
-		$(window).on("scroll",backToTopFun);	
+
+		}
+		$(window).on("scroll",backToTopFun);
 	}
 } (window.jQuery);
 
@@ -5077,13 +5077,13 @@ jQuery(function($) {
 	  					} else {
 	  						console.log("incorrect argument, ignored.");
 	  						topMargin = 0;
-	  					}	
+	  					}
 	  				}
 	  			} else {
 	  				topMargin = 0;
 	  			}
 	  			menuSize = $('.'+itemClass).size();
-  			}			
+  			}
 			stickyHeight = parseInt($(this).height());
 			stickyMarginB = parseInt($(this).css('margin-bottom'));
 			currentMarginT = parseInt($(this).next().closest('div').css('margin-top'));
@@ -5150,12 +5150,12 @@ jQuery(function($) {
 !function($) {
 	'use strict';
 	// MODAL CLASS DEFINITION
-	// ======================	
+	// ======================
 	var Modal = function(element, options) {
 		this.options = options;
 		this.$body = $(document.body);
 		this.$element = $(element);
-		this.$backdrop = 
+		this.$backdrop =
 		this.isShown = null;
 		this.scrollbarWidth = 0;
 
@@ -5511,22 +5511,22 @@ $(function() {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 !function ($) {
-	'use strict';	
+	'use strict';
 	function transitionEnd() {
-		var el = document.createElement('bootstrap');	
+		var el = document.createElement('bootstrap');
 		var transEndEventNames = {
 			WebkitTransition : 'webkitTransitionEnd',
 			MozTransition    : 'transitionend',
 			OTransition      : 'oTransitionEnd otransitionend',
 			transition       : 'transitionend'
-		}	
+		}
 		for (var name in transEndEventNames) {
 			if (el.style[name] !== undefined) {
 				return { end: transEndEventNames[name] }
 			}
-		}		
+		}
 		return false // explicit for ie8 (  ._.)
-	}	
+	}
 	// http://blog.alexmaccaw.com/css-transitions
 	$.fn.emulateTransitionEnd = function (duration) {
 		var called = false;
@@ -5537,9 +5537,9 @@ $(function() {
 		}
 		setTimeout(callback, duration);
 		return this;
-	}	
+	}
 	$(function () {
-		$.support.transition = transitionEnd();	
+		$.support.transition = transitionEnd();
 		if (!$.support.transition) return;
 		$.event.special.bsTransitionEnd = {
 			bindType: $.support.transition.end,
@@ -5548,7 +5548,7 @@ $(function() {
 				if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments);
 			}
 		}
-	})	
+	})
 }(window.jQuery);
 
 /* =======================================================================
@@ -5644,7 +5644,7 @@ $(function() {
 	}
 
 	Tooltip.prototype.enter = function(obj) {
-		var self = obj instanceof this.constructor ? 
+		var self = obj instanceof this.constructor ?
 		obj: $(obj.currentTarget).data('bs.' + this.type);
 
 		if (self && self.$tip && self.$tip.is(':visible')) {
@@ -6008,7 +6008,7 @@ $(function() {
 function($) {
 	'use strict';
 	// POPOVER PUBLIC CLASS DEFINITION
-	// ===============================	
+	// ===============================
 	var Popover = function(element, options) {
 		this.init('popover', element, options)
 	}
@@ -6024,7 +6024,7 @@ function($) {
 	})
 
 	// NOTE: POPOVER EXTENDS tooltip.js
-	// ================================	
+	// ================================
 	Popover.prototype = $.extend({},$.fn.tooltip.Constructor.prototype);
 	Popover.prototype.constructor = Popover;
 	Popover.prototype.getDefaults = function() {
@@ -6068,7 +6068,7 @@ function($) {
 	}
 
 	// POPOVER PLUGIN DEFINITION
-	// =========================	
+	// =========================
 	function Plugin(option) {
 		return this.each(function() {
 			var $this = $(this);
@@ -6167,7 +6167,7 @@ $(function() {
 	$.fn.alert.Constructor = Alert;
 
 	// ALERT NO CONFLICT
-	// =================	
+	// =================
 	$.fn.alert.noConflict = function() {
 		$.fn.alert = old;
 		return this;
@@ -8672,7 +8672,7 @@ function($) {
 	Method show() does not set display css correctly and datetimepicker is not shown.
 	Changed to .css('display', 'block') solve the problem.
 	See https://github.com/vitalets/x-editable/issues/37
-	
+
 	In jquery 1.7.2+ everything works fine.
 	*/
 			//this.picker.find('>div').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).show();

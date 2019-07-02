@@ -12889,7 +12889,7 @@ module.exports = Schema.DEFAULT = new Schema({
 // It is not described in the YAML specification.
 //
 // This schema is based on standard YAML's Core schema and includes most of
-// extra types described at YAML tag repository. (http://yaml.org/type/)
+// extra types described at YAML tag repositories. (http://yaml.org/type/)
 
 
 'use strict';

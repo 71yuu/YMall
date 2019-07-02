@@ -42,17 +42,17 @@ public class TbPanelContent implements Serializable {
     private String fullUrl;
 
     /**
-     * 3d 轮播图备用1
+     * 图片地址
      */
     private String picUrl;
 
     /**
-     * 3d 轮播图备用2
+     * 3d 轮播图备用1
      */
     private String picUrl2;
 
     /**
-     * 3d 轮播图备用3
+     * 3d 轮播图备用2
      */
     private String picUrl3;
 

@@ -14,4 +14,12 @@ public interface TbItemCatMapper {
     List<TbItemCat> selectAll();
 
     int updateByPrimaryKey(TbItemCat record);
+
+    /**
+     * 根据分级分类，获取子分类
+     *
+     * @param id 分类 id
+     * @return
+     */
+    List<TbItemCat> selectTbCatByPid(Long id);
 }
