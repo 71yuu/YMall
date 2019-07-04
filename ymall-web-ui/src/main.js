@@ -5,6 +5,7 @@ import store from './store/'
 import VueLazyload from 'vue-lazyload'
 import infiniteScroll from 'vue-infinite-scroll'
 import VueCookie from 'vue-cookie'
+import PicZoom from 'vue-piczoom'
 import { userInfo } from './api'
 import { Button, Pagination, Checkbox, Col, Menu, Submenu, MenuItem, MenuItemGroup, Icon, Autocomplete, Loading, Message, Notification, Steps, Step, Form, FormItem, Table, TableColumn, Input, Dialog, Select, Option } from 'element-ui'
 import { getStore } from './utils/storage'
@@ -36,6 +37,7 @@ Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
 Vue.use(infiniteScroll)
 Vue.use(VueCookie)
+Vue.use(PicZoom)
 Vue.use(VueLazyload, {
   // preLoad: 1.3,
   // error: 'dist/error.png',

@@ -1,24 +1,19 @@
 package com.yuu.ymall.web.api.web;
 
 import com.yuu.ymall.commons.dto.BaseResult;
-import com.yuu.ymall.web.api.domain.ESItem;
+import com.yuu.ymall.web.api.dto.CategoryProductPageInfo;
 import com.yuu.ymall.web.api.repositories.ItemRepository;
 import com.yuu.ymall.web.api.service.ContentService;
 import com.yuu.ymall.web.api.service.ItemCatService;
+import com.yuu.ymall.web.api.service.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author by Yuu
@@ -42,6 +37,9 @@ public class GoodsController {
     @Autowired
     private ContentService contentService;
 
+    @Autowired
+    private ProductService productService;
+
     /**
      * 快速搜索
      *
@@ -51,18 +49,8 @@ public class GoodsController {
     @GetMapping(value = "quickSearch")
     @ApiOperation("")
     public BaseResult getQuickSearch(@RequestParam(defaultValue = "") String key) {
-        // 构建查询条件
-        NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder();
-        // 添加基本查询条件
-        searchQueryBuilder.withQuery(QueryBuilders.termQuery("title", key));
-        // 初始化分页参数
-        int page = 0;
-        int size = 5;
-        // 设置分页参数
-        searchQueryBuilder.withPageable(PageRequest.of(page, size));
-        Page<ESItem> searchs = itemRepository.search(searchQueryBuilder.build());
-        List<ESItem> esItems = searchs.getContent();
-        return BaseResult.success(esItems);
+        BaseResult baseResult = productService.getQuickSearch(key);
+        return BaseResult.success(baseResult);
     }
 
     /**
@@ -86,6 +74,44 @@ public class GoodsController {
     @ApiOperation(value = "获取首页各板块内容")
     public BaseResult getProductHome() {
         BaseResult baseResult = contentService.getHome();
+        return baseResult;
+    }
+
+    /**
+     * 获取商品详情
+     *
+     * @param productId 商品 id
+     * @return
+     */
+    @GetMapping("productDet")
+    @ApiOperation(value = "获取商品详情")
+    public BaseResult getProductDet(@RequestParam Long productId) {
+        BaseResult baseResult = productService.getProductDet(productId);
+        return baseResult;
+    }
+
+    /**
+     * 获取推荐商品模块
+     *
+     * @return
+     */
+    @GetMapping("recommend")
+    @ApiOperation(value = "获取推荐商品")
+    public BaseResult getRecommendGoods() {
+        BaseResult baseResult = contentService.getRecommendGoods();
+        return baseResult;
+    }
+
+    /**
+     * 分页商品查询
+     *
+     * @param categoryProductPageInfo
+     * @return
+     */
+    @GetMapping("getCategoryGoods")
+    @ApiOperation(value = "所有商品")
+    public BaseResult getCategoryProducts(CategoryProductPageInfo categoryProductPageInfo) {
+        BaseResult baseResult = productService.getByCategory(categoryProductPageInfo);
         return baseResult;
     }
 }

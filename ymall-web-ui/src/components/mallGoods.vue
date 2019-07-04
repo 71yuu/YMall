@@ -26,7 +26,9 @@
 </template>
 <script>
   import YButton from './YButton'
-  import { mapMutations } from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
+  import { addCartProduct } from '../api/cart'
+  import { getStore } from '../utils/storage'
 
   export default {
     props: {
@@ -50,7 +52,10 @@
         if (!this.showMoveImg) {
           // 登录了直接存在会员下
           if (this.login) {
-            // todo
+            addCartProduct({userId: getStore('userId'), productId: id, productNum: 1}).then(res => {
+              // 并不重新请求数据
+              this.ADD_CART({productId: id, salePrice: price, productName: name, productImg: img})
+            })
           } else {
             // 未登录 vuex 存
             this.ADD_CART({productId: id, salePrice: price, productName: name, productImg: img})
@@ -67,6 +72,9 @@
           }
         }
       }
+    },
+    computed: {
+      ...mapState(['login'])
     },
     components: {YButton}
   }

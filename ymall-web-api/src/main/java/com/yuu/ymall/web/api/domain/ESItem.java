@@ -21,34 +21,46 @@ public class ESItem {
     private Long id;
 
     /**
-     * 商品标题
+     * 商品名称
      */
     @Field(type = FieldType.text, analyzer = "ik_max_word")
-    private String title;
+    private String productName;
 
     /**
-     * 商品卖点
+     * 商品副标题
      */
     @Field(type = FieldType.text, analyzer = "ik_max_word")
-    private String sellPoint;
+    private String subTitle;
 
     /**
-     * 商品价格
+     * 商品 id
+     */
+    @Field(type = FieldType.Long)
+    private Long productId;
+
+    /**
+     * 分类 id
+     */
+    @Field(type = FieldType.Long)
+    private Long cid;
+
+    /**
+     * 商品售价
      */
     @Field(type = FieldType.Double)
-    private Double price;
+    private Double salePrice;
 
     /**
-     * 商品图片地址
+     * 商品大图 1 张
      */
     @Field(type = FieldType.keyword)
-    private String image;
+    private String picUrl;
 
     /**
-     * 商品所属分类名称
+     * 商品销量
      */
-    @Field(type = FieldType.keyword)
-    private String cname;
+    @Field(type = FieldType.Integer)
+    private Integer orderNum;
 
     public Long getId() {
         return id;
@@ -58,43 +70,59 @@ public class ESItem {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getSellPoint() {
-        return sellPoint;
+    public String getSubTitle() {
+        return subTitle;
     }
 
-    public void setSellPoint(String sellPoint) {
-        this.sellPoint = sellPoint;
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
     }
 
-    public Double getPrice() {
-        return price;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
-    public String getImage() {
-        return image;
+    public Long getCid() {
+        return cid;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setCid(Long cid) {
+        this.cid = cid;
     }
 
-    public String getCname() {
-        return cname;
+    public Double getSalePrice() {
+        return salePrice;
     }
 
-    public void setCname(String cname) {
-        this.cname = cname;
+    public void setSalePrice(Double salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
     }
 }

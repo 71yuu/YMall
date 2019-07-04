@@ -8,10 +8,10 @@
       </span>
       <span class="num">
         <input type="text"
-               :class="{show:show}"
-               v-model="Num>=limit?limit:Num"
-               @blur="blur()"
-               maxlength="2">
+                :class="{show:show}"
+                v-model="Num>=limit?limit:Num"
+                @blur="blur()"
+                maxlength="3">
                   <ul ref="ul">
                     <li v-for="i in numList" :key="i">{{i}}</li>
                   </ul>
@@ -29,7 +29,7 @@
         default: 1
       },
       id: {
-        type: [Number, String]
+        type: [String, Boolean]
       },
       checked: {
         type: [String, Boolean]
@@ -39,7 +39,6 @@
         default: 10
       }
     },
-    computed: {},
     data () {
       return {
         show: true,
@@ -63,7 +62,7 @@
       },
       blur () {
         this.Num = this.Num > this.limit ? Number(this.limit) : Number(this.Num)
-        this.$emit('edit-num', this.Num, this.id, this.checked)
+        this.$emit('edit-num', this.Num)
       },
       ani (opera) {
         this.flag = false
@@ -91,7 +90,7 @@
           this.domInt(ulStyle)
           this.flag = true
         })
-        this.$emit('edit-num', this.Num, this.id, this.checked)
+        this.$emit('edit-num', this.Num)
       },
       domInt (domStyle) {
         domStyle.zIndex = '1'

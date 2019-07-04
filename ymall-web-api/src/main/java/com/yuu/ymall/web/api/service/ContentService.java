@@ -15,4 +15,11 @@ public interface ContentService {
      * @return
      */
     BaseResult getHome();
+
+    /**
+     * 获取推荐商品
+     *
+     * @return
+     */
+    BaseResult getRecommendGoods();
 }

@@ -43,8 +43,9 @@
 <script>
 import YFooter from '/common/footer'
 import YButton from '/components/YButton'
+import { addCartProduct } from '/api/cart.js'
 import {memberLogin, geetest} from '/api/index.js'
-import { setStore, getStore } from '../../utils/storage'
+import { setStore, getStore, removeStore } from '../../utils/storage'
 require('../../../static/geetest/gt.js')
 var captcha
 export default {
@@ -88,7 +89,8 @@ export default {
       },
       verAccount: false,
       verPassword: false,
-      loginTxt: '登录'
+      loginTxt: '登录',
+      cart: []
     }
   },
   methods: {
@@ -138,6 +140,21 @@ export default {
         setStore('autoLogin', 'false')
       }
     },
+    // 登录时将本地的添加到用户购物车
+    login_addCart () {
+      let cartArr = []
+      let localCart = JSON.parse(getStore('buyCart'))
+      if (localCart && localCart.length) {
+        localCart.forEach(item => {
+          cartArr.push({
+            userId: getStore('userId'),
+            productId: item.productId,
+            productNum: item.productNum
+          })
+        })
+      }
+      this.cart = cartArr
+    },
     toLogin () {
       this.loginTxt = '登录中...'
       this.autoLogin()
@@ -156,9 +173,21 @@ export default {
         auto
       }).then(res => {
         if (res.status === 200) {
-          console.log('登录成功！')
           setStore('token', res.result.token)
           setStore('userId', res.result.id)
+          // 登录后添加当前缓存中的购物车
+          this.login_addCart()
+          if (this.cart.length) {
+            for (let i = 0; i < this.cart.length; i++) {
+              addCartProduct(this.cart[i]).then(res => {
+              })
+            }
+            removeStore('buyCart')
+            this.$router.push({
+              path: '/'
+            })
+          }
+
           this.$router.push({
             path: '/'
           })
@@ -173,7 +202,6 @@ export default {
   },
   mounted () {
     let autoLogin = getStore('autoLogin')
-    console.log(autoLogin)
     if (autoLogin === 'true') {
       this.login.auto = true
     } else if (autoLogin === 'false') {

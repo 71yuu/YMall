@@ -1,49 +1,33 @@
 <template>
   <div class="goods">
-    <div class="nav-subs">
-      <div class="nav-sub-bgs"></div>
-      <div class="nav-sub-wrappers">
-        <div class="w">
-          <ul class="nav-lists">
-            <li>
-              <router-link to="/">
-                <a>首页</a>
-              </router-link>
-            </li>
-            <li>
-              <a class="active">搜索结果</a>
-            </li>
-            <li>
-              <a v-if="searching === true">拼命搜索中...</a>
-              <a v-if="searching === false">共为您找到 {{total}} 款商品信息</a>
-            </li>
-          </ul>
-          <div></div>
-        </div>
-      </div>
-    </div>
-
+    <!-- 查询条件 -->
     <div class="nav">
       <div class="w">
-        <a href="javascript:;" :class="{active:sortType===1}" @click="reset()">综合排序</a>
-        <a href="javascript:;" @click="sortByPrice(1)" :class="{active:sortType===2}">价格从低到高</a>
-        <a href="javascript:;" @click="sortByPrice(-1)" :class="{active:sortType===3}">价格从高到低</a>
+        <a href="javascript:;" :class="{active:sortType===1}" @click="reset">综合排序</a>
+        <a href="javascript:;" :class="{active:sortType===2}" @click="sortByOrder">销量排序</a>
+        <a href="javascript:;" :class="{active:sortType===3}" @click="sortByPrice(3)">价格从低到高</a>
+        <a href="javascript:;" :class="{active:sortType===4}" @click="sortByPrice(4)">价格从高到低</a>
         <div class="price-interval">
-          <input type="number" class="input" placeholder="价格" v-model="min">
+          <el-input type="number" class="input" placeholder="价格" v-model="min" style="width:100px;"></el-input>
           <span style="margin: 0 5px"> - </span>
-          <input type="number" placeholder="价格" v-model="max">
-          <y-button text="确定" classStyle="main-btn" @btnClick="reset" style="margin-left: 10px;"></y-button>
+          <el-input type="number" placeholder="价格" v-model="max" style="width:100px;"></el-input>
+          <!--<y-button text="确定" :classStyle="min && max ? main-btn : default-btn" @btnClick="_getAllGoods" style="margin-left: 10px;"></y-button>-->
+          <el-button type="primary" @click="_getAllGoods" :disabled="min && max && min < max ? false : true" style="margin-left: 10px;">确定</el-button>
         </div>
+        <a v-if="searching">拼命搜索中...</a>
+        <a v-if="!searching">共为您找到 {{total}} 款商品信息</a>
       </div>
     </div>
 
+    <!-- 查询内容 -->
     <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
-      <div  class="img-item" v-if="!noResult" >
-        <!--商品-->
+      <div class="img-item" v-if="!noResult">
+        <!-- 商品 -->
         <div class="goods-box w">
-          <mall-goods v-for="(item,i) in goods" :key="i" :msg="item"></mall-goods>
+          <mall-goods v-for="(item, i) in goods" :key="i" :msg="item"></mall-goods>
         </div>
 
+        <!-- 分页 -->
         <el-pagination
           v-if="!noResult&&!error"
           @size-change="handleSizeChange"
@@ -55,19 +39,21 @@
           :total="total">
         </el-pagination>
       </div>
-      <div class="no-info" v-if="noResult" >
+      <!-- 没有结果 -->
+      <div class="no-info" v-if="noResult">
         <div class="no-data">
           <img src="/static/images/no-search.png">
-          <br> 抱歉！没有为您找到相关的商品
+          <br>抱歉！暂时还没有商品
         </div>
         <section class="section">
           <y-shelf :title="recommendPanel.name">
             <div slot="content" class="recommend">
-              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContents" :key="i"></mall-goods>
+              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContentDtos" :key="i"></mall-goods>
             </div>
           </y-shelf>
         </section>
       </div>
+      <!-- 查询错误 -->
       <div class="no-info" v-if="error">
         <div class="no-data">
           <img src="/static/images/error.png">
@@ -76,7 +62,7 @@
         <section class="section">
           <y-shelf :title="recommendPanel.name">
             <div slot="content" class="recommend">
-              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContents" :key="i"></mall-goods>
+              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContentDtos" :key="i"></mall-goods>
             </div>
           </y-shelf>
         </section>
@@ -85,61 +71,59 @@
   </div>
 </template>
 <script>
-  import { getSearch } from '/api/goods.js'
-  import { recommend } from '/api/index.js'
-  import mallGoods from '/components/mallGoods'
-  import YButton from '/components/YButton'
+  import MallGoods from '/components/mallGoods'
+  import { recommend } from '/api/index'
   import YShelf from '/components/shelf'
-  import YHeader from '/common/header'
-  import YFooter from '/common/footer'
+  import { getAllGoods } from '/api/goods'
+
   export default {
     data () {
       return {
-        goods: [],
-        noResult: false,
+        recommendPanel: {
+          name: '',
+          panelContentDtos: []
+        },
         error: false,
+        noResult: false,
+        loading: false,
+        total: 0,
+        goods: [],
+        pageSize: 20,
+        currentPage: 1,
+        sort: '',
+        sortType: 1,
         min: '',
         max: '',
-        loading: true,
-        searching: true,
-        timer: null,
-        sortType: 1,
-        windowHeight: null,
-        windowWidth: null,
-        sort: '',
-        recommendPanel: [],
-        currentPage: 1,
-        pageSize: 20,
-        total: 0,
-        key: ''
+        key: '',
+        searching: true
       }
     },
     methods: {
       handleSizeChange (val) {
         this.pageSize = val
-        this._getSearch()
+        this._getAllGoods()
         this.loading = true
       },
       handleCurrentChange (val) {
         this.currentPage = val
-        this._getSearch()
+        this._getAllGoods()
         this.loading = true
       },
-      _getSearch () {
+      _getAllGoods () {
         let params = {
           params: {
-            key: this.key,
-            size: this.pageSize,
             page: this.currentPage,
+            size: this.pageSize,
             sort: this.sort,
             priceGt: this.min,
-            priceLte: this.max
+            priceLte: this.max,
+            key: this.key
           }
         }
-        getSearch(params).then(res => {
-          if (res.success === true) {
-            this.goods = res.result.itemList
-            this.total = res.result.recordCount
+        getAllGoods(params).then(res => {
+          if (res.status === 200) {
+            this.total = res.result.total
+            this.goods = res.result.data
             this.noResult = false
             if (this.total === 0) {
               this.noResult = true
@@ -148,51 +132,62 @@
           } else {
             this.error = true
           }
-          this.loading = false
           this.searching = false
+          this.loading = false
         })
       },
       // 默认排序
       reset () {
         this.sortType = 1
-        this.sort = ''
+        this.sort = 1
         this.currentPage = 1
         this.loading = true
-        this._getSearch()
+        this._getAllGoods()
+      },
+      // 销量排序
+      sortByOrder () {
+        this.sortType = 2
+        this.sort = 2
+        this.currentPage = 1
+        this.loading = true
+        this._getAllGoods()
       },
       // 价格排序
       sortByPrice (v) {
-        v === 1 ? this.sortType = 2 : this.sortType = 3
+        this.sortType = v
         this.sort = v
         this.currentPage = 1
         this.loading = true
-        this._getSearch()
+        this._getAllGoods()
       }
     },
-    created () {
+    watch: {
+      $route (to, from) {
+        if (to.fullPath.indexOf('/goods?category=') >= 0) {
+          this.cid = to.query.cid
+          this._getAllGoods()
+        }
+      }
     },
     mounted () {
-      this.windowHeight = window.innerHeight
-      this.windowWidth = window.innerWidth
-      // console.log(this.$route.query.key)
       this.key = this.$route.query.key
-      console.log(this.key)
-      this._getSearch()
+      this._getAllGoods()
       recommend().then(res => {
-        let data = res.result
-        this.recommendPanel = data[0]
+        if (res.status === 200) {
+          this.recommendPanel = res.result
+          this.error = false
+        } else {
+          this.error = true
+        }
       })
     },
     components: {
-      mallGoods,
-      YButton,
-      YShelf,
-      YHeader,
-      YFooter
+      MallGoods,
+      YShelf
     }
   }
 </script>
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" rel="stylesheet/scss">
   @import "../../assets/style/mixin";
   @import "../../assets/style/theme";
 
@@ -242,61 +237,8 @@
     }
   }
 
-  .nav-subs {
-    position: relative;
-    margin-top: -40px;
-    z-index: 20;
-    height: 90px;
-    background: #f7f7f7;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .04);
-    .nav-sub-wrappers {
-      padding: 31px 0;
-      height: 90px;
-      position: relative;
-    }
-    .w {
-      display: flex;
-      justify-content: space-between;
-    }
-    .nav-lists {
-      height: 28px;
-      line-height: 28px;
-      display: flex;
-      align-items: center;
-      height: 100%;
-      li:first-child {
-        padding-left: 0;
-        a {
-          padding-left: 10px;
-        }
-      }
-      li {
-        position: relative;
-        float: left;
-        padding-left: 2px;
-        a {
-          display: block;
-          // cursor: default;
-          padding: 0 10px;
-          color: #666;
-          &.active {
-            font-weight: bold;
-          }
-        }
-        a:hover {
-          color: #5683EA;
-        }
-      }
-      li:before {
-        content: ' ';
-        position: absolute;
-        left: 0;
-        top: 13px;
-        width: 2px;
-        height: 2px;
-        background: #bdbdbd;
-      }
-    }
+  em {
+    color: #e4393c;
   }
 
   .no-info {
@@ -310,17 +252,21 @@
     }
   }
 
+  .img-item{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .el-pagination{
+    align-self: flex-end;
+    margin: 3vw 10vw 2vw;
+  }
+
   .section {
     padding-top: 8vw;
     margin-bottom: -5vw;
     width: 1218px;
     align-self: center;
-  }
-
-  @media (min-width: 1px) {
-    .nav-subs .nav-sub-wrappers:after {
-      display: block;
-    }
   }
 
   .recommend {
@@ -331,15 +277,6 @@
     }
   }
 
-  .img-item{
-    display: flex;
-    flex-direction: column;
-  }
-
-  .el-pagination{
-    align-self: flex-end;
-    margin: 3vw 10vw 2vw;
-  }
 
 
 </style>

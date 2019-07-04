@@ -4,12 +4,14 @@ import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.commons.redis.RedisCacheManager;
 import com.yuu.ymall.commons.utils.MapperUtil;
 import com.yuu.ymall.domain.TbItem;
+import com.yuu.ymall.domain.TbPanel;
 import com.yuu.ymall.web.api.dto.TbPanelContentDto;
 import com.yuu.ymall.web.api.dto.TbPanelDto;
 import com.yuu.ymall.web.api.mapper.TbItemMapper;
 import com.yuu.ymall.web.api.mapper.TbPanelContentMapper;
 import com.yuu.ymall.web.api.mapper.TbPanelMapper;
 import com.yuu.ymall.web.api.service.ContentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,18 @@ public class ContentServiceImpl implements ContentService {
      */
     @Value("${PRODUCT_HOME}")
     private String PRODUCT_HOME;
+
+    /**
+     * 推荐板块 key
+     */
+    @Value("${RECOMEED_PANEL}")
+    private String RECOMEED_PANEL;
+
+    /**
+     * 推荐板块数据库 id
+     */
+    @Value("${RECOMEED_PANEL_ID}")
+    private Integer RECOMEED_PANEL_ID;
 
     @Override
     public BaseResult getHome() {
@@ -87,5 +101,55 @@ public class ContentServiceImpl implements ContentService {
         }
 
         return BaseResult.success(tbPanelDtos);
+    }
+
+    @Override
+    public BaseResult getRecommendGoods() {
+        TbPanelDto tbPanelDto = new TbPanelDto();
+
+        // 有缓存，从缓存中共读取
+        String redisJson = (String) redisCacheManager.get(RECOMEED_PANEL);
+        if (StringUtils.isNoneBlank(redisJson)) {
+            try {
+                tbPanelDto = MapperUtil.json2pojo(redisJson, TbPanelDto.class);
+                return BaseResult.success(tbPanelDto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 没有缓存，从数据库中读取
+        TbPanel tbPanel = tbPanelMapper.selectByPrimaryKey(RECOMEED_PANEL_ID);
+        if (tbPanel != null) {
+            tbPanelDto.setId(tbPanel.getId());
+            tbPanelDto.setName(tbPanel.getName());
+            tbPanelDto.setType(tbPanel.getType());
+            // 查询板块内容
+            List<TbPanelContentDto> tbPanelContentDtos = tbPanelContentMapper.selectContentByPid(tbPanel.getId());
+            // 获取商品相关信息
+            for (TbPanelContentDto tbPanelContentDto : tbPanelContentDtos) {
+                TbItem tbItem = tbItemMapper.selectByPrimaryKey(tbPanelContentDto.getProductId());
+                if (tbItem != null) {
+                    tbPanelContentDto.setProductName(tbItem.getTitle());
+                    tbPanelContentDto.setSubTitle(tbItem.getSellPoint());
+                    tbPanelContentDto.setSalePrice(tbItem.getPrice());
+                }
+            }
+
+            tbPanelDto.setPanelContentDtos(tbPanelContentDtos);
+        }
+
+        if (tbPanelDto != null) {
+            // 将结果添加至缓存
+            try {
+                String tbPanelDtoJson = MapperUtil.obj2json(tbPanelDto);
+                redisCacheManager.set(RECOMEED_PANEL, tbPanelDtoJson);
+                return BaseResult.success(tbPanelDto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return BaseResult.fail("获取推荐板块失败");
     }
 }

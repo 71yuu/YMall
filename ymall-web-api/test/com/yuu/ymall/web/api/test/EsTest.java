@@ -10,6 +10,8 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.SearchResultMapper;
@@ -55,14 +57,18 @@ public class EsTest {
      */
     @Test
     public void insertDocument() {
-        ESItem esItem = new ESItem();
-        esItem.setId(2l);
-        esItem.setCname("手机");
-        esItem.setTitle("小米手机");
-        esItem.setSellPoint("正在热卖");
-        esItem.setImage("xxx");
-        esItem.setPrice(123d);
-        itemRepository.save(esItem);
+        for (long i = 0l; i <= 10l; i++) {
+            ESItem esItem = new ESItem();
+            esItem.setId(i);
+            esItem.setCid(1193l);
+            esItem.setProductName("小米手机1");
+            esItem.setSubTitle("小米手机真好1");
+            esItem.setSalePrice(299d * i);
+            esItem.setProductId(150635087972564l);
+            esItem.setPicUrl("https://i.loli.net/2018/07/13/5b48ac7766d98.png");
+            esItem.setOrderNum(100 * (int)i);
+            itemRepository.save(esItem);
+        }
     }
 
     /**
@@ -71,8 +77,8 @@ public class EsTest {
     @Test
     public void heiglight() {
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.termQuery("title", "小米"))
-                .withHighlightFields(new HighlightBuilder.Field("title")).build();
+                .withQuery(QueryBuilders.termQuery("subTitle", "小米"))
+                .withHighlightFields(new HighlightBuilder.Field("productName")).build();
         AggregatedPage<ESItem> esItems = elasticsearchTemplate.queryForPage(searchQuery, ESItem.class, new SearchResultMapper() {
             @Override
             public <T> AggregatedPage<T> mapResults(SearchResponse response, Class<T> aClass, Pageable pageable) {
@@ -82,9 +88,13 @@ public class EsTest {
                         return null;
                     }
                     ESItem esItem = new ESItem();
-                    HighlightField itemTitle = hit.getHighlightFields().get("title");
-                    if (itemTitle != null) {
-                        esItem.setTitle(itemTitle.fragments()[0].toString());
+                    HighlightField productName = hit.getHighlightFields().get("productName");
+                    if (productName != null) {
+                        esItem.setProductName(productName.fragments()[0].toString());
+                    }
+                    HighlightField subTitle = hit.getHighlightFields().get("subTitle");
+                    if (subTitle != null) {
+                        esItem.setSubTitle(subTitle.fragments()[0].toString());
                     }
                     esItems.add(esItem);
                 }
@@ -94,6 +104,45 @@ public class EsTest {
                 return null;
             }
         });
-        esItems.forEach(esItem -> System.out.println(esItem.getTitle()));
+        esItems.forEach(esItem -> System.out.println(esItem.getProductName()));
+    }
+
+    @Test
+    public void catePageTest() {
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+        queryBuilder.withQuery(QueryBuilders.matchQuery("cid", 1193));
+        queryBuilder.withQuery(QueryBuilders.rangeQuery("salePrice").gte(1).lte(3000));
+        queryBuilder.withPageable(PageRequest.of(0, 2));
+
+        // 执行搜索
+        Page<ESItem> search = elasticsearchTemplate.queryForPage(queryBuilder.build(), ESItem.class);
+        System.out.println(search.getTotalElements());
+        for (ESItem esItem : search) {
+            System.out.println(esItem.getProductName());
+        }
+    }
+
+    @Test
+    public void cateTest() {
+        // ElasticSearch 查询
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+        queryBuilder.withQuery(QueryBuilders.matchQuery("cid", "1193"));
+       /* if (priceGt != null && priceLt != null) {
+            queryBuilder.withQuery(QueryBuilders.rangeQuery("price").gt(priceGt).lt(priceLt));
+        }
+        if (StringUtils.isNotBlank(categoryProductPageInfo.getSort())) {
+            if ("2".equals(sort)) {
+                queryBuilder.withSort(SortBuilders.fieldSort("orderNum").order(SortOrder.DESC));
+            } else if ("3".equals(sort)) {
+                queryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.ASC));
+            } else if ("4".equals(sort)) {
+                queryBuilder.withSort(SortBuilders.fieldSort("price").order(SortOrder.DESC));
+            }
+        }*/
+        queryBuilder.withPageable(PageRequest.of(0, 20));
+
+        // 执行搜索
+        Page<ESItem> search = itemRepository.search(queryBuilder.build());
+        List<ESItem> esItems = search.getContent();
     }
 }

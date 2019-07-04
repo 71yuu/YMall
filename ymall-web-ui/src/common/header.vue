@@ -4,7 +4,7 @@
       <header class="w">
         <div class="w-box">
           <div class="nav-logo">
-            <h1 @click="changePage(-1)">
+            <h1>
               <router-link to="/" title="YMall商城官网">YMall商城</router-link>
             </h1>
           </div>
@@ -21,7 +21,7 @@
                 :on-icon-click="handleSearch"
                 @keydown.enter.native="handleSearch">
               </el-autocomplete>
-              <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
+              <router-link to="/goods"><a>全部商品</a></router-link>
             </div>
 
             <div class="nav-aside" ref="aside" :class="{fixed:st}">
@@ -132,15 +132,6 @@
             </div>
         </div>
       </slot>
-      <!--<div class="nav">
-        <el-menu class="el-menu" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="1"><a @click="toHome">首页</a></el-menu-item>
-          <el-submenu v-for="(cate,i) in cateList" :index="i+1 + ''" :key="i" >
-            <template slot="title"><span @click="toCategory(cate.id)">{{cate.name}}</span></template>
-            <el-menu-item :index="i + '-' + j" v-for="(cateSon,j) in cate.catesons" @click="toCategory(cateSon.id)" :key="j">{{cateSon.name}}</el-menu-item>
-          </el-submenu>
-        </el-menu>
-      </div>-->
     </div>
   </div>
 </template>
@@ -149,7 +140,8 @@
   import { mapMutations, mapState } from 'vuex'
   import { getQuickSearch } from '../api/goods'
   import { logout, cateList } from '../api/index'
-  import { getStore, removeStore } from '../utils/storage'
+  import { getCartList, delCartProduct } from '../api/cart'
+  import { setStore, getStore, removeStore } from '../utils/storage'
 
   export default {
     data () {
@@ -171,10 +163,6 @@
     },
     methods: {
       ...mapMutations(['INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'EDIT_CART']),
-      // 更改导航栏文字样式
-      changePage (v) {
-        this.changePage = v
-      },
       // 异步查询
       querySearchAsync (queryString, cb) {
         if (this.key === undefined) {
@@ -201,10 +189,11 @@
         }
         getQuickSearch(params).then(res => {
           if (res.status === 200) {
+            let result = res.result.result
             let array = []
-            for (let i = 0; i < res.result.length; i++) {
+            for (let i = 0; i < result.length; i++) {
               let obj = {}
-              obj.value = res.result[i].title
+              obj.value = result[i].productName
               array.push(obj)
             }
             if (array.length !== 0) {
@@ -244,18 +233,21 @@
         logout(params).then(res => {
           removeStore('token')
           removeStore('userId')
+          removeStore('userInfo')
+          removeStore('buyCart')
           window.location.href = '/'
         })
       },
       // 去首页
       toHome () {
+        this.key = ''
         this.$router.push({
           path: '/home'
         })
       },
       // 控制顶部
       navFixed () {
-        if (this.$route.path === '/goods' || this.$route.path === '/home' || this.$route.path === '/goodsDetails' || this.$route.path === '/thanks') {
+        if (this.$route.path === '/goods' || this.$route.path === '/home' || this.$route.path === '/goodsDetails' || this.$route.path === '/search') {
           var st = document.documentElement.scrollTop || document.body.scrollTop
           st >= 100 ? this.st = true : this.st = false
           // 计算小圆当前位置
@@ -282,7 +274,9 @@
       delGoods (productId) {
         if (this.login) {
           // 登录了
-          // todo
+          delCartProduct({userId: getStore('userId'), productId}).then(res => {
+            this.EDIT_CART({productId})
+          })
         } else {
           this.EDIT_CART({productId})
         }
@@ -309,6 +303,20 @@
             category: id
           }
         })
+      },
+      // 登录时获取一次购物车
+      _getCartList () {
+        let params = {
+          params: {
+            userId: getStore('userId')
+          }
+        }
+        getCartList(params).then(res => {
+          if (res.status === 200) {
+            setStore('buyCart', res.result)
+          }
+          // 重新初始化一次本地数据
+        }).then(this.INIT_BUYCART)
       }
     },
     computed: {
@@ -338,7 +346,7 @@
       this.navFixed()
       if (this.login) {
         // 登录获取购物车
-        // todo
+        this._getCartList()
       } else {
         this.INIT_BUYCART()
       }
@@ -354,7 +362,7 @@
   }
 
 </script>
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" rel="stylesheet/scss">
   @import "../assets/style/theme";
   @import "../assets/style/mixin";
 

@@ -1,6 +1,7 @@
 package com.yuu.ymall.domain;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -65,5 +66,18 @@ public class TbItem implements Serializable {
      * 更新时间
      */
     private Date updated;
+
+    /**
+     * 获取图片地址数组
+     *
+     * @return
+     */
+    public String[] getImages() {
+        if (!StringUtils.isBlank(this.image)) {
+            String[] images = this.image.split(",");
+            return images;
+        }
+        return null;
+    }
 
 }
