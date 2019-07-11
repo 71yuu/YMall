@@ -32,11 +32,11 @@
 
 - 首页
 
-![](\screenhots\首页.png)
+![](/screenhots/首页.png)
 
-![](screenhots\首页-1.png)
+![](/screenhots/首页-1.png)
 
-![](ymall\screenhots\首页-2.png)
+![](/screenhots/首页-2.png)
 
 - 分类商品页
 
