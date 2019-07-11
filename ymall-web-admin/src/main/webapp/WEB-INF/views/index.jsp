@@ -12,12 +12,7 @@
             <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
             <nav class="nav navbar-nav">
                 <ul class="cl">
-                    <li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
-                        <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onclick="App.openAndFull('添加商品','/product-form')"><i class="Hui-iconfont">&#xe620;</i> 商品</a></li>
-                            <li><a href="javascript:;" onclick="App.show('添加会员','/member-form','','630')"><i class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
-                        </ul>
-                    <li ><a href="http://YMall.Yuu.cn" target="_blank">商城前台</a></li>
+                    <li ><a href="http://localhost:9999" target="_blank">商城前台</a></li>
                     </li>
                 </ul>
             </nav>

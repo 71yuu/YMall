@@ -107,6 +107,9 @@ public class ItemCatServiceImpl implements ItemCatService {
             return BaseResult.fail("删除商品分类失败！");
         }
 
+        // 删除 Redis 缓存
+        redisCacheManager.del(HEADER_CATE);
+
         return BaseResult.success("删除商品分类成功");
     }
 }

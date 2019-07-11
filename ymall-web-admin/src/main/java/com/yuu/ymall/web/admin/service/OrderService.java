@@ -25,9 +25,10 @@ public interface OrderService {
      *
      * @param request 请求
      * @param search 查询条件
+     * @param status 订单状态
      * @return
      */
-    DataTablesResult<TbOrder> getOrderList(HttpServletRequest request, String search);
+    DataTablesResult<TbOrder> getOrderList(HttpServletRequest request, String search, int status);
 
     /**
      * 获取订单详情

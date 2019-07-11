@@ -37,4 +37,12 @@ public interface TbOrderItemMapper extends BaseMapper<TbOrderItem> {
      * @return
      */
     List<TbOrderItem> selectOrderItemByOrderId(String orderId);
+
+    /**
+     * 查询该商品订单数量
+     *
+     * @param itemId 商品 id
+     * @return
+     */
+    int selectOrderNumByItemId(Long itemId);
 }

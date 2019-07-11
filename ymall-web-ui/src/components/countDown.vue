@@ -64,11 +64,11 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     this.countdowm(this.endTime)
   }
 }
 </script>
 <style lang='scss' rel='stylesheet/scss' scoped>
-  
+
 </style>

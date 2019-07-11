@@ -45,7 +45,7 @@
             {
                 "data": "image",
                 render: function (data, type, row, meta) {
-                    return '<img src="'+ data +'" style="width:80px; height: 60px;"/>';
+                    return '<img src="'+ data.split(',')[0] +'" style="width:80px; height: 60px;"/>';
                 }
             },
             {

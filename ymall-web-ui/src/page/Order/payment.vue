@@ -1,34 +1,29 @@
 <template>
-  <div class="w" style="padding-bottom: 100px;">
+  <div class="w" style="padding-bottom: 50px;">
     <y-shelf title="支付订单">
       <div slot="content">
         <div class="box-inner order-info">
-          <h3>提交订单成功，请填写捐赠信息</h3>
-          <p class="payment-detail">请在 <span>24 小时内</span>完成支付，超时订单将自动取消。</p>
-          <p class="payment-detail">我们不会在您完成支付后的 72 小时内发货，您的支付将用作捐赠</p>
-          <p class="payment-detail" style="color:red">支付成功后文档或源码将自动发至您填写的邮箱中</p>
+          <h3>提交订单成功，请选择支付方式</h3>
+          <p class="payment-detail">请在 <span style="color: #d44d44; font-weight: 700;">2 小时内 </span>完成支付，超时订单将自动取消。</p>
+          <p class="payment-detail">我们将在您完成支付后的 72 小时内发货</p>
         </div>
-        <div class="pay-info">
-          <span style="color:red">*</span> 昵称：<el-input v-model="nickName" placeholder="请输入您的昵称" @change="checkValid" :maxlength="maxLength" class="input"></el-input><br>
-          <span style="color:red">*</span> 捐赠金额：<el-select class="money-select" v-model="moneySelect" placeholder="请选择支付金额" @change="changeSelect">
-            <el-option label="￥1.00 支付测试（YMall分布式详细文档）" value="1.00"></el-option>
-            <el-option label="￥38.00 感谢捐赠（YMall单体版源码及文档）" value="38.00"></el-option>
-            <el-option label="自定义 随意撒币" value="custom"></el-option>
-          </el-select><br>
-          <div v-if="moneySelect === 'custom'"><span style="color:red">*</span> 输入金额：<el-input v-model="money" placeholder="请输入捐赠金额(最多2位小数，不得低于0.1元)" @change="checkValid" :maxlength="maxLength" class="input" style="margin-left:10px"></el-input><br></div>
-          <span style="color:red">*</span> 通知邮箱：<el-input v-model="email" placeholder="支付审核结果将以邮件方式发送至您的邮箱" @change="checkValid" :maxlength="maxLength" class="input" style="margin-left:10px"></el-input><br>
-          &nbsp;&nbsp; 留言：<el-input v-model="info" placeholder="请输入您的留言内容" :maxlength="maxLength" class="input"></el-input>
-        </div>
-        <!--支付方式-->
+        <!-- 支付方式 -->
         <div class="pay-type">
           <div class="p-title">支付方式</div>
           <div class="pay-item">
-            <div :class="{active:payType==1}" @click="payType=1"><img src="/static/images/alipay@2x.png" alt=""></div>
-            <div :class="{active:payType==2}" @click="payType=2"><img src="/static/images/weixinpay@2x.png" alt=""></div>
-            <div :class="{active:payType==3}" @click="payType=3"><img src="/static/images/qqpay.png" alt=""></div>
+            <div class="active"><img src="/static/images/alipay@2x.png" alt=""></div>
+          </div>
+          <div class="nav-user-wrapper pa active">
+            <div class="nav-user-list">
+              <div class="code-viewer">
+                <canvas id="msg"></canvas>
+              </div>
+              <p class="tip">请使用支付宝扫一扫</p>
+              <p class="tip">扫描二维码支付</p>
+            </div>
           </div>
         </div>
-
+        <!-- 订单金额 -->
         <div>
           <div class="box-inner">
             <div>
@@ -39,26 +34,23 @@
               <span>
                 实际应付金额：
               </span>
-              <em><span>¥</span>{{money}}</em>
-              <y-button :text="payNow"
-                        :classStyle="submit?'main-btn':'disabled-btn'"
-                        style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"
-                        @btnClick="paySuc()"
-              ></y-button>
+              <em><span>¥</span>{{orderTotal.toFixed(2)}}</em>
             </div>
           </div>
         </div>
-
       </div>
     </y-shelf>
-    <!--地址信息-->
+
+    <!-- 地址信息 -->
     <div class="p-msg w">
       <div class="confirm-detail">
         <div class="info-title">收货信息</div>
-        <p class="info-detail">姓名：{{userName}}</p>
-        <p class="info-detail">联系电话：{{tel}}</p>
-        <p class="info-detail">详细地址：{{streetName}}</p></div>
+        <p class="info-detail">姓名：{{address.userName}}</p>
+        <p class="info-detail">联系电话：{{address.tel}}</p>
+        <p class="info-detail">详细地址：{{address.streetName}}</p></div>
     </div>
+
+    <!-- 商品信息 -->
     <div class="confirm-table-title">
       <span class="name">商品信息</span>
       <div>
@@ -67,7 +59,6 @@
         <span class="subtotal">小计</span>
       </div>
     </div>
-    <!--商品-->
     <div class="confirm-goods-table">
       <div class="cart-items" v-for="(item,i) in cartList" :key="i">
         <div class="name">
@@ -76,187 +67,221 @@
           </div>
         </div>
         <div class="n-b">
-          <div class="price">¥ {{item.salePrice}}</div>
+          <div class="price">¥ {{item.salePrice.toFixed(2)}}</div>
           <div class="goods-num">{{item.productNum}}</div>
           <div class="subtotal">
-            <div class="subtotal-cell"> ¥ {{item.salePrice * item.productNum}}<br></div>
+            <div class="subtotal-cell"> ¥ {{(item.salePrice * item.productNum).toFixed(2)}}<br></div>
           </div>
         </div>
       </div>
     </div>
-    <!--合计-->
+
+    <!-- 合计 -->
     <div class="order-discount-line">
       <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
-        <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{orderTotal}}</span>
+        <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{orderTotal.toFixed(2)}}</span>
       </p>
-      <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ ¥ 0.00</span></p>
     </div>
   </div>
 </template>
 <script>
   import YShelf from '/components/shelf'
-  import YButton from '/components/YButton'
-  import { getOrderDet, payMent } from '/api/goods'
-  import { getStore, setStore } from '/utils/storage'
+  import { getStore } from '/utils/storage'
+  import { getOrderDet, payment, getOrderStatus } from '/api/order'
+  import QRCode from 'qrcode'
+
   export default {
     data () {
       return {
-        payType: 1,
-        addList: {},
-        cartList: [],
-        addressId: 0,
-        productId: '',
-        num: '',
         userId: '',
-        orderTotal: 0,
-        userName: '',
-        tel: '',
-        streetName: '',
-        payNow: '立刻支付',
-        submit: false,
-        nickName: '',
-        money: '1.00',
-        info: '',
-        email: '',
         orderId: '',
-        type: '',
-        moneySelect: '1.00',
-        isCustom: false,
-        maxLength: 30
+        cartList: [],
+        address: {
+          userName: '',
+          tel: '',
+          streetName: ''
+        },
+        orderTotal: 0,
+        qrCode: '',
+        myInterval: ''
       }
     },
-    computed: {
-      // 选中的总价格
-      checkPrice () {
-        let totalPrice = 0
-        this.cartList && this.cartList.forEach(item => {
-          if (item.checked === '1') {
-            totalPrice += (item.productNum * item.salePrice)
-          }
+    watch: {
+      // 通过监听获取数据
+      qrCode (val) {
+        // 获取页面的canvas
+        let msg = document.getElementById('msg')
+        // 将获取到的数据（val）画到msg（canvas）上
+        QRCode.toCanvas(msg, val, function (error) {
+          console.log(error)
         })
-        return totalPrice
       }
     },
     methods: {
-      checkValid () {
-        if (this.nickName !== '' && this.money !== '' && this.isMoney(this.money) && this.email !== '' && this.isEmail(this.email)) {
-          this.submit = true
-        } else {
-          this.submit = false
-        }
-      },
-      messageFail (m) {
-        this.$message.error({
-          message: m
-        })
-      },
-      changeSelect (v) {
-        if (v !== 'custom') {
-          this.money = v
-        } else {
-          this.isCustom = true
-          this.money = ''
-        }
-        this.checkValid()
-      },
-      goodsDetails (id) {
-        window.open(window.location.origin + '#/goodsDetails?productId=' + id)
-      },
+      // 获取订单详情
       _getOrderDet (orderId) {
         let params = {
           params: {
-            orderId: this.orderId
+            orderId: orderId
           }
         }
         getOrderDet(params).then(res => {
-          this.cartList = res.result.goodsList
-          this.userName = res.result.addressInfo.userName
-          this.tel = res.result.addressInfo.tel
-          this.streetName = res.result.addressInfo.streetName
-          this.orderTotal = res.result.orderTotal
-        })
-      },
-      paySuc () {
-        this.payNow = '支付中...'
-        this.submit = false
-        if (this.payType === 1) {
-          this.type = 'Alipay'
-        } else if (this.payType === 2) {
-          this.type = 'Wechat'
-        } else if (this.payType === 3) {
-          this.type = 'QQ'
-        } else {
-          this.type = '其它'
-        }
-        payMent({
-          nickName: this.nickName,
-          money: this.money,
-          info: this.info,
-          email: this.email,
-          orderId: this.orderId,
-          userId: this.userId,
-          payType: this.type,
-          custom: this.isCustom
-        }).then(res => {
-          if (res.success === true) {
-            setStore('payNum', res.result)
-            setStore('setTime', 90)
-            setStore('price', this.money)
-            setStore('isCustom', this.isCustom)
-            if (this.payType === 1) {
-              this.$router.push({path: '/order/alipay'})
-            } else if (this.payType === 2) {
-              this.$router.push({path: '/order/wechat'})
-            } else if (this.payType === 3) {
-              this.$router.push({path: '/order/qqpay'})
+          if (res.status === 200) {
+            if (res.result.orderStatus === 0) {
+              console.log('订单未支付')
+              this.cartList = res.result.goodsList
+              this.address.userName = res.result.tbAddress.userName
+              this.address.tel = res.result.tbAddress.tel
+              this.address.streetName = res.result.tbAddress.streetName
+              this.orderTotal = res.result.orderTotal
+              console.log(this.orderId)
+              this.getPay()
             } else {
-              this.$router.push({path: '/order/alipay'})
+              // todo
+              this.$router.push({
+                path: '/user/orderDetail',
+                query: {
+                  orderId: orderId
+                }
+              })
             }
           } else {
-            this.payNow = '立刻支付'
-            this.submit = true
-            this.messageFail(res.message)
+            this.$router.push({
+              path: '/'
+            })
           }
         })
       },
-      isMoney (v) {
-        if (v < 0.1) {
-          return false
-        }
-        var regu = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/
-        var re = new RegExp(regu)
-        if (re.test(v)) {
-          return true
-        } else {
-          return false
-        }
+      // 商品详情
+      goodsDetails (id) {
+        window.open(window.location.origin + '/goodsDetails?productId=' + id)
       },
-      isEmail (v) {
-        var regu = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
-        var re = new RegExp(regu)
-        if (re.test(v)) {
-          return true
-        } else {
-          return false
+      // 获取付款二维码
+      getPay () {
+        payment({
+          orderId: this.orderId,
+          orderTotal: this.orderTotal
+        }).then(res => {
+          this.qrCode = res.qrCode
+          console.log(this.qrCode)
+          this._getOrderStatus()
+        })
+      },
+      // 获取订单支付状态
+      _getOrderStatus () {
+        let orderId = this.orderId
+        let params = {
+          params: {
+            orderId: orderId
+          }
         }
+        this.myInterval = setInterval(() => {
+          setTimeout(() => {
+            getOrderStatus(params).then(res => {
+              console.log(res)
+              if (res === 'SUCCESS') {
+                clearInterval(this.myInterval)
+                this.$router.push({
+                  path: '/order/paysuccess',
+                  query: {
+                    orderId: orderId
+                  }
+                })
+              }
+            })
+          }, 1)
+        }, 3000)
       }
     },
     created () {
       this.userId = getStore('userId')
       this.orderId = this.$route.query.orderId
+      let orderId = this.orderId
       if (this.orderId) {
-        this._getOrderDet(this.orderId)
+        this._getOrderDet(orderId)
       } else {
-        this.$router.push({path: '/'})
+        this.$router.push({
+          path: '/'
+        })
       }
+    },
+    destroyed () {
+      clearInterval(this.myInterval)
     },
     components: {
       YShelf,
-      YButton
+      QRCode
     }
   }
 </script>
 <style lang="scss" scoped rel="stylesheet/scss">
+
+  .nav-user-wrapper {
+    top: 18px;
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: opacity .15s ease-out;
+    transition: opacity .15s ease-out;
+  }
+
+  .nav-user-wrapper {
+    width: 182px;
+    transform: translate(-50%);
+    left: 50%;
+  }
+
+  .nav-user-wrapper.active {
+    top: 380px;
+    left: 235px;
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: opacity .15s ease-out;
+    transition: opacity .15s ease-out;
+  }
+
+  .nav-user-wrapper {
+    right: 0;
+    width: 360px;
+    .nav-user-list {
+      &:before {
+        right: 34px;
+      }
+    }
+  }
+
+  .nav-user-wrapper {
+    position: absolute;
+    z-index: 30;
+    padding-top: 18px;
+    opacity: 0;
+    visibility: hidden;
+    top: -3000px;
+  }
+
+  .nav-user-list {
+    width: 182px;
+    height: 250px;
+    text-align: center;
+    &:before {
+      left: 50%;
+    }
+  }
+
+  .nav-user-list .tip {
+    display: block;
+    padding-top: 8px;
+    color: #a1a1a1;
+    font-size: 12px;
+  }
+
+  .nav-user-list .code-viewer img{
+    display: block;
+    width: 133px;
+    height: 133px;
+    margin: 0 auto;
+    border: 0;
+  }
+
   .w {
     padding-top: 39px;
   }
@@ -285,6 +310,7 @@
     margin: 0 auto;
     width: 90%;
     padding-bottom: 30px;
+    height: 420px;
     .p-title {
       font-size: 18px;
       line-height: 40px;

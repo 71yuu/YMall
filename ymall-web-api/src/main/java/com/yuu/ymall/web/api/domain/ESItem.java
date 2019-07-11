@@ -62,6 +62,12 @@ public class ESItem {
     @Field(type = FieldType.Integer)
     private Integer orderNum;
 
+    /**
+     * 商品限制购买数量
+     */
+    @Field(type = FieldType.Integer)
+    private Integer limit;
+
     public Long getId() {
         return id;
     }
@@ -124,5 +130,13 @@ public class ESItem {
 
     public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 }

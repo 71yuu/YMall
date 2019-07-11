@@ -183,7 +183,7 @@
                                                 尊敬的 <span id="username"></span>，
                                                 <span id="hello"></span>
                                                 现在时间是：<span id="currentTime"></span></a>
-                                            <p style="font-size: 20px;"><br>YMALL商城系统是基于 SSM 的电商 B2C 购物商城系统。前后端开发分离，前台基于 Vue 开发，主要功能有会员登录注册、首页管理、分类商品页、商品详情页、购物车、订单、在线支付、会员中心等。后台管理系统主要包括登录、首页管理、分类管理、商品管理、订单管理、会员管理、管理员管理、报表管理、快递管理等等。<br><br>
+                                            <p style="font-size: 20px;"><br>YMALL 商城系统是基于 SSM 的电商 B2C 购物商城系统。前后端开发分离，前台基于 Vue 开发，主要功能有会员登录注册、首页管理、分类商品页、商品详情页、购物车、订单、在线支付、会员中心等。后台管理系统主要包括登录、首页管理、分类管理、商品管理、订单管理、会员管理、管理员管理、报表管理、快递管理等等。<br><br>
                                                 By: Yuu
                                             </p>
                                         </div>
@@ -206,6 +206,33 @@
                             </div>
 
                             <div class="timeline">
+                                <article class="timeline-item alt">
+                                    <div class="timeline-desk">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <span class="arrow-alt"></span>
+                                                <span class="timeline-icon purple"></span>
+                                                <span class="timeline-date">04:00 pm</span>
+                                                <h1 class="purple">2019年7月12日</h1>
+                                                <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 正在进行项目评审与答辩</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                                <article class="timeline-item">
+                                    <div class="timeline-desk">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <span class="arrow-alt"></span>
+                                                <span class="timeline-icon purple"></span>
+                                                <span class="timeline-date">02:05 am</span>
+                                                <h1 class="purple">2019年7月11日</h1>
+                                                <p><a href="https://www.71yuu.com/" target="_blank">Yuu</a> 完成
+                                                    <a href="https://github.com/71yuu/YMall" target="_blank">ymall-web-ui</a>项目
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
                                 <article class="timeline-item alt">
                                     <div class="timeline-desk">
                                         <div class="panel">

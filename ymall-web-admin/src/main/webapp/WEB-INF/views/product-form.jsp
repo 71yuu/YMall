@@ -139,6 +139,7 @@
      * 初始化 Dropzone
      */
     Dropzone.autoDiscover = false;
+    let first = true;
     var myDropzone = new Dropzone("#dropz", {
         url: "/upload", // 文件提交地址
         method: "post",  // 也可用put
@@ -200,6 +201,9 @@
         // 配置服务端地址
         editor.customConfig.uploadImgServer = '/upload';
         editor.customConfig.uploadFileName = 'editorFiles';
+        editor.customConfig.uploadImgMaxSize = 50 * 1024 * 1024
+        // 将 timeout 时间改为 3s
+        editor.customConfig.uploadImgTimeout = 200000
         editor.create();
         E.fullscreen.init('#editor');
 

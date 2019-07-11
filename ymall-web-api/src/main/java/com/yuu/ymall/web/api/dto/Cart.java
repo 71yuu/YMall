@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @classname Cart
  * @date 2019/7/3 9:10
  */
-public class    Cart implements Serializable {
+public class Cart implements Serializable {
 
     /**
      * 用户 id

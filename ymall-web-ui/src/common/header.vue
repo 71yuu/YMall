@@ -49,12 +49,6 @@
                         <router-link to="/user/addressList">收货地址</router-link>
                       </li>
                       <li>
-                        <router-link to="/user/support">售后服务</router-link>
-                      </li>
-                      <li>
-                        <router-link to="/user/coupon">我的优惠</router-link>
-                      </li>
-                      <li>
                         <a href="javascript:;" @click="_logout">退出</a>
                       </li>
                     </ul>
@@ -120,7 +114,7 @@
         </div>
       </header>
       <slot name="nav">
-        <div class="nav-sub" :class="{fixed:st}">
+        <div class="nav-sub" :class="{fixed:st}" style="height:70px;">
           <div class="nav-sub-wrapper" :class="{fixed:st}">
               <el-menu style="background-color: #f7f7f7; width: 100%; " mode="horizontal" @select="handleSelect">
                 <el-menu-item index="1"><a @click="toHome">首页</a></el-menu-item>
@@ -139,7 +133,8 @@
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
   import { getQuickSearch } from '../api/goods'
-  import { logout, cateList } from '../api/index'
+  import { cateList } from '../api/index'
+  import { logout } from '/api/member'
   import { getCartList, delCartProduct } from '../api/cart'
   import { setStore, getStore, removeStore } from '../utils/storage'
 
@@ -345,7 +340,7 @@
       this.token = getStore('token')
       this.navFixed()
       if (this.login) {
-        // 登录获取购物车
+        // todo // 登录获取购物车 this._getCartList()
         this._getCartList()
       } else {
         this.INIT_BUYCART()
@@ -365,6 +360,10 @@
 <style lang="scss" rel="stylesheet/scss">
   @import "../assets/style/theme";
   @import "../assets/style/mixin";
+
+  .el-submenu__title i {
+    display: none!important;
+  }
 
   .el-menu {
     padding-left: 17%;
@@ -957,7 +956,7 @@
       background-image: linear-gradient(#fff, #f1f1f1);
     }
     .nav-sub-wrapper {
-      padding: 14px 0;
+      padding: 6px 0;
       height: 90px;
       position: relative;
       &.fixed {

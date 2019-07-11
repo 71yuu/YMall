@@ -25,7 +25,9 @@
         <!-- 统一的依赖管理 -->
         <alibaba-druid.version>1.1.6</alibaba-druid.version>
         <aliyun-sms.version>4.1.0</aliyun-sms.version>
+        <alipay.version>3.7.110.ALL</alipay.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
         <commons-io.version>1.3.2</commons-io.version>
         <commons-net.version>3.3</commons-net.version>
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
@@ -50,6 +52,7 @@
         <mybatis-paginator.version>1.2.15</mybatis-paginator.version>
         <pagehelper.version>4.1.6</pagehelper.version>
         <qiniuyun.version>[7.2.0, 7.2.99]</qiniuyun.version>
+        <quartz.version>2.2.3</quartz.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <slf4j.version>1.8.0-alpha2</slf4j.version>
         <spring.version>5.0.4.RELEASE</spring.version>
@@ -108,6 +111,11 @@
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
                 <version>${commons-fileupload.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
             </dependency>
             <!-- Apache End -->
 
@@ -217,6 +225,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
@@ -376,6 +389,27 @@
             </dependency>
             <!-- AliYun SMS End-->
 
+            <!-- AliPay Begin -->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>${alipay.version}</version>
+            </dependency>
+            <!-- AliPay End -->
+
+            <!-- Quartz Begin -->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!-- Quartz End -->
+
         </dependencies>
     </dependencyManagement>
 
@@ -401,6 +435,9 @@
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <showWarnings>true</showWarnings>
+                    <compilerArguments>
+                        <extdirs>${project.basedir}/src/main/webapp/lib</extdirs>
+                    </compilerArguments>
                 </configuration>
             </plugin>
         </plugins>

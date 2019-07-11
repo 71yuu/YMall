@@ -161,6 +161,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseResult delete(Long[] ids) {
         for (Long id : ids) {
+            if (id.equals(1l)) {
+                return BaseResult.success("不能删除超级管理员！！！");
+            }
             tbUserMapper.deleteByPrimaryKey(id);
         }
         return BaseResult.success("删除用户成功！");

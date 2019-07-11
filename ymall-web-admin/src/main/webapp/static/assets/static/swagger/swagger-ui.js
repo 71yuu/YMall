@@ -20984,7 +20984,7 @@ Request.prototype.end = function(fn){
       xhr.upload.onprogress = handleProgress;
     }
   } catch(e) {
-    // Accessing xhr.upload fails in IE from a web worker, so just pretend it doesn't exist.
+    // Accessing xhr.upload fails in IE from a controller worker, so just pretend it doesn't exist.
     // Reported here:
     // https://connect.microsoft.com/IE/feedback/details/837245/xmlhttprequest-upload-throws-invalid-argument-when-used-from-web-worker-context
   }

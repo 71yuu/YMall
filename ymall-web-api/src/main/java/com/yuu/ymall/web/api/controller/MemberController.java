@@ -1,9 +1,11 @@
-package com.yuu.ymall.web.api.web;
+package com.yuu.ymall.web.api.controller;
 
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.commons.geetest.GeetestLib;
 import com.yuu.ymall.commons.redis.RedisCacheManager;
+import com.yuu.ymall.domain.TbAddress;
 import com.yuu.ymall.domain.TbMember;
+import com.yuu.ymall.web.api.dto.Member;
 import com.yuu.ymall.web.api.dto.MemberLogin;
 import com.yuu.ymall.web.api.service.MemberService;
 import io.swagger.annotations.Api;
@@ -23,7 +25,7 @@ import java.util.HashMap;
  * @date 2019/6/24 8:57
  */
 @RestController
-@Api(description = "会员接口")
+@Api(description = "会员服务接口")
 @RequestMapping("member")
 public class MemberController {
 
@@ -182,9 +184,151 @@ public class MemberController {
      * @return
      */
     @GetMapping("forgetVerCode")
-    @ApiOperation(value = "")
+    @ApiOperation(value = "会员忘记密码发送验证码")
     public BaseResult forgetVerCode(@RequestParam(defaultValue = "") String account) {
         BaseResult baseResult = memberService.sendVerCode(account);
+        return baseResult;
+    }
+
+    /**
+     * 获取会员地址列表
+     *
+     * @param userId 会员 id
+     * @return
+     */
+    @GetMapping("addressList")
+    @ApiOperation(value = "获取会员地址列表")
+    public BaseResult getAddressList(@RequestParam Long userId) {
+        BaseResult baseResult = memberService.getAddressList(userId);
+        return baseResult;
+    }
+
+    /**
+     * 修改会员收货地址
+     *
+     * @param tbAddress 会员地址
+     * @return
+     */
+    @PostMapping("addressUpdate")
+    @ApiOperation(value = "修改会员地址")
+    public BaseResult addressUpdate(@RequestBody TbAddress tbAddress) {
+        BaseResult baseResult = memberService.updateAddress(tbAddress);
+        return baseResult;
+    }
+
+    /**
+     * 新增会员地址
+     *
+     * @param tbAddress 会员地址
+     * @return
+     */
+    @PostMapping("addressAdd")
+    @ApiOperation(value = "新增会员地址")
+    public BaseResult addressAdd(@RequestBody TbAddress tbAddress) {
+        BaseResult baseResult = memberService.addAdderss(tbAddress);
+        return baseResult;
+    }
+
+    /**
+     * 删除会员地址
+     *
+     * @param id 地址 id
+     * @return
+     */
+    @PostMapping("addressDel")
+    @ApiOperation(value = "删除会员地址")
+    public BaseResult addressDel(@RequestBody TbAddress tbAddress) {
+        BaseResult baseResult = memberService.delAddress(tbAddress.getId());
+        return baseResult;
+    }
+
+    /**
+     * 修改会员头像
+     *
+     * @return
+     */
+    @PostMapping("uploadImg")
+    @ApiOperation(value = "会员修改头像")
+    public BaseResult uploadImg(@RequestBody Member member) {
+        BaseResult baseResult = memberService.uploadImg(member);
+        return baseResult;
+    }
+
+    /**
+     * 修改会员昵称
+     *
+     * @param member 会员数据接收对象
+     * @return
+     */
+    @PostMapping("updateUsername")
+    @ApiOperation(value = "修改会员昵称")
+    public BaseResult updateUsername(@RequestBody Member member) {
+        BaseResult baseResult = memberService.updateUsername(member);
+        return baseResult;
+    }
+
+    /**
+     * 修改会员手机号
+     *
+     * @param member 会员数据接收对象
+     * @return
+     */
+    @PostMapping("updatePhone")
+    @ApiOperation(value = "修改会员手机号")
+    public BaseResult updatePhone(@RequestBody Member member) {
+        BaseResult baseResult = memberService.updatePhone(member);
+        return baseResult;
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param member 会员数据接收对象
+     * @return
+     */
+    @PostMapping("updatePass")
+    @ApiOperation(value = "修改密码")
+    public BaseResult updatePassword(@RequestBody Member member) {
+            BaseResult baseResult = memberService.updatePass(member);
+        return baseResult;
+    }
+
+    /**
+     * 修改邮箱发送验证码
+     *
+     * @param email 邮箱
+     * @return
+     */
+    @GetMapping("sendEmailCode")
+    @ApiOperation(value = "修改邮箱发送验证码")
+    public BaseResult sendEmailCode(@RequestParam String email) {
+        BaseResult baseResult = memberService.sendEmailCode(email);
+        return baseResult;
+    }
+
+    /**
+     * 验证邮箱是否存在
+     *
+     * @param email 邮箱
+     * @return
+     */
+    @GetMapping("checkEmail")
+    @ApiOperation(value = "验证邮箱是否存在")
+    public BaseResult checkEmail(@RequestParam String email) {
+        BaseResult baseResult = memberService.checkEmail(email);
+        return baseResult;
+    }
+
+    /**
+     * 修改邮箱
+     *
+     * @param member 会员
+     * @return
+     */
+    @PostMapping("updateEmail")
+    @ApiOperation(value = "修改邮箱")
+   public BaseResult updateEmail(@RequestBody Member member) {
+        BaseResult baseResult = memberService.updateEmail(member);
         return baseResult;
     }
 }

@@ -95,6 +95,11 @@ public class ItemController {
     @DeleteMapping("stop/{id}")
     @ApiOperation(value = "下架商品")
     public BaseResult stopItem(@PathVariable Long id) {
+        // 判断首页是否关联
+        int result = contentService.selectContentByIid(id);
+        if (result > 0) {
+            return BaseResult.fail("下架商品失败！包含首页展示关联的商品,商品ID："+ id +"，请先从首页配置中删除该商品关联");
+        }
         BaseResult baseResult = itemService.stopItem(id);
         return baseResult;
     }
@@ -122,6 +127,7 @@ public class ItemController {
     @ApiOperation(value = "保存商品")
     public BaseResult saveItem(ItemDto itemDto) {
         BaseResult baseResult = itemService.saveItem(itemDto);
+        // 更新索引库
         return baseResult;
     }
 

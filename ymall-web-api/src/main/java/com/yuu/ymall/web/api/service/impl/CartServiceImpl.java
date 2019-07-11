@@ -74,13 +74,13 @@ public class CartServiceImpl implements CartService {
             cartProduct.setProductImg(tbItem.getImages()[0]);
             cartProduct.setLimitNum(tbItem.getLimitNum());
             cartProduct.setSalePrice(tbItem.getPrice());
+            cartProduct.setChecked("0");
             String redisJson = MapperUtil.obj2json(cartProduct);
             redisCacheManager.setHash(cartKey, hashKey, redisJson);
             return BaseResult.success("添加商品到购物车成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return BaseResult.fail("添加商品到购物车失败");
     }
 
@@ -103,8 +103,11 @@ public class CartServiceImpl implements CartService {
                     cartProduct = MapperUtil.json2pojo(productJson, CartProduct.class);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    return BaseResult.fail("获取购物车失败");
                 }
-                cartProducts.add(cartProduct);
+                if (cartProduct != null) {
+                    cartProducts.add(cartProduct);
+                }
             }
         }
 
@@ -124,5 +127,84 @@ public class CartServiceImpl implements CartService {
         redisCacheManager.deleteHash(redisKey, hashKey);
 
         return BaseResult.success("删除购物车商品成功");
+    }
+
+    @Override
+    public BaseResult editProduct(Cart cart) {
+
+        // Redis key
+        String redisKey = CART_PRE + ":" + cart.getUserId();
+
+        // Hash key
+        String hashKey = String.valueOf(cart.getProductId());
+
+        // 修改缓存
+        try {
+            String oldCartJson = (String) redisCacheManager.getHash(redisKey, hashKey);
+            CartProduct oldCartProduct = MapperUtil.json2pojo(oldCartJson, CartProduct.class);
+            oldCartProduct.setChecked(cart.getChecked());
+            oldCartProduct.setProductNum(cart.getProductNum());
+            String newCartProductJson = MapperUtil.obj2json(oldCartProduct);
+            if (newCartProductJson != null) {
+                redisCacheManager.setHash(redisKey, hashKey, newCartProductJson);
+                return BaseResult.success("编辑购物车商品成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return BaseResult.fail("编辑购物车商品失败");
+    }
+
+    @Override
+    public BaseResult editCheckAll(Cart cart) {
+
+        // Redis key
+        String redisKey = CART_PRE + ":" + cart.getUserId();
+
+        Map<String, Object> hashByKey = redisCacheManager.getHashByKey(redisKey);
+        for (String key : hashByKey.keySet()) {
+            String oldCartProductJson = (String) hashByKey.get(key);
+            try {
+                CartProduct cartProduct = MapperUtil.json2pojo(oldCartProductJson, CartProduct.class);
+                if (cartProduct != null) {
+                    if ("true".equals(cart.getChecked())) {
+                        cartProduct.setChecked("1");
+                    } else {
+                        cartProduct.setChecked("0");
+                    }
+                }
+                String newCartProduct = MapperUtil.obj2json(cartProduct);
+                redisCacheManager.setHash(redisKey, key, newCartProduct);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return BaseResult.fail("购物车全选失败");
+            }
+        }
+
+        return BaseResult.success("购物车全选成功");
+    }
+
+    @Override
+    public BaseResult delCartChecked(Cart cart) {
+
+        // Redis key
+        String redisKey = CART_PRE + ":" + cart.getUserId();
+
+        Map<String, Object> hashByKey = redisCacheManager.getHashByKey(redisKey);
+        for (String key : hashByKey.keySet()) {
+            String oldCartProductJson = (String) hashByKey.get(key);
+            try {
+                CartProduct cartProduct = MapperUtil.json2pojo(oldCartProductJson, CartProduct.class);
+                if (cartProduct != null && "1".equals(cartProduct.getChecked())) {
+                    redisCacheManager.deleteHash(redisKey, key);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return BaseResult.fail("删除购物车已选商品失败");
+            }
+        }
+
+        return BaseResult.success("删除购物车已选商品成功");
     }
 }

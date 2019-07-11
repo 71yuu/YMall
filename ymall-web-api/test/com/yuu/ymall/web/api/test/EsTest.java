@@ -47,9 +47,9 @@ public class EsTest {
      */
     @Test
     public void createIndex() throws Exception {
-        //elasticsearchTemplate.createIndex(ESItem.class);
+        elasticsearchTemplate.createIndex(ESItem.class);
         //System.out.println("创建索引和映射关系成功");
-        elasticsearchTemplate.putMapping(ESItem.class);
+        //elasticsearchTemplate.putMapping(ESItem.class);
     }
 
     /**
@@ -67,6 +67,7 @@ public class EsTest {
             esItem.setProductId(150635087972564l);
             esItem.setPicUrl("https://i.loli.net/2018/07/13/5b48ac7766d98.png");
             esItem.setOrderNum(100 * (int)i);
+            esItem.setLimit((int)i);
             itemRepository.save(esItem);
         }
     }

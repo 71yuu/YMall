@@ -25,6 +25,15 @@
                 <a href="javascript:;" onclick="deleteMulti()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
                 <a href="javascript:;" onclick="orderPrint()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe652;</i> 订单打印</a>
             </span>
+            <span class="l" style="margin-top: 5px;margin-left: 1200px;">
+              <select class="select" size="1" id="orderType" style="height:35px;width: 200px;">
+                <option value="-1" selected>所有订单</option>
+                <option value="0">待付款订单</option>
+                <option value="2">待发货订单</option>
+                <option value="4">交易成功订单</option>
+                <option value="5">交易失败订单</option>
+              </select>
+            </span>
         </div>
         <div class="mt-20">
             <div class="mt-20" style="margin-bottom: 70px">
@@ -309,6 +318,20 @@
 
         App.deleteMulti(url, successMethod);
     }
+
+    /**
+     * 选择订单类型
+     */
+    $("#orderType").on("change",function(){
+        let type = $("#orderType").val()
+
+        let param = {
+            "status": type
+        }
+
+        _dataTables.settings()[0].ajax.data = param
+        _dataTables.ajax.reload()
+    })
 
 </script>
 </body>

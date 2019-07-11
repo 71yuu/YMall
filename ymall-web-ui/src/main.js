@@ -7,7 +7,7 @@ import infiniteScroll from 'vue-infinite-scroll'
 import VueCookie from 'vue-cookie'
 import PicZoom from 'vue-piczoom'
 import { userInfo } from './api'
-import { Button, Pagination, Checkbox, Col, Menu, Submenu, MenuItem, MenuItemGroup, Icon, Autocomplete, Loading, Message, Notification, Steps, Step, Form, FormItem, Table, TableColumn, Input, Dialog, Select, Option } from 'element-ui'
+import { Button, Pagination, Checkbox, Col, Menu, Submenu, MenuItem, MenuItemGroup, Icon, Autocomplete, Loading, Message, Notification, Steps, Step, Form, FormItem, Table, TableColumn, Input, Dialog, Select, Option, MessageBox, Cascader } from 'element-ui'
 import { getStore } from './utils/storage'
 import VueContentPlaceholders from 'vue-content-placeholders'
 Vue.use(VueContentPlaceholders)
@@ -31,10 +31,14 @@ Vue.use(Input)
 Vue.use(Dialog)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Cascader)
+Vue.component(MessageBox)
 Vue.use(Loading.directive)
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$confirm = MessageBox.confirm
 Vue.use(infiniteScroll)
 Vue.use(VueCookie)
 Vue.use(PicZoom)
@@ -45,7 +49,7 @@ Vue.use(VueLazyload, {
   // attempt: 1
 })
 Vue.config.productionTip = false
-const whiteList = ['/home', '/goods', '/login', '/register', '/forgetPassword', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
+const whiteList = ['/home', '/goods', '/login', '/register', '/forgetPassword', '/goodsDetails', '/search', '/cart', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
 router.beforeEach(function (to, from, next) {
   let params = {
     params: {

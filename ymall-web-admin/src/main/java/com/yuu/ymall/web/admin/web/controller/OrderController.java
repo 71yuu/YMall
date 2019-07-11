@@ -47,8 +47,8 @@ public class OrderController {
      */
     @GetMapping("list")
     @ApiOperation(value = "获取订单列表")
-    public DataTablesResult<TbOrder> getOrderList(HttpServletRequest request, @RequestParam("search[value]") String search) {
-        DataTablesResult<TbOrder> result = orderService.getOrderList(request, search);
+    public DataTablesResult<TbOrder> getOrderList(HttpServletRequest request, @RequestParam("search[value]") String search,@RequestParam(defaultValue = "-1") int status) {
+        DataTablesResult<TbOrder> result = orderService.getOrderList(request, search, status);
         return result;
     }
 

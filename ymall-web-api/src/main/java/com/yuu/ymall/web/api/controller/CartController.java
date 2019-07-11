@@ -1,4 +1,4 @@
-package com.yuu.ymall.web.api.web;
+package com.yuu.ymall.web.api.controller;
 
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.web.api.dto.Cart;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("member/cart")
-@Api(description = "购物车")
+@Api(description = "购物车服务接口")
 public class CartController {
 
     @Autowired
@@ -50,7 +50,7 @@ public class CartController {
     }
 
     /**
-     * 删除商品到购物车
+     * 删除购物车商品
      *
      * @param userId 会员id
      * @param productId 商品id
@@ -63,4 +63,44 @@ public class CartController {
         return baseResult;
     }
 
+    /**
+     * 修改购物车商品
+     *
+     * @param cart 购物车商品
+     * @return
+     */
+    @PostMapping("editProduct")
+    @ApiOperation(value = "修改购物车商品")
+    public BaseResult editProduct(@RequestBody Cart cart) {
+        BaseResult baseResult = cartService.editProduct(cart);
+        return baseResult;
+    }
+
+    /**
+     * 全选购物车
+     *
+     * @param cart 购物车
+     * @return
+     */
+    @PostMapping("editCheckAll")
+    @ApiOperation(value = "全选购物车")
+    public BaseResult editCheckAll(@RequestBody Cart cart) {
+        BaseResult baseResult = cartService.editCheckAll(cart);
+        return baseResult;
+    }
+
+    /**
+     * 删除已选购物车商品
+     *
+     * @param cart 购物车
+     * @return
+     */
+    @PostMapping("delChecked")
+    @ApiOperation(value = "删除已选购物车商品")
+    public BaseResult delCartChecked(@RequestBody Cart cart) {
+        BaseResult baseResult = cartService.delCartChecked(cart);
+        return baseResult;
+    }
+
 }
+

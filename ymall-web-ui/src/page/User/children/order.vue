@@ -32,8 +32,7 @@
                     <div>¥ {{Number(good.salePrice).toFixed(2)}}</div>
                     <div class="num">{{good.productNum}}</div>
                     <div class="type">
-                      <el-button style="margin-left:20px" @click="_delOrder(item.orderId,i)" type="danger" size="small" v-if="j<1" class="del-order">删除此订单</el-button>
-                      <!-- <a @click="_delOrder(item.orderId,i)" href="javascript:;" v-if="j<1" class="del-order">删除此订单</a> -->
+                      <el-button style="margin-left:20px" @click="_delOrder(item.orderId,i,item.orderStatus)" :disabled="item.orderStatus === 2 ? true : false" type="danger" size="small" v-if="j<1" class="del-order">{{getOperate(item.orderStatus)}}</el-button>
                     </div>
                   </div>
                 </div>
@@ -73,89 +72,149 @@
   </div>
 </template>
 <script>
-  import { orderList, delOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
+  import { getOrderList, confirmReceipt, deleteOrder } from '/api/order'
+
   export default {
     data () {
       return {
-        orderList: [0],
         userId: '',
-        orderStatus: '',
-        loading: true,
         currentPage: 1,
         pageSize: 5,
+        orderList: '',
+        loading: true,
         total: 0
       }
     },
     methods: {
-      message (m) {
+      // 确认删除
+      confirmDelete (orderId) {
+        this.$confirm('您确认删除订单号为' + orderId + '的订单吗？此操作不可恢复', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteOrder({orderId: orderId, userId: this.userId}).then(res => {
+            if (res.status === 200) {
+              this._orderList()
+              this.messageSuccess(res.message)
+            } else {
+              this.messageFail(res.message)
+            }
+          })
+        })
+      },
+      // 成功消息提示
+      messageSuccess (m) {
+        this.$message({
+          message: m,
+          type: 'success'
+        })
+      },
+      // 失败消息提示
+      messageFail (m) {
         this.$message.error({
           message: m
         })
       },
-      handleSizeChange (val) {
-        this.pageSize = val
-        this._orderList()
-      },
-      handleCurrentChange (val) {
-        this.currentPage = val
-        this._orderList()
-      },
-      orderPayment (orderId) {
-        window.open(window.location.origin + '#/order/payment?orderId=' + orderId)
-      },
-      goodsDetails (id) {
-        window.open(window.location.origin + '#/goodsDetails?productId=' + id)
-      },
-      orderDetail (orderId) {
-        this.$router.push({
-          path: 'orderDetail',
-          query: {
-            orderId: orderId
-          }
-        })
-      },
-      getOrderStatus (status) {
-        if (status === '1') {
-          return '支付审核中'
-        } else if (status === '2') {
-          return '待发货'
-        } else if (status === '3') {
-          return '待收货'
-        } else if (status === '4') {
-          return '交易成功'
-        } else if (status === '5') {
-          return '交易关闭'
-        } else if (status === '6') {
-          return '支付失败'
-        }
-      },
+      // 获取订单列表
       _orderList () {
         let params = {
           params: {
             userId: this.userId,
-            size: this.pageSize,
-            page: this.currentPage
+            page: this.currentPage,
+            size: this.pageSize
           }
         }
-        orderList(params).then(res => {
+        getOrderList(params).then(res => {
           this.orderList = res.result.data
           this.total = res.result.total
           this.loading = false
         })
       },
-      _delOrder (orderId, i) {
-        let params = {
-          params: {
-            orderId: orderId
-          }
+      // 更改分页大小
+      handleSizeChange (val) {
+        this.pageSize = val
+        this._orderList()
+      },
+      // 更改当前页数
+      handleCurrentChange (val) {
+        this.currentPage = val
+        this._orderList()
+      },
+      // 获取订单状态
+      getOrderStatus (status) {
+        if (status === 0) {
+          return '待支付'
+        } else if (status === 1) {
+          return '已付款'
+        } else if (status === 2) {
+          return '待发货'
+        } else if (status === 3) {
+          return '已发货'
+        } else if (status === 4) {
+          return '交易成功'
+        } else if (status === 5) {
+          return '交易失败'
+        } else {
+          return '交易失败'
         }
-        delOrder(params).then(res => {
-          if (res.success === true) {
-            this.orderList.splice(i, 1)
-          } else {
-            this.message('删除失败')
+      },
+      // 获取订单操作
+      getOperate (status) {
+        if (status === 0) {
+          return '去支付'
+        } else if (status === 1 || status === 2 || status === 3) {
+          return '确认收货'
+        } else if (status === 4 || status === 5) {
+          return '删除订单'
+        } else {
+          return '交易失败'
+        }
+      },
+      // 操作订单
+      _delOrder (orderId, i, status) {
+        if (status === 0) {
+          this.$router.push({
+            path: '/order/payment',
+            query: {
+              'orderId': orderId
+            }
+          })
+        } else if (status === 1 || status === 2 || status === 3) {
+          console.log('确认收货')
+          confirmReceipt({orderId: orderId, userId: this.userId}).then(res => {
+            if (res.status === 200) {
+              this._orderList()
+              this.messageSuccess(res.message)
+            } else {
+              this.messageFail(res.message)
+            }
+          })
+        } else if (status === 4 || status === 5) {
+          console.log('删除订单')
+          this.confirmDelete(orderId)
+          return '删除订单'
+        } else {
+          return '交易失败'
+        }
+      },
+      // 查看订单详情
+      goodsDetails (productId) {
+        this.$router.push({
+          path: '/goodsDetails',
+          query: {
+            productId: productId
+          }
+        })
+      },
+      // 查看详情
+      orderDetail (orderId) {
+        this.$router.push({
+          path: '/user/orderDetail',
+          query: {
+            orderId: orderId
           }
         })
       }

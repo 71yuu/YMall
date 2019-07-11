@@ -87,6 +87,12 @@ public class ContentServiceImpl implements ContentService {
                     tbPanelContentDto.setSalePrice(tbItem.getPrice());
                     tbPanelContentDto.setProductName(tbItem.getTitle());
                     tbPanelContentDto.setSubTitle(tbItem.getSellPoint());
+                    Integer limitNum = tbItem.getLimitNum();
+                    Integer num = tbItem.getNum();
+                    if (limitNum > num) {
+                        limitNum = num;
+                    }
+                    tbPanelContentDto.setLimit(limitNum);
                 }
             }
             tbPanelDto.setPanelContentDtos(tbPanelContents);

@@ -55,5 +55,6 @@
         select id, name
         from tb_item_cat
         where parent_id = #{id}
+        order by sort_order
     </select>
 </mapper>

@@ -13,7 +13,7 @@
             </ul>
           </div>
           <div class="thumb">
-            <div class="big">
+            <div class="big" style="width:100%; height: 100%;">
               <pic-zoom :url="big" :scale="3" :alt="product.productName"></pic-zoom>
               <!--<img :src="big" :alt="product.productName">-->
             </div>
@@ -53,7 +53,7 @@
       <y-shelf title="产品信息">
         <div slot="content">
           <div class="img-item" v-if="productDetail">
-            <div v-html="productDetail">{{ productMsg }}</div>
+            <div v-html="productDetail">{{productDetail}}</div>
           </div>
           <div class="no-info" v-else>
             <img src="/static/images/no-data.png">
@@ -153,8 +153,8 @@
           query: {productId, num: this.productNum}
         })
       },
+      // 数量组件回调方法
       editNum (num) {
-        console.log(num)
         this.productNum = num
       }
     },

@@ -33,23 +33,6 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
-            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <div class="radio-box">
-                    <input name="sex" value="男" type="radio" id="sex-1" checked>
-                    <label for="sex-1">男</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio" id="sex-2" name="sex" value="女">
-                    <label for="sex-2">女</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio" id="sex-3" name="sex" value="保密">
-                    <label for="sex-3">保密</label>
-                </div>
-            </div>
-        </div>
-        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="phone" name="phone">
@@ -71,13 +54,6 @@
                             class="Hui-iconfont">&#xe642;</i> 上传头像</a>
                     <input type="file" id="fileBtn" name="userFile" accept='image/gif,image/jpeg,image/jpg,image/png,image/svg' class="input-file" onchange="upload()">
                 </span>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">描述：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <textarea id="description" name="description" cols="" rows="" class="textarea"
-                          placeholder="说点什么...最多输入100个字符"></textarea>
             </div>
         </div>
         <div class="row cl">

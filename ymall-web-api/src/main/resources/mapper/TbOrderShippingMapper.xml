@@ -19,13 +19,10 @@
     where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrderShipping" >
-    insert into tb_order_shipping (order_id, receiver_name, receiver_phone, 
-      receiver_mobile, receiver_province, receiver_city, 
-      receiver_district, receiver_address, receiver_zip, 
+    insert into tb_order_shipping (order_id, receiver_name, receiver_phone, receiver_address,
       created, updated)
-    values (#{orderId,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR}, 
-      #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, #{receiverCity,jdbcType=VARCHAR}, 
-      #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{receiverZip,jdbcType=VARCHAR}, 
+    values (#{orderId,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR},
+      #{receiverAddress,jdbcType=VARCHAR},
       #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrderShipping" >
@@ -43,13 +40,13 @@
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select order_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, 
+    select order_id, receiver_name, receiver_phone, receiver_mobile, receiver_province,
     receiver_city, receiver_district, receiver_address, receiver_zip, created, updated
     from tb_order_shipping
     where order_id = #{orderId,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select order_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, 
+    select order_id, receiver_name, receiver_phone, receiver_mobile, receiver_province,
     receiver_city, receiver_district, receiver_address, receiver_zip, created, updated
     from tb_order_shipping
   </select>

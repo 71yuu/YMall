@@ -19,12 +19,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_order_item (item_id, order_id, num, 
-      title, price, total_fee, 
+    insert into tb_order_item (item_id, order_id, num,
+      title, price, total_fee,
       pic_path
       )
-    values (#{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, 
-      #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{totalFee,jdbcType=DECIMAL}, 
+    values (#{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER},
+      #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{totalFee,jdbcType=DECIMAL},
       #{picPath,jdbcType=VARCHAR}
       )
   </insert>
@@ -90,5 +90,12 @@
         select <include refid="tbOrderItemBaseColumns"/>
         from tb_order_item as a
         where order_id = #{orderId}
+    </select>
+
+    <!-- 查询商品订单数量 -->
+    <select id="selectOrderNumByItemId" resultType="java.lang.Integer">
+        select count(*)
+        from tb_order_item
+        where item_id = #{itemId}
     </select>
 </mapper>

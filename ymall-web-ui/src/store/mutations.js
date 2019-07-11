@@ -18,14 +18,15 @@ export default {
     }
   },
   // 加入购物车
-  [ADD_CART] (state, {productId, salePrice, productName, productImg, productNum = 1}) {
+  [ADD_CART] (state, {productId, salePrice, productName, productImg, limitNum, productNum = 1}) {
     let cart = state.cartList // 购物车
     let flag = true
     let goods = {
       productId,
       salePrice,
       productName,
-      productImg
+      productImg,
+      limitNum
     }
     if (cart.length) {        // 有内容
       cart.forEach(item => {
@@ -88,7 +89,8 @@ export default {
     setStore('buyCart', state.cartList)
   },
   // 修改购物车
-  [EDIT_CART] (state, {productId, productNum, checked}) {
+  [EDIT_CART] (state, {productId, productNum, checked, checkedDelete}) {
+    productId = Number(productId)
     let cart = state.cartList
     if (productNum) {
       cart.forEach((item, i) => {
@@ -99,8 +101,13 @@ export default {
       })
     } else if (productId) {
       cart.forEach((item, i) => {
+        console.log(productId)
+        console.log(i)
         if (item.productId === productId) {
+          console.log('splice')
+          console.log(cart)
           cart.splice(i, 1)
+          console.log(cart)
         }
       })
     } else {

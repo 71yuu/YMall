@@ -15,15 +15,22 @@
     delete from tb_order_item
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrderItem" >
+
+    <!-- 根据订单 id 删除订单商品 -->
+    <delete id="deleteByOrderId">
+        delete from tb_order_item
+        where order_id = #{orderId}
+    </delete>
+
+    <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrderItem" >
     <selectKey resultType="java.lang.String" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_order_item (item_id, order_id, num, 
-      title, price, total_fee, 
+    insert into tb_order_item (id, item_id, order_id, num,
+      title, price, total_fee,
       pic_path)
-    values (#{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, 
-      #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{totalFee,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=VARCHAR}, #{itemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER},
+      #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{totalFee,jdbcType=DECIMAL},
       #{picPath,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrderItem" >
@@ -46,4 +53,22 @@
     select id, item_id, order_id, num, title, price, total_fee, pic_path
     from tb_order_item
   </select>
+
+    <!-- sql 片断 -->
+    <sql id="tbOrderItemBaseColumns">
+        id,
+        item_id,
+        order_id,
+        num,
+        title,
+        price,
+        total_fee,
+        pic_path
+    </sql>
+    <!-- 根据订单 id,查询订单商品 -->
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+      select <include refid="tbOrderItemBaseColumns"/>
+      from tb_order_item
+      where order_id = #{orderId}
+    </select>
 </mapper>

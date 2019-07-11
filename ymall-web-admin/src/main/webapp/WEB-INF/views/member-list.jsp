@@ -32,7 +32,6 @@
                 <th width="30"><input type="checkbox" class="minimal icheck_master"/></th>
                 <th width="40">ID</th>
                 <th width="80">用户名</th>
-                <th width="40">性别</th>
                 <th width="90">手机</th>
                 <th width="100">邮箱</th>
                 <th width="90">创建时间</th>
@@ -62,16 +61,6 @@
             },
             {"data": "id"},
             {"data": "username"},
-            {
-                "data": "sex",
-                render: function (data, type, row, meta) {
-                    if (data == null || data == "") {
-                        return "用户未设置该信息！";
-                    } else {
-                        return data;
-                    }
-                }
-            },
             {"data": "phone"},
             {
                 "data": "email",

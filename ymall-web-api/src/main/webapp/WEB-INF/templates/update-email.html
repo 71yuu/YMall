@@ -1,0 +1,85 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>YMALL 修改邮箱</title>
+    <style media="all" type="text/css">
+        td, p, h1, h3, a {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        a {
+            color: #66c0f4;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #66c0f4;
+            text-decoration: none;
+        }
+    </style>
+<body bgcolor="" link="#6d93b8" alink="#9DB7D0" vlink="#6d93b8"
+      style="font-family: Helvetica, Arial, sans-serif; font-size: 14px;">
+    <table style="background-color: #ebedf0; width: 538px;" align="center" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td style="font-size: 24px;color: #292c33;text-align: center;height:65px;">
+                YMALL
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="470" border="0" align="center" cellpadding="0" cellspacing="0"
+                       style="background-color: #fff;padding-left: 5px; padding-right: 5px; padding-bottom: 10px;">
+
+                    <tbody>
+                    <tr>
+                        <td style="padding-top: 32px;">
+                        <span style="padding-left: 25px;padding-right: 25px;font-size: 14px;font-family: '微软雅黑','黑体',arial;color: #525866;">
+                            <span th:text="${email}"></span> 您好
+                        </span>
+                            <br>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-top: 32px;padding-left: 25px;padding-right: 25px;font-size: 14px;font-family: '微软雅黑','黑体',arial;color: #525866;">
+                            以下是您更改 <a style="color: #8f98a0;" target="_blank" href="https://71yuu.com/">YMALL</a>
+                            更改邮箱时所需的验证码：
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-left: 25px;padding-top: 24px; padding-bottom: 24px;">
+                            <div>
+                                <span style="font-size: 24px; color: #66c0f4; font-family: Arial, Helvetica, sans-serif; font-weight: bold;"><span th:text="${code}"></span></span>
+                                <br>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-left: 25px;padding-right: 25px;font-size: 14px;font-family: '微软雅黑','黑体',arial;color: #525866;">
+                            如果不是您本人尝试更改您的 <a style="color: #8f98a0;" target="_blank" href="https://71yuu.com/">YMALL</a>
+                            登录凭据，请忽略此封电子邮件。有可能是其他用户输入了错误的登录信息。
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-left: 25px;font-size: 16px; color: #6d7880; padding-top: 50px; padding-bottom:10px;">
+                            <a style="color: #8f98a0;" target="_blank" href="https://71yuu.com/">YMALL<br>https://71yuu.com/</a><br>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 65px;border-bottom: 1px solid grey;text-align:center;">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

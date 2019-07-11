@@ -24,21 +24,26 @@
     delete from tb_order
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrder" >
-    <selectKey resultType="java.lang.String" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into tb_order (payment, payment_type, post_fee, 
-      status, payment_time, consign_time, 
-      end_time, close_time, shipping_name, 
-      shipping_code, user_id, buyer_message, 
-      buyer_nick, buyer_comment, created, 
+
+    <!-- 取消订单 -->
+    <update id="cancelOrder">
+        update tb_order
+        set close_time = now(), status = 5
+        where id = #{orderId}
+    </update>
+
+    <insert id="insert" parameterType="com.yuu.ymall.domain.TbOrder" >
+    insert into tb_order (id, payment, payment_type, post_fee,
+      status, payment_time, consign_time,
+      end_time, close_time, shipping_name,
+      shipping_code, user_id, buyer_message,
+      buyer_nick, buyer_comment, created,
       updated)
-    values (#{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, #{postFee,jdbcType=DECIMAL}, 
-      #{status,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, #{consignTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{shippingName,jdbcType=VARCHAR}, 
-      #{shippingCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{buyerMessage,jdbcType=VARCHAR}, 
-      #{buyerNick,jdbcType=VARCHAR}, #{buyerComment,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP}, 
+    values (#{id, jdbcType=VARCHAR}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, #{postFee,jdbcType=DECIMAL},
+      #{status,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, #{consignTime,jdbcType=TIMESTAMP},
+      #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{shippingName,jdbcType=VARCHAR},
+      #{shippingCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{buyerMessage,jdbcType=VARCHAR},
+      #{buyerNick,jdbcType=VARCHAR}, #{buyerComment,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP},
       #{updated,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbOrder" >
@@ -61,17 +66,95 @@
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select id, payment, payment_type, post_fee, status, payment_time, consign_time, end_time, 
-    close_time, shipping_name, shipping_code, user_id, buyer_message, buyer_nick, buyer_comment, 
+
+    <!-- 修改订单状态 -->
+    <update id="updateOrderStatus">
+        update tb_order
+        set status = #{orderStatus}
+        where id = #{orderId}
+    </update>
+
+    <!-- 支付成功，修改支付时间和支付状态 -->
+    <update id="updatePayTimeAndStatus">
+        update tb_order
+        set payment_time = now(), status = 2
+        where id = #{orderId}
+    </update>
+
+    <!-- 支付失败，修改关闭时间和支付状态 -->
+    <update id="updateCloseTimeAndStatus">
+        update tb_order
+        set close_time = now, status = 5
+        where id = #{orderId}
+    </update>
+
+    <!-- 确认收货 -->
+    <update id="confirmReceipt">
+        update tb_order
+        set end_time = now(), status = 4
+        where id = #{orderId}
+    </update>
+
+    <select  id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, payment, payment_type, post_fee, status, payment_time, consign_time, end_time,
+    close_time, shipping_name, shipping_code, user_id, buyer_message, buyer_nick, buyer_comment,
     created, updated
     from tb_order
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, payment, payment_type, post_fee, status, payment_time, consign_time, end_time, 
-    close_time, shipping_name, shipping_code, user_id, buyer_message, buyer_nick, buyer_comment, 
+    select id, payment, payment_type, post_fee, status, payment_time, consign_time, end_time,
+    close_time, shipping_name, shipping_code, user_id, buyer_message, buyer_nick, buyer_comment,
     created, updated
     from tb_order
   </select>
+
+    <!-- sql 片断 -->
+    <sql id="tbOrderBaseColumns">
+        id,
+        payment,
+        payment_type,
+        post_fee,
+        status,
+        payment_time,
+        consign_time,
+        end_time,
+        close_time,
+        shipping_name,
+        shipping_code,
+        user_id,
+        buyer_message,
+        buyer_nick,
+        buyer_comment,
+        created,
+        updated
+    </sql>
+
+    <!-- 查询超时的订单 -->
+    <select id="selectOrderOutTime" resultType="string">
+      select id from tb_order
+      where status = 0
+      and created &lt;= subdate(now(), interval 2 hour)
+    </select>
+
+    <!-- 获取会员所有订单 -->
+    <select id="selectByUserId" resultMap="BaseResultMap">
+      select <include refid="tbOrderBaseColumns"/>
+      from tb_order
+      where user_id = #{userId}
+      order by created desc
+    </select>
+
+    <!-- 获取会员订单总数 -->
+    <select id="getMemberOrderCount" resultType="int">
+      select count(*) from tb_order
+      where user_id = #{userId}
+    </select>
+
+    <!-- 获取会员的订单信息 -->
+    <select id="selectByUserIdAndOrderId" resultType="com.yuu.ymall.domain.TbOrder">
+        select <include refid="tbOrderBaseColumns"/>
+        from tb_order
+        where user_id = #{userId} and id = #{orderId}
+    </select>
 </mapper>

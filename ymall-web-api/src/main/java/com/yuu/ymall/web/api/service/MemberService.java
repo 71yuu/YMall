@@ -1,7 +1,9 @@
 package com.yuu.ymall.web.api.service;
 
 import com.yuu.ymall.commons.dto.BaseResult;
+import com.yuu.ymall.domain.TbAddress;
 import com.yuu.ymall.domain.TbMember;
+import com.yuu.ymall.web.api.dto.Member;
 import com.yuu.ymall.web.api.dto.MemberLogin;
 
 import javax.servlet.http.HttpSession;
@@ -87,4 +89,92 @@ public interface MemberService {
      * @return
      */
     BaseResult sendVerCode(String account);
+
+    /**
+     * 获取会员地址列表
+     *
+     * @param userId 会员id
+     * @return
+     */
+    BaseResult getAddressList(Long userId);
+
+    /**
+     * 修改会员地址
+     *
+     * @param tbAddress 会员地址
+     * @return
+     */
+    BaseResult updateAddress(TbAddress tbAddress);
+
+    /**
+     * 新增会员地址
+     *
+     * @param tbAddress 会员地址
+     * @return
+     */
+    BaseResult addAdderss(TbAddress tbAddress);
+
+    /**
+     * 删除会员地址
+     *
+     * @param id 会员地址 id
+     * @return
+     */
+    BaseResult delAddress(Long id);
+
+    /**
+     * 会员修改头像
+     *
+     * @param member 会员请求数据
+     * @return
+     */
+    BaseResult uploadImg(Member member);
+
+    /**
+     * 修改会员昵称
+     *
+     * @param member 会员请求数据
+     * @return
+     */
+    BaseResult updateUsername(Member member);
+
+    /**
+     * 修改会员手机号
+     *
+     * @param member 会员请求数据
+     * @return
+     */
+    BaseResult updatePhone(Member member);
+
+    /**
+     * 个人中心修改密码
+     *
+     * @param member 会员请求数据
+     * @return
+     */
+    BaseResult updatePass(Member member);
+
+    /**
+     * 发送 email 邮件
+     *
+     * @param email 邮箱
+     * @return
+     */
+    BaseResult sendEmailCode(String email);
+
+    /**
+     * 验证邮箱是否存在
+     *
+     * @param email 邮箱
+     * @return
+     */
+    BaseResult checkEmail(String email);
+
+    /**
+     * 修改邮箱
+     *
+     * @param member 会员接收数据
+     * @return
+     */
+    BaseResult updateEmail(Member member);
 }

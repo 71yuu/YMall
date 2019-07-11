@@ -10,7 +10,7 @@
         <div v-if="addList.length">
           <div class="address-item" v-for="(item,i) in addList" :key="i">
             <div class="name">{{item.userName}}</div>
-            <div class="address-msg">{{item.streetName}}</div>
+            <div class="address-msg">{{item.detailsAddress}}</div>
             <div class="telephone">{{item.tel}}</div>
             <div class="defalut">
               <a @click="changeDef(item)"
@@ -20,7 +20,7 @@
             </div>
             <div class="operation">
               <el-button type="primary" icon="edit" size="small"  @click="update(item)"></el-button>
-              <el-button type="danger" icon="delete" size="small" :data-id="item.addressId" @click="del(item.addressId,i)"></el-button>
+              <el-button type="danger" icon="delete" size="small" :data-id="item.id" @click="del(item.id,i)"></el-button>
             </div>
           </div>
         </div>
@@ -34,133 +34,245 @@
         </div>
       </div>
     </y-shelf>
-    <y-popup :open="popupOpen" @close='popupOpen=false' :title="popupTitle">
-      <div slot="content" class="md" :data-id="msg.addressId">
-        <div>
-          <input type="text" placeholder="收货人姓名" v-model="msg.userName">
+
+    <!-- 新增或修改地址 -->
+    <div class="edit-address" v-show="editAddressShow">
+      <y-shelf :title="addressTxt">
+            <span slot="right">
+              <span class="close" @click="editAddressShow=false">
+                <svg t="1501234940517" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+                     xmlns="http://www.w3.org/2000/svg" p-id="3014" xmlns:xlink="http://www.w3.org/1999/xlink"
+                     width="20" height="20"><path
+                  d="M941.576 184.248l-101.824-101.824L512 410.176 184.248 82.424 82.424 184.248 410.168 512l-327.744 327.752 101.824 101.824L512 613.824l327.752 327.752 101.824-101.824L613.832 512z"
+                  fill="#cdcdcd" p-id="3015"></path></svg>
+              </span>
+            </span>
+        <div slot="content" class="content">
+          <el-form :model="addressVer" :rules="addressVerRules" ref="addressVer" class="register-form">
+            <el-form-item prop="userName">
+              <el-input v-model="addressVer.userName" size="large" placeholder="收货人姓名" auto-complete="off" style="width:296px;"></el-input>
+            </el-form-item>
+            <el-form-item prop="phone">
+              <el-input v-model="addressVer.phone" size="large" placeholder="手机号" auto-complete="off" style="width:296px;"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-cascader
+                placeholder="请选择地址"
+                size="large"
+                :options="options"
+                v-model="selectedOptions"
+                @change="handleChange" style="width:296px;">
+              </el-cascader>
+            </el-form-item>
+            <el-form-item prop="streetName">
+              <el-input v-model="addressVer.streetName" size="large" placeholder="街道地址" auto-complete="off" style="width:296px;"></el-input>
+            </el-form-item>
+            <el-checkbox class="auto-login" v-model="addressVer.isDefault">设为默认</el-checkbox>
+          </el-form>
+
+          <div class="bootom-btn pa">
+            <el-button @click="editAddressShow=false" style="width: 140px; height: 40px;">
+              取消
+            </el-button>
+            <el-button @click="save({userId:userId,id:addressVer.addressId,userName:addressVer.userName,tel:addressVer.phone,state: addressVer.state, city: addressVer.city, district: addressVer.district, streetName:addressVer.streetName,isDefault:addressVer.isDefault})" type="primary" :disabled="btnHighlight ? false : true"  style="width: 140px; height: 40px;">
+              确定
+            </el-button>
+          </div>
         </div>
-        <div>
-          <input type="number" placeholder="手机号码" v-model="msg.tel">
-        </div>
-        <div>
-          <input type="text" placeholder="收货地址" v-model="msg.streetName">
-        </div>
-        <div>
-          <el-checkbox class="auto-login" v-model="msg.isDefault">设为默认</el-checkbox>
-        </div>
-        <y-button text='保存'
-                  class="btn"
-                  :classStyle="btnHighlight?'main-btn':'disabled-btn'"
-                  @btnClick="save({userId:userId,addressId:msg.addressId,userName:msg.userName,tel:msg.tel,streetName:msg.streetName,isDefault:msg.isDefault})">
-        </y-button>
-      </div>
-    </y-popup>
+      </y-shelf>
+    </div>
   </div>
 </template>
 <script>
-  import { addressList, addressUpdate, addressAdd, addressDel } from '/api/goods'
+  import { addressList, addressUpdate, addressAdd, addressDel } from '/api/member'
   import YButton from '/components/YButton'
   import YPopup from '/components/popup'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
+  import { regionData, CodeToText, TextToCode } from 'element-china-area-data'
+
   export default {
     data () {
+      // 验证收货人
+      let vUserName = (rule, value, callback) => {
+        if (!value) {
+          this.verUserName = false
+          return callback(new Error('请输入收货人姓名'))
+        }
+        this.verUserName = true
+        return callback()
+      }
+      // 验收收货手机号
+      let vPhone = (rule, value, callback) => {
+        const phoneReg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        if (!value) {
+          this.verPhone = false
+          return callback(new Error('请输入手机号'))
+        }
+        if (!phoneReg.test(value)) {
+          this.verPhone = false
+          return callback(new Error('请输入正确的手机号'))
+        }
+        this.verPhone = true
+        return callback()
+      }
+      // 验证街道
+      let vStreetName = (rule, value, callback) => {
+        if (!value) {
+          this.verStreetName = false
+          return callback(new Error('请输入街道地址'))
+        }
+        this.verStreetName = true
+        return callback()
+      }
       return {
         addList: [],
-        popupOpen: false,
-        popupTitle: '管理收货地址',
-        msg: {
+        userId: '',
+        addressTxt: '新增收货地址',
+        editAddressShow: false,
+        addressVer: {
           addressId: '',
           userName: '',
-          tel: '',
+          phone: '',
+          state: '',
+          city: '',
+          district: '',
           streetName: '',
           isDefault: false
         },
-        userId: ''
+        addressVerRules: {
+          userName: [
+            {validator: vUserName, trigger: 'change, blur'}
+          ],
+          phone: [
+            {validator: vPhone, trigger: 'change, blur'}
+          ],
+          streetName: [
+            {validator: vStreetName, trigger: 'change, blur'}
+          ]
+        },
+        verUserName: false,
+        verPhone: false,
+        verStreetName: false,
+        options: regionData,
+        selectedOptions: [],
+        // 详细地址
+        detailedAddress: ''
       }
     },
     computed: {
       btnHighlight () {
-        let msg = this.msg
-        return msg.userName && msg.tel && msg.streetName
+        return this.verUserName && this.verPhone && this.addressVer.state && this.addressVer.city && this.addressVer.district && this.verStreetName
       }
     },
     methods: {
+      // 错误消息提示
       message (m) {
         this.$message.error({
           message: m
         })
       },
+      // 获取会员地址列表
       _addressList () {
-        addressList({userId: this.userId}).then(res => {
+        let params = {
+          params: {
+            userId: this.userId
+          }
+        }
+        addressList(params).then(res => {
           let data = res.result
           if (data.length) {
             this.addList = res.result
-            this.addressId = res.result[0].addressId || '1'
           } else {
             this.addList = []
           }
         })
       },
+      // 更新会员地址
       _addressUpdate (params) {
         addressUpdate(params).then(res => {
           this._addressList()
         })
       },
+      // 新增会员地址
       _addressAdd (params) {
         addressAdd(params).then(res => {
-          if (res.success === true) {
+          if (res.status === 200) {
             this._addressList()
           } else {
             this.message(res.message)
           }
         })
       },
+      // 修改默认地址
       changeDef (item) {
+        item.userId = this.userId
         if (!item.isDefault) {
           item.isDefault = true
           this._addressUpdate(item)
         }
         return false
       },
-      // 保存
+      // 保存会员地址
       save (p) {
-        this.popupOpen = false
-        if (p.addressId) {
+        this.editAddressShow = false
+        if (p.id) {
           this._addressUpdate(p)
         } else {
-          delete p.addressId
+          delete p.id
           this._addressAdd(p)
         }
       },
-      // 删除
+      // 删除会员地址
       del (addressId, i) {
-        addressDel({addressId: addressId}).then(res => {
-          if (res.success === true) {
+        addressDel({id: addressId}).then(res => {
+          if (res.status === 200) {
             this.addList.splice(i, 1)
           } else {
             this.message('删除失败')
           }
         })
       },
-      // 修改
+      // 修改会员地址
       update (item) {
-        this.popupOpen = true
+        this.editAddressShow = true
         if (item) {
-          this.popupTitle = '管理收货地址'
-          this.msg.userName = item.userName
-          this.msg.tel = item.tel
-          this.msg.streetName = item.streetName
-          this.msg.isDefault = item.isDefault
-          this.msg.addressId = item.addressId
+          this.addressTxt = '修改收货地址'
+          let state = TextToCode[item.state].code
+          let city = TextToCode[item.state][item.city].code
+          let district = TextToCode[item.state][item.city][item.district].code
+          this.selectedOptions.push(state, city, district)
+          this.addressVer.userName = item.userName
+          this.addressVer.phone = item.tel
+          this.addressVer.state = item.state
+          this.addressVer.city = item.city
+          this.addressVer.district = item.district
+          this.addressVer.streetName = item.streetName
+          this.addressVer.isDefault = item.isDefault
+          this.addressVer.addressId = item.id
         } else {
-          this.popupTitle = '新增收货地址'
-          this.msg.userName = ''
-          this.msg.tel = ''
-          this.msg.streetName = ''
-          this.msg.isDefault = false
-          this.msg.addressId = ''
+          this.addressTxt = '新增收货地址'
+          this.addressVer.userName = ''
+          this.addressVer.phone = ''
+          this.addressVer.state = ''
+          this.addressVer.city = ''
+          this.addressVer.district = ''
+          this.selectedOptions = []
+          this.addressVer.streetName = ''
+          this.addressVer.isDefault = false
+          this.addressVer.addressId = ''
         }
+      },
+      // 修改城市选择
+      handleChange (value) {
+        console.log(this.selectedOptions)
+        let addArr = value
+        let state = CodeToText[(addArr[0])]
+        let city = CodeToText[(addArr[1])]
+        let district = CodeToText[(addArr[2])]
+        this.addressVer.state = state
+        this.addressVer.city = city
+        this.addressVer.district = district
       }
     },
     created () {
@@ -175,6 +287,109 @@
   }
 </script>
 <style scoped lang="scss">
+  @import "../../../assets/style/mixin";
+
+  .el-cascader-menus {
+    z-index: '9999!important';
+  }
+
+  // 修改会员地址
+  .edit-address {
+    z-index: 1999;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    @include wh(100%);
+    background-color: rgba(0, 0, 0, .5);
+    @extend %block-center;
+    .content {
+      display: flex;
+      padding: 45px 100px 0;
+    }
+    > div {
+      box-sizing: content-box;
+      @include wh(500px, 460px);
+      margin: 0;
+    }
+    .btn {
+      width: 80px;
+      height: 30px;
+      margin-left: 10px;
+      position: relative;
+      text-align: center;
+      line-height: 30px;
+      text-shadow: rgba(255, 255, 255, .496094) 0 1px 0;
+      border: 1px solid #E6E6E6;
+      border-radius: 10px;
+      &:hover {
+      }
+      a {
+        color: #666;
+        display: block;
+        @include wh(100%);
+      }
+    }
+    input[type=file] {
+      position: absolute;
+      right: 0;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 80px;
+      height: 30px;
+      cursor: pointer;
+      box-sizing: border-box;
+      border: 15px solid #000;
+      overflow: hidden;
+    }
+    .edit-l {
+      width: 100px;
+      text-align: center;
+    }
+    .edit-r {
+      margin-left: 20px;
+      flex: 1;
+      > div {
+        border: 1px solid #ccc;
+        width: 320px;
+        height: 320px;
+      }
+    }
+  }
+
+  .close {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    padding: 0 10px;
+    @extend %block-center;
+    &:hover {
+      svg {
+        transition: all 1s;
+        transform: rotate(360deg);
+        transform-origin: 50% 50%;
+      }
+      path {
+        fill: #8a8a8a;
+      }
+    }
+  }
+
+  .bootom-btn {
+    padding: 0 15px;
+    border-top: 1px solid #E6E6E6;
+    bottom: 0;
+    height: 60px;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .table-title {
     position: relative;
     z-index: 1;
@@ -196,10 +411,10 @@
       color: #838383;
     }
     .address {
-      margin-left: 115px; 
+      margin-left: 115px;
     }
     .tel {
-      margin-left: 195px; 
+      margin-left: 195px;
     }
   }
 

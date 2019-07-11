@@ -12,6 +12,7 @@ import com.yuu.ymall.web.admin.commons.dto.ItemDto;
 import com.yuu.ymall.web.admin.commons.utils.IDUtil;
 import com.yuu.ymall.web.admin.mapper.*;
 import com.yuu.ymall.web.admin.service.ItemService;
+import com.yuu.ymall.web.admin.service.SearchService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +51,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private RedisCacheManager redisCacheManager;
+
+    @Autowired
+    private SearchService searchService;
 
     @Value("${PRODUCT_ITEM}")
     private String PRODUCT_ITEM;
@@ -96,6 +100,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public BaseResult stopItem(Long id) {
         tbItemMapper.stopItemById(id);
+        // 删除 ES 索引
+        searchService.refreshItem(-1, id);
         return BaseResult.success("下架商品成功！");
     }
 
@@ -103,6 +109,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public BaseResult startItem(Long id) {
         tbItemMapper.startItemById(id);
+        // 增加索引
+        searchService.refreshItem(0, id);
         return BaseResult.success("发布商品成功！");
     }
 
@@ -134,6 +142,9 @@ public class ItemServiceImpl implements ItemService {
 
             // 同步缓存
             redisCacheManager.del(PRODUCT_ITEM + ":" + newTbItem.getId());
+
+            // 更新 ES 索引库
+            searchService.refreshItem(0, itemDto.getId());
         }
 
         // 新增商品
@@ -149,9 +160,11 @@ public class ItemServiceImpl implements ItemService {
             tbItemDesc.setItemId(id);
             tbItemDesc.setCreated(new Date());
             tbItemDescMapper.insert(tbItemDesc);
+
+            // 更新 ES 索引库
+            searchService.refreshItem(0, id);
         }
 
-        // todo 发送消息同步索引库
 
         return BaseResult.success("保存商品成功！");
     }

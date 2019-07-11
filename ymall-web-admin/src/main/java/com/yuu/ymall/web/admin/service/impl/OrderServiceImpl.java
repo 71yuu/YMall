@@ -48,11 +48,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public DataTablesResult<TbOrder> getOrderList(HttpServletRequest request, String search) {
+    public DataTablesResult<TbOrder> getOrderList(HttpServletRequest request, String search, int status) {
         DataTablesResult<TbOrder> result = new DataTablesResult<>(request);
 
         Map<String, Object> params = new HashMap<>();
         params.put("search", search);
+        params.put("status", status);
 
         // 分页查询
         PageHelper.startPage(result.getPageNum(), result.getLength());

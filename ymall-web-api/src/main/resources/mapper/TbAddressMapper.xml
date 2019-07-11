@@ -6,10 +6,11 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
     <result column="street_name" jdbcType="VARCHAR" property="streetName" />
     <result column="is_default" jdbcType="BIT" property="isDefault" />
-    <result column="created" jdbcType="TIMESTAMP" property="created" />
-    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tb_address
@@ -19,31 +20,69 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_address (user_id, user_name, tel, 
-      street_name, is_default, created, 
-      updated)
-    values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
-      #{streetName,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT}, #{created,jdbcType=TIMESTAMP}, 
-      #{updated,jdbcType=TIMESTAMP})
+    insert into tb_address (user_id, user_name, tel, state, city,  district,
+      street_name, is_default)
+    values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR},
+      #{streetName,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbAddress">
     update tb_address
     set user_id = #{userId,jdbcType=BIGINT},
       user_name = #{userName,jdbcType=VARCHAR},
       tel = #{tel,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR} ,
+      district = #{district,jdbcType=VARCHAR} ,
       street_name = #{streetName,jdbcType=VARCHAR},
-      is_default = #{isDefault,jdbcType=BIT},
-      created = #{created,jdbcType=TIMESTAMP},
-      updated = #{updated,jdbcType=TIMESTAMP}
+      is_default = #{isDefault,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, user_id, user_name, tel, street_name, is_default, created, updated
+    <!-- 会员修改地址 -->
+    <update id="updateAddress">
+        update tb_address
+        set user_name = #{userName},
+            tel = #{tel},
+            state = #{state} ,
+            city = #{city} ,
+            district = #{district},
+            street_name = #{streetName},
+            is_default = #{isDefault}
+        where id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, user_id, user_name, tel, state, city, district, street_name, is_default
     from tb_address
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, user_name, tel, street_name, is_default, created, updated
+    select id, user_id, user_name, tel, state, city, district, street_name, is_default
     from tb_address
   </select>
+
+    <!-- sql 片断 -->
+    <sql id="tbAddressBaseColumns">
+        id,
+        user_name,
+        tel,
+        state,
+        city,
+        district,
+        street_name,
+        is_default
+    </sql>
+
+    <!-- 获取会员地址列表 -->
+    <select id="selectByUserId" resultType="tbAddress">
+        select <include refid="tbAddressBaseColumns"/>
+        from tb_address
+        where user_id = #{userId}
+        order by is_default desc
+    </select>
+
+    <!-- 移除默认地址 -->
+    <update id="removeDefault">
+      update tb_address set is_default = false where user_id = #{userId}
+    </update>
+
+
 </mapper>

@@ -8,9 +8,9 @@
         <a href="javascript:;" :class="{active:sortType===3}" @click="sortByPrice(3)">价格从低到高</a>
         <a href="javascript:;" :class="{active:sortType===4}" @click="sortByPrice(4)">价格从高到低</a>
         <div class="price-interval">
-          <el-input type="number" class="input" placeholder="价格" v-model="min" style="width:100px;"></el-input>
+          <el-input type="number" class="input" placeholder="价格" v-model="min" style="width:83px;"></el-input>
           <span style="margin: 0 5px"> - </span>
-          <el-input type="number" placeholder="价格" v-model="max" style="width:100px;"></el-input>
+          <el-input type="number" placeholder="价格" v-model="max" style="width:83px;"></el-input>
           <!--<y-button text="确定" :classStyle="min && max ? main-btn : default-btn" @btnClick="_getAllGoods" style="margin-left: 10px;"></y-button>-->
           <el-button type="primary" @click="_getAllGoods" :disabled="min && max && min < max ? false : true" style="margin-left: 10px;">确定</el-button>
         </div>

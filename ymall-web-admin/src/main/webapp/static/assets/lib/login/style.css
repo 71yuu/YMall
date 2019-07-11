@@ -35,10 +35,10 @@ body {
 /*--header--*/
 .center-container {
 	padding: 0em;
-	background: rgba(0, 0, 0, 0.42)
+	background: rgba(19, 19, 19, 0.42)
 }
 .header-w3l {
-	padding-top: 2em;
+	padding-top: 13em;
 }
 .header-w3l h1{
 	font-size:3em;
@@ -51,7 +51,7 @@ body {
 
 /*--main--*/
 .main-content-agile {
-	margin: 7em 0em 3em;
+	margin: 4em 0em 3em;
 }
 .wthree-pro h2 {
 	font-size: 1.5em;
@@ -113,7 +113,7 @@ span.icon1, span.icon2{
 	border: none;
 	padding: 8px 0px;
 	outline: none;
-	width: 38%;
+	width: 100%;
 	font-size: 1.1em;
 	cursor: pointer;
 	letter-spacing: 2px;
@@ -277,7 +277,7 @@ span.icon1, span.icon2{
 }
 @media(max-width: 768px){
 	.header-w3l {
-		padding-top: 3em;
+		padding-top: 2em;
 	}
 	.wthree-pro h2 {
 		font-size: 1.25em;

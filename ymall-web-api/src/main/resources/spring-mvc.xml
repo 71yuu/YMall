@@ -36,7 +36,7 @@
 <!--    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.yuu.ymall.web.admin.web.interceptor.PermissionInterceptor" />
+            <bean class="com.yuu.ymall.controller.admin.controller.interceptor.PermissionInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>-->
 

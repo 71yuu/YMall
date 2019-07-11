@@ -1,4 +1,4 @@
-package com.yuu.ymall.web.api.web;
+package com.yuu.ymall.web.api.controller;
 
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.web.api.dto.CategoryProductPageInfo;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("goods")
-@Api(description = "商品页面展示")
+@Api(description = "商品服务接口")
 public class GoodsController {
 
     @Autowired
@@ -115,3 +115,4 @@ public class GoodsController {
         return baseResult;
     }
 }
+

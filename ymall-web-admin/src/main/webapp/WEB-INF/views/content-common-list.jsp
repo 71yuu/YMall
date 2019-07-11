@@ -279,7 +279,7 @@
         function successMethod() {
             updateCurrentCount('/content/delete/' + id);
             refresh();
-            layer.msg("删除成功！", {icon:2, time:1000});
+            layer.msg("删除成功！", {icon:1, time:1000});
         }
         App.deleteSinge(confirmMsg, url, successMethod);
     }

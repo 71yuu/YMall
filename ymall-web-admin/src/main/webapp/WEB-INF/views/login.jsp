@@ -38,10 +38,10 @@
             font-family:"Microsoft Yahei"
         }
         span.icon1 {
-            top: 23%;
+            top: 25%;
         }
         span.icon2 {
-            top: 44%;
+            top: 46%;
         }
         #wait {
             text-align: left;
@@ -54,7 +54,7 @@
 </head>
 <body>
 <!-- main -->
-<div data-vide-bg="/static/assets/lib/video/Ipad" style="height: 100%;">
+<div style="height: 100%;background: url('/static/assets/images/login-img.png') no-repeat fixed center">
     <div class="center-container" style="height: 100%;">
         <!--header-->
         <div class="header-w3l">

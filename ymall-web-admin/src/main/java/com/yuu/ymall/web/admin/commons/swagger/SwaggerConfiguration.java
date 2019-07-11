@@ -36,7 +36,7 @@ public class SwaggerConfiguration {
                 .apiInfo(apiInfo())
                 .select()
                 // 扫描指定包中的 swagger 注解
-                //.apis(RequestHandlerSelectors.basePackage("com.yuu.ymall.web.admin.controller"))
+                //.apis(RequestHandlerSelectors.basePackage("com.yuu.ymall.controller.admin.controller"))
                 // 扫描所有有注解的 api，用这种方式更灵活
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())

@@ -31,7 +31,22 @@ public class TbAddress implements Serializable {
     private String tel;
 
     /**
-     * 详细地址
+     * 省份
+     */
+    private String state;
+
+    /**
+     * 城市
+     */
+    private String city;
+
+    /**
+     * 区/县
+     */
+    private String district;
+
+    /**
+     * 街道地址
      */
     private String streetName;
 
@@ -49,4 +64,9 @@ public class TbAddress implements Serializable {
      * 更新日期
      */
     private Date updated;
+
+    /**
+     * 详细地址
+     */
+    private String detailsAddress;
 }

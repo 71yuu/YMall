@@ -22,16 +22,16 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_item (title, sell_point, price, 
-      num, limit_num, image, 
-      cid, status, created, 
+    insert into tb_item (title, sell_point, price,
+      num, limit_num, image,
+      cid, status, created,
       updated)
-    values (#{title,jdbcType=VARCHAR}, #{sellPoint,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{num,jdbcType=INTEGER}, #{limitNum,jdbcType=INTEGER}, #{image,jdbcType=VARCHAR}, 
-      #{cid,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, 
+    values (#{title,jdbcType=VARCHAR}, #{sellPoint,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+      #{num,jdbcType=INTEGER}, #{limitNum,jdbcType=INTEGER}, #{image,jdbcType=VARCHAR},
+      #{cid,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP},
       #{updated,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbItem" >
+    <update id="updateByPrimaryKey" parameterType="com.yuu.ymall.domain.TbItem" >
     update tb_item
     set title = #{title,jdbcType=VARCHAR},
       sell_point = #{sellPoint,jdbcType=VARCHAR},
@@ -45,14 +45,29 @@
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select id, title, sell_point, price, num, limit_num, image, cid, status, created, 
+
+    <!-- 减少商品库存 -->
+    <update id="reduceItemNum">
+      update tb_item
+      set num = num - #{num}
+      where id = #{productId}
+    </update>
+
+    <!-- 商品库存 +1 -->
+    <update id="addItemNum">
+        update tb_item
+        set num = num + #{num}
+        where id = #{productId}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, title, sell_point, price, num, limit_num, image, cid, status, created,
     updated
     from tb_item
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, title, sell_point, price, num, limit_num, image, cid, status, created, 
+    select id, title, sell_point, price, num, limit_num, image, cid, status, created,
     updated
     from tb_item
   </select>

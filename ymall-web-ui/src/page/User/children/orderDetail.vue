@@ -3,50 +3,44 @@
     <y-shelf v-bind:title="orderTitle">
       <div slot="content">
         <div v-loading="loading" element-loading-text="加载中..." style="min-height: 10vw;" v-if="orderList.length">
-          <div class="orderStatus" v-if="orderStatus !== -1 && orderStatus !== 6">
-            <el-steps :space="200" :active="orderStatus">
+          <div class="orderStatus" v-if="orderStatus !== 0 && orderStatus !== 5">
+            <el-steps :space="200" :active="orderStatus+1">
               <el-step title="下单" v-bind:description="createTime"></el-step>
               <el-step title="付款" v-bind:description="payTime"></el-step>
-              <el-step title="配货" description=""></el-step>
-              <el-step title="出库" description=""></el-step>
+              <el-step title="待发货" v-bind:description="noconsignTxt"></el-step>
+              <el-step title="已发货" v-bind:description="consignTime"></el-step>
               <el-step title="交易成功" v-bind:description="finishTime"></el-step>
             </el-steps>
           </div>
-          <div class="orderStatus-close" v-if="orderStatus === -1">
+          <div class="orderStatus-close" v-if="orderStatus === 5">
             <el-steps :space="780" :active="2">
               <el-step title="下单" v-bind:description="createTime"></el-step>
               <el-step title="交易关闭" v-bind:description="closeTime"></el-step>
             </el-steps>
           </div>
-          <div class="orderStatus-close" v-if="orderStatus === 6">
-            <el-steps :space="780" :active="2">
-              <el-step title="下单" v-bind:description="createTime"></el-step>
-              <el-step title="交易关闭" v-bind:description="closeTime"></el-step>
-            </el-steps>
-          </div>
-          <div class="status-now" v-if="orderStatus === 1">
+          <div class="status-now" v-if="orderStatus === 0" style="margin-top: 30px;">
             <ul>
               <li class="status-title"><h3>订单状态：待付款</h3></li>
               <li class="button">
                 <el-button @click="orderPayment(orderId)" type="primary" size="small">现在付款</el-button>
-                <el-button @click="_cancelOrder()" size="small">取消订单</el-button>
+                <el-button @click="_cancelOrder(orderId)" size="small">取消订单</el-button>
               </li>
             </ul>
             <p class="realtime">
               <span>您的付款时间还有 </span>
-              <span class="red"><countDown v-bind:endTime="countTime" endText="已结束"></countDown></span>
+              <span class="red"><countDown v-if="countTime" v-bind:endTime="countTime" endText="已结束"></countDown></span>
               <span>，超时后订单将自动取消。</span>
             </p>
           </div>
           <div class="status-now" v-if="orderStatus === 2">
             <ul>
-              <li class="status-title"><h3>订单状态：已支付，待系统审核确认</h3></li>
+              <li class="status-title"><h3>订单状态：待发货</h3></li>
             </ul>
             <p class="realtime">
-              <span>请耐心等待审核，审核结果将发送到您的邮箱，并且您所填写的捐赠数据将显示在捐赠表中。</span>
+              <span>我们将在 72 小时内为您发货</span>
             </p>
           </div>
-          <div class="status-now" v-if="orderStatus === -1 || orderStatus === 6">
+          <div class="status-now" v-if="orderStatus === 5">
             <ul>
               <li class="status-title"><h3>订单状态：已关闭</h3></li>
             </ul>
@@ -54,7 +48,7 @@
               <span>您的订单已关闭。</span>
             </p>
           </div>
-          <div class="status-now" v-if="orderStatus === 5">
+          <div class="status-now" v-if="orderStatus === 4">
             <ul>
               <li class="status-title"><h3>订单状态：已完成</h3></li>
             </ul>
@@ -62,6 +56,7 @@
               <span>您的订单已交易成功，感谢您的惠顾！</span>
             </p>
           </div>
+
           <div class="gray-sub-title cart-title">
             <div class="first">
               <div>
@@ -74,8 +69,7 @@
               </div>
             </div>
           </div>
-
-          <!--商品-->
+          <!-- 订单商品 -->
           <div class="goods-table">
             <div class="cart-items" v-for="(item,i) in orderList" :key="i">
               <a @click="goodsDetails(item.productId)" class="img-box"><img :src="item.productImg" alt=""></a>
@@ -89,15 +83,14 @@
               </div>
             </div>
           </div>
-          <!--合计-->
+          <!-- 合计 -->
           <div class="order-discount-line">
             <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
-              <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{orderTotal}}</span>
+              <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{Number(orderTotal).toFixed(2)}}</span>
             </p>
-            <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ ¥ 0.00</span></p>
-            <p class="price-total"><span>应付金额：</span><span class="price-red">¥ {{orderTotal}}</span></p>
+            <p class="price-total"><span>应付金额：</span><span class="price-red">¥ {{Number(orderTotal).toFixed(2)}}</span></p>
           </div>
-
+          <!-- 收货信息 -->
           <div class="gray-sub-title cart-title">
             <div class="first">
               <div>
@@ -110,7 +103,21 @@
             <p class="address">联系电话：{{ tel }}</p>
             <p class="address">详细地址：{{ streetName }}</p>
           </div>
+
+          <!-- 物流信息 -->
+          <div class="gray-sub-title cart-title" v-if="orderStatus === 3 || orderStatus === 4">
+            <div class="first">
+              <div>
+                <span class="order-id">物流信息</span>
+              </div>
+            </div>
+          </div>
+          <div style="height: 155px;padding: 20px 30px;">
+            <p class="address">物流名称：{{ shippingName }}</p>
+            <p class="address">物流单号：{{ shippingCode }}</p>
+          </div>
         </div>
+
         <div v-loading="loading" element-loading-text="加载中..." v-else>
           <div style="padding: 100px 0;text-align: center">
             获取该订单信息失败
@@ -118,46 +125,68 @@
         </div>
       </div>
     </y-shelf>
-
   </div>
 </template>
 <script>
-  import { getOrderDet, cancelOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
+  import { getOrderDet, cancelOrder } from '/api/order'
   import countDown from '/components/countDown'
+
   export default {
     data () {
       return {
-        orderList: [0],
         userId: '',
-        orderStatus: 0,
         orderId: '',
+        orderTitle: '',
+        loading: true,
+        orderList: [0],
+        orderStatus: 0,
+        orderTotal: 0,
         userName: '',
         tel: '',
         streetName: '',
-        orderTitle: '',
         createTime: '',
-        payTime: '',
         closeTime: '',
+        payTime: '',
         finishTime: '',
-        orderTotal: '',
-        loading: true,
-        countTime: 0
+        countTime: '',
+        noconsignTxt: '待发货',
+        shippingName: '',
+        shippingCode: ''
       }
     },
     methods: {
-      message (m) {
+      // 成功消息提示
+      messageSuccess (m) {
+        this.$message({
+          message: m,
+          type: 'success'
+        })
+      },
+      // 失败消息提示
+      messageFail (m) {
         this.$message.error({
           message: m
         })
       },
-      orderPayment (orderId) {
-        window.open(window.location.origin + '#/order/payment?orderId=' + orderId)
+      // 确认删除
+      confirmCancel (orderId) {
+        this.$confirm('您确认取消订单号为' + orderId + '的订单吗？此操作不可恢复', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          cancelOrder({userId: this.userId, orderId: orderId}).then(res => {
+            if (res.status === 200) {
+              this._getOrderDet()
+            } else {
+              this.messageFail(res.message)
+            }
+          })
+        })
       },
-      goodsDetails (id) {
-        window.open(window.location.origin + '#/goodsDetails?productId=' + id)
-      },
+      // 获取订单详情
       _getOrderDet () {
         let params = {
           params: {
@@ -165,41 +194,39 @@
           }
         }
         getOrderDet(params).then(res => {
-          if (res.result.orderStatus === '0') {
-            this.orderStatus = 1
-          } else if (res.result.orderStatus === '1') {
-            this.orderStatus = 2
-          } else if (res.result.orderStatus === '4') {
-            this.orderStatus = 5
-          } else if (res.result.orderStatus === '5') {
-            this.orderStatus = -1
-          } else if (res.result.orderStatus === '6') {
-            this.orderStatus = 6
-          }
+          this.orderStatus = res.result.orderStatus
           this.orderList = res.result.goodsList
           this.orderTotal = res.result.orderTotal
-          this.userName = res.result.addressInfo.userName
-          this.tel = res.result.addressInfo.tel
-          this.streetName = res.result.addressInfo.streetName
+          this.userName = res.result.tbAddress.userName
+          this.tel = res.result.tbAddress.tel
+          this.streetName = res.result.tbAddress.streetName
           this.createTime = res.result.createDate
+          this.consignTime = res.result.consignDate
           this.closeTime = res.result.closeDate
           this.payTime = res.result.payDate
-          if (this.orderStatus === 5) {
-            this.finishTime = res.result.finishDate
+          this.finishTime = res.result.finishDate
+          this.countTime = res.result.countTime
+          this.shippingName = res.result.shippingName
+          this.shippingCode = res.result.shippingCode
+          if (this.consignTime !== null) {
+            this.noconsignTxt = '订单已发货'
           } else {
-            this.countTime = res.result.finishDate
+            this.noconsignTxt = '订单未发货'
           }
           this.loading = false
         })
       },
-      _cancelOrder () {
-        cancelOrder({orderId: this.orderId}).then(res => {
-          if (res.success === true) {
-            this._getOrderDet()
-          } else {
-            this.message('取消失败')
-          }
-        })
+      // 去付款
+      orderPayment (orderId) {
+        window.open(window.location.origin + '/order/payment?orderId=' + orderId)
+      },
+      // 取消订单
+      _cancelOrder (orderId) {
+        this.confirmCancel(orderId)
+      },
+      // 商品详情
+      goodsDetails (productId) {
+        window.open(window.location.origin + '/goodsDetails?productId=' + productId)
       }
     },
     created () {
@@ -272,7 +299,7 @@
     border: 1px solid #EBEBEB;
     margin-left: -80px;
   }
-  
+
   img {
     display: block;
     @include wh(80px);

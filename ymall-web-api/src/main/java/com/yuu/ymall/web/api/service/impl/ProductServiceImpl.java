@@ -1,14 +1,17 @@
 package com.yuu.ymall.web.api.service.impl;
 
+import com.google.common.collect.Lists;
 import com.yuu.ymall.commons.dto.BaseResult;
 import com.yuu.ymall.commons.redis.RedisCacheManager;
 import com.yuu.ymall.commons.utils.MapperUtil;
 import com.yuu.ymall.domain.TbItem;
+import com.yuu.ymall.domain.TbItemCat;
 import com.yuu.ymall.domain.TbItemDesc;
 import com.yuu.ymall.web.api.domain.ESItem;
 import com.yuu.ymall.web.api.dto.CateProductsResult;
 import com.yuu.ymall.web.api.dto.CategoryProductPageInfo;
 import com.yuu.ymall.web.api.dto.ProductDet;
+import com.yuu.ymall.web.api.mapper.TbItemCatMapper;
 import com.yuu.ymall.web.api.mapper.TbItemDescMapper;
 import com.yuu.ymall.web.api.mapper.TbItemMapper;
 import com.yuu.ymall.web.api.repositories.ItemRepository;
@@ -60,6 +63,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    @Autowired
+    private TbItemCatMapper tbItemCatMapper;
+
     @Value("${PRODUCT_ITEM}")
     private String PRODUCT_ITEM;
 
@@ -74,7 +80,6 @@ public class ProductServiceImpl implements ProductService {
 
         // Redis 商品详情缓存 key
         String redisKey = PRODUCT_ITEM + ":" + productId;
-
 
         // 先查询
         String redisJson = (String) redisCacheManager.get(redisKey);
@@ -106,7 +111,9 @@ public class ProductServiceImpl implements ProductService {
 
             // 查询商品详情
             TbItemDesc tbItemDesc = tbItemDescMapper.selectByPrimaryKey(productId);
-            productDet.setDetail(tbItemDesc.getItemDesc());
+            if (tbItemDesc != null) {
+                productDet.setDetail(tbItemDesc.getItemDesc());
+            }
 
             // 设置商品小图
             productDet.setProductImageSmall(tbItem.getImages());
@@ -154,7 +161,15 @@ public class ProductServiceImpl implements ProductService {
         // ElasticSearch 查询
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         if (cid != null) {
-            queryBuilder.withQuery(QueryBuilders.matchQuery("cid", cid));
+            // 查询该分类所有子分类
+            List<TbItemCat> tbItemCats = tbItemCatMapper.selectTbCatByPid(cid);
+            List<Long> cids = new ArrayList<>();
+            for (TbItemCat tbItemCat : tbItemCats) {
+                Long id = tbItemCat.getId();
+                cids.add(id);
+            }
+            cids.add(cid);
+            queryBuilder.withQuery(QueryBuilders.termsQuery("cid", cids));
         }
         if (key != null) {
             queryBuilder.withQuery(QueryBuilders.multiMatchQuery(key, "productName", "subTitle"));
@@ -177,12 +192,7 @@ public class ProductServiceImpl implements ProductService {
         // 执行搜索
         List<ESItem> esItemList = new ArrayList<>();
         long total = 0L;
-        // 按分类查询
-        if (cid != null) {
-            Page<ESItem> search = itemRepository.search(queryBuilder.build());
-            esItemList = search.getContent();
-            total = search.getTotalElements();
-        }
+
         // 按关键字查询
         if (key != null) {
             AggregatedPage<ESItem> esItems = elasticsearchTemplate.queryForPage(queryBuilder.build(), ESItem.class, new SearchResultMapper() {
@@ -195,8 +205,8 @@ public class ProductServiceImpl implements ProductService {
                         }
                         Map<String, Object> source = hit.getSource();
                         ESItem esItem = new ESItem();
-                        int id = (int) source.get("id");
-                        esItem.setId((long)id);
+                        Long id = (Long)source.get("id");
+                        esItem.setId(id);
                         int cid = (int) source.get("cid");
                         esItem.setCid((long)cid);
                         Long productId = (Long) source.get("productId");
@@ -209,6 +219,8 @@ public class ProductServiceImpl implements ProductService {
                         esItem.setPicUrl(picUrl);
                         int orderNum = (int) source.get("orderNum");
                         esItem.setOrderNum(orderNum);
+                        int limit = (int) source.get("limit");
+                        esItem.setLimit(limit);
                         HighlightField productName = hit.getHighlightFields().get("productName");
                         if (productName != null) {
                             esItem.setProductName(productName.fragments()[0].toString());
@@ -221,13 +233,32 @@ public class ProductServiceImpl implements ProductService {
                     return null;
                 }
             });
-            total = esItems.getTotalElements();
-            esItemList = esItems.getContent();
+            if (esItems != null) {
+                total = esItems.getTotalElements();
+                esItemList = esItems.getContent();
+            }
+        }
+
+        // 全部商品
+        if (StringUtils.isBlank(key) && cid == null) {
+            Iterable<ESItem> esItems = itemRepository.search(queryBuilder.build());
+            if (esItems != null) {
+                esItemList = Lists.newArrayList(esItems);
+                total = esItemList.size();
+            }
+        }
+
+        // 按分类查询
+        if (cid != null) {
+            Page<ESItem> search = itemRepository.search(queryBuilder.build());
+            if (search != null) {
+                esItemList = search.getContent();
+                total = search.getTotalElements();
+            }
         }
 
         cateProductsResult.setTotal(total);
         cateProductsResult.setData(esItemList);
-
 
         return BaseResult.success(cateProductsResult);
     }

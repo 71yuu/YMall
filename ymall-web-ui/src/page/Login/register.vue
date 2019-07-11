@@ -150,7 +150,6 @@ export default {
       codePhone: '',
       agreement: false,
       registerTxt: '注册',
-
       cart: []
     }
   },

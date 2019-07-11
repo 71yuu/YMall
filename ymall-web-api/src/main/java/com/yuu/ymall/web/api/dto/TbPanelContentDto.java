@@ -63,6 +63,11 @@ public class TbPanelContentDto implements Serializable {
      */
     private String subTitle;
 
+    /**
+     * 商品限制购买数量
+     */
+    private int limit;
+
     public Long getId() {
         return id;
     }
@@ -141,5 +146,13 @@ public class TbPanelContentDto implements Serializable {
 
     public void setSubTitle(String subTitle) {
         this.subTitle = subTitle;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 }

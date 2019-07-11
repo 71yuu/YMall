@@ -15,6 +15,10 @@ export const vercode = (params) => {
 export const checkPhone = (params) => {
   return http.fetchGet('/api/member/checkphone/' + params.value, null)
 }
+// 验证邮箱是否存在
+export const checkEmail = (params) => {
+  return http.fetchGet('/api/member/checkEmail', params)
+}
 // 验证手机号或邮箱是存在
 export const checkAccount = (params) => {
   return http.fetchGet('/api/member/checkAccount', params)
@@ -27,10 +31,6 @@ export const forgetVerCode = (params) => {
 export const updatePassword = (params) => {
   return http.fetchPost('/api/member/updatePassword', params)
 }
-// 退出登陆
-export const logout = (params) => {
-  return http.fetchGet('/api/member/logout', params)
-}
 // 用户信息
 export const userInfo = (params) => {
   return http.fetchGet('/api/member/checkLogin', params)
@@ -38,18 +38,6 @@ export const userInfo = (params) => {
 // 注册账号
 export const register = (params) => {
   return http.fetchPost('/api/member/register', params)
-}
-// 上传图片
-export const upload = (params) => {
-  return http.fetchPost('/api/member/imgaeUpload', params)
-}
-// 修改头像
-export const updateheadimage = (params) => {
-  return http.fetchPost('/api/member/updateheadimage', params)
-}
-// 捐赠列表
-export const thanksList = (params) => {
-  return http.fetchGet('/api/member/thanks', params)
 }
 // 首页接口
 export const productHome = (params) => {
@@ -62,9 +50,5 @@ export const cateList = (params) => {
 // 推荐板块
 export const recommend = (params) => {
   return http.fetchGet('/api/goods/recommend', params)
-}
-// 捐赠板块
-export const thank = (params) => {
-  return http.fetchGet('/api/goods/thank', params)
 }
 

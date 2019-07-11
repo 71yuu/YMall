@@ -33,4 +33,28 @@ public interface CartService {
      * @return
      */
     BaseResult delProduct(Cart cart);
+
+    /**
+     * 修改购物车商品
+     *
+     * @param cart 购物车商品
+     * @return
+     */
+    BaseResult editProduct(Cart cart);
+
+    /**
+     * 全选购物车
+     *
+     * @param cart 购物车
+     * @return
+     */
+    BaseResult editCheckAll(Cart cart);
+
+    /**
+     * 删除购物车已选商品
+     *
+     * @param cart 购物车
+     * @return
+     */
+    BaseResult delCartChecked(Cart cart);
 }

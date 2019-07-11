@@ -30,7 +30,7 @@
         <!-- 这是默认的执行类型 （SIMPLE: 简单； REUSE: 执行器可能重复使用prepared statements语句；BATCH: 执行器可以重复执行语句和批量更新） -->
         <setting name="defaultExecutorType" value="SIMPLE"/>
 
-        <!-- 使用驼峰命名法转换字段。 -->
+        <!-- 使用驼峰命名法转换 字段。 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
 
         <!-- 设置本地缓存范围 session:就会有数据的共享 statement:语句范围 (这样就不会有数据的共享 ) defalut:session -->

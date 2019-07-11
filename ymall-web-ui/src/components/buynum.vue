@@ -9,7 +9,7 @@
       <span class="num">
         <input type="text"
                 :class="{show:show}"
-                v-model="Num>=limit?limit:Num"
+                v-model="Num>limit?limit:Num"
                 @blur="blur()"
                 maxlength="3">
                   <ul ref="ul">
@@ -62,7 +62,7 @@
       },
       blur () {
         this.Num = this.Num > this.limit ? Number(this.limit) : Number(this.Num)
-        this.$emit('edit-num', this.Num)
+        this.$emit('edit-num', this.id, this.Num, this.checked)
       },
       ani (opera) {
         this.flag = false
@@ -90,7 +90,7 @@
           this.domInt(ulStyle)
           this.flag = true
         })
-        this.$emit('edit-num', this.Num)
+        this.$emit('edit-num', this.Num, this.id, this.checked)
       },
       domInt (domStyle) {
         domStyle.zIndex = '1'

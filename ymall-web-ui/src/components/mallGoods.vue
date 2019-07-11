@@ -3,7 +3,7 @@
     <div style="">
       <div class="good-img">
         <a @click="openProduct(msg.productId)">
-          <img v-lazy="msg.picUrl" :alt="msg.productName">
+          <img v-lazy="msg.picUrl" :alt="msg.productName" :key="msg.picUrl">
         </a>
       </div>
       <h6 class="good-title" v-html="msg.productName">{{msg.productName}}</h6>
@@ -15,7 +15,7 @@
           </a>
           <y-button text="加入购物车"
                     style="margin: 0 5px"
-                    @btnClick="addCart(msg.productId, msg.salePrice, msg.productName, msg.picUrl)"
+                    @btnClick="addCart(msg.productId, msg.salePrice, msg.productName, msg.picUrl, msg.limit)"
                     classStyle="main-btn">
           </y-button>
         </div>
@@ -33,13 +33,20 @@
   export default {
     props: {
       msg: {
-        salePrice: 0
+        salePrice: 0,
+        limit: 10
       }
     },
     data () {
       return {}
     },
     methods: {
+      open (t, m) {
+        this.$notify.info({
+          title: t,
+          message: m
+        })
+      },
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
       // 查看详情
       openProduct (id) {
@@ -47,7 +54,20 @@
         window.open('//' + window.location.host + '/goodsDetails?productId=' + id)
       },
       // 加入购物车
-      addCart (id, price, name, img) {
+      addCart (id, price, name, img, limit) {
+        let cart = this.cartList
+        let flag = true
+        cart.forEach(cart => {
+          if (cart.productId === id && cart.productNum >= limit) {
+            flag = false
+          }
+        })
+        if (!flag) {
+          let msg = '该商品限购' + limit + '件'
+          this.open('限购', msg)
+          return
+        }
+
         // 动画是否在运动，先不添加
         if (!this.showMoveImg) {
           // 登录了直接存在会员下
@@ -58,8 +78,9 @@
             })
           } else {
             // 未登录 vuex 存
-            this.ADD_CART({productId: id, salePrice: price, productName: name, productImg: img})
+            this.ADD_CART({productId: id, salePrice: price, productName: name, productImg: img, limitNum: limit})
           }
+
           // 加入购物车动画
           var dom = event.target
           // 获取点击的坐标
@@ -74,7 +95,7 @@
       }
     },
     computed: {
-      ...mapState(['login'])
+      ...mapState(['login', 'cartList'])
     },
     components: {YButton}
   }
