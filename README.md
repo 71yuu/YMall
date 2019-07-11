@@ -32,63 +32,63 @@
 
 - 首页
 
-![](C:\workspace\project\ymall\screenhots\首页.png)
+![](screenhots\首页.png)
 
-![](C:\workspace\project\ymall\screenhots\首页-1.png)
+![](screenhots\首页-1.png)
 
-![](C:\workspace\project\ymall\screenhots\首页-2.png)
+![](ymall\screenhots\首页-2.png)
 
 - 分类商品页
 
-![](C:\workspace\project\ymall\screenhots\分类商品页.png)
+![](screenhots\分类商品页.png)
 
 - 商品详情页
 
-![](C:\workspace\project\ymall\screenhots\商品详情页-1.png)
+![](screenhots\商品详情页-1.png)
 
-![](C:\workspace\project\ymall\screenhots\商品详情页-2.png)
+![](screenhots\商品详情页-2.png)
 
 - 购物车
 
-![](C:\workspace\project\ymall\screenhots\购物车.png)
+![](screenhots\购物车.png)
 
 - 下单
 
-![](C:\workspace\project\ymall\screenhots\下单-1.png)
+![](screenhots\下单-1.png)
 
-![](C:\workspace\project\ymall\screenhots\下单-2.png)
+![](screenhots\下单-2.png)
 
 - 支付
 
-![](C:\workspace\project\ymall\screenhots\支付-1.png)
+![](screenhots\支付-1.png)
 
-![](C:\workspace\project\ymall\screenhots\支付-2.png)
+![](screenhots\支付-2.png)
 
 - 会员中心-我的订单
 
-![](C:\workspace\project\ymall\screenhots\会员中心-1.png)
+![](screenhots\会员中心-1.png)
 
-![](C:\workspace\project\ymall\screenhots\会员中心-1-1.png)
+![](screenhots\会员中心-1-1.png)
 
 - 会员中心-账号资料
 
-![](C:\workspace\project\ymall\screenhots\会员中心-2.png)
+![](screenhots\会员中心-2.png)
 
 - 会员中心-修改地址
 
-![](C:\workspace\project\ymall\screenhots\会员中心-3.png)
+![](screenhots\会员中心-3.png)
 
 - 注册
 
-![](C:\workspace\project\ymall\screenhots\注册.png)
+![](screenhots\注册.png)
 
 - 登录
 
-![](C:\workspace\project\ymall\screenhots\登录.png)
+![](screenhots\登录.png)
 
 - 忘记密码
 
-![](C:\workspace\project\ymall\screenhots\忘记密码.png)
+![](screenhots\忘记密码.png)
 
 
 
@@ -96,45 +96,45 @@
 
 - 管理员登录
 
-![](C:\workspace\project\ymall\screenhots\后台登录.png)
+![](screenhots\后台登录.png)
 
 - 首页
 
-![](C:\workspace\project\ymall\screenhots\后台首页.png)
+![](screenhots\后台首页.png)
 
 - 首页板块管理
 
-![](C:\workspace\project\ymall\screenhots\后台-板块管理.png)
+![](screenhots\后台-板块管理.png)
 
 - 首页板块内容管理
 
-![](C:\workspace\project\ymall\screenhots\后台-板块内容管理.png)
+![](screenhots\后台-板块内容管理.png)
 
 - 首页轮播图管理
 
-![](C:\workspace\project\ymall\screenhots\后台-轮播图管理.png)
+![](screenhots\后台-轮播图管理.png)
 
 - 商品管理
 
-![](C:\workspace\project\ymall\screenhots\后台-商品管理.png)
+![](screenhots\后台-商品管理.png)
 
 - 分类管理
 
-![](C:\workspace\project\ymall\screenhots\后台-分类管理.png)
+![](screenhots\后台-分类管理.png)
 
 - 订单管理
 
-![](C:\workspace\project\ymall\screenhots\后台-订单管理.png)
+![](screenhots\后台-订单管理.png)
 
 - 管理员管理
 
-![](C:\workspace\project\ymall\screenhots\后台-管理员管理.png)
+![](screenhots\后台-管理员管理.png)
 
 - 报表管理
 
-![](C:\workspace\project\ymall\screenhots\后台-报表管理.png)
+![](screenhots\后台-报表管理.png)
 
 - 快递管理
 
-![](C:\workspace\project\ymall\screenhots\后台-快递管理.png)
+![](screenhots\后台-快递管理.png)
 
