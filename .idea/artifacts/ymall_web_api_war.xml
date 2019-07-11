@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ymall-web-api:war">
+    <output-path>$PROJECT_DIR$/ymall-web-api/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>ymall-web-api</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="ymall-web-api-1.0.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="ymall-web-api:war exploded" />
+    </root>
+  </artifact>
+</component>
