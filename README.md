@@ -32,7 +32,7 @@
 
 - 首页
 
-![](/screenhots/首页.png)
+![](screenhots/首页.png)
 
 ![](/screenhots/首页-1.png)
 
