@@ -32,9 +32,12 @@
 
 - 首页
 
-![](screenhots/首页.png)
+  ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/首页.png)
 
-![](/screenhots/首页-1.png)
+
+![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/首页-1.png)
+
+![](screenhots/首页-1.png)
 
 ![](/screenhots/首页-2.png)
 
