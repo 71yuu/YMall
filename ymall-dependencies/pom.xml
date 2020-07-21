@@ -52,7 +52,7 @@
         <mybatis-paginator.version>1.2.15</mybatis-paginator.version>
         <pagehelper.version>4.1.6</pagehelper.version>
         <qiniuyun.version>7.2.0</qiniuyun.version>
-        <quartz.version>2.2.3</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <slf4j.version>1.8.0-alpha2</slf4j.version>
         <spring.version>5.0.4.RELEASE</spring.version>
