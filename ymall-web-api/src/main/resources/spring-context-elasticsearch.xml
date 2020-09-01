@@ -10,7 +10,7 @@
         ">
 
     <!-- client 客户端配置 -->
-    <elasticsearch:transport-client id="client"  cluster-nodes="192.168.106.155:9300" cluster-name="elasticsearch"/>
+    <elasticsearch:transport-client id="client"  cluster-nodes="192.168.93.137:9300" cluster-name="elasticsearch"/>
 
     <!-- 扫描Dao包，自动创建实例 -->
     <elasticsearch:repositories base-package="com.yuu.ymall.web.api.repositories"/>
