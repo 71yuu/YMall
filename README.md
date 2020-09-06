@@ -97,7 +97,7 @@
 
 - 首页
 
-  ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/后台首页.png)
+![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/后台首页.png)
 
 ## 项目部署
 ### 1. 运行项目所需环境
@@ -111,7 +111,8 @@
 
 确保你已经安装上述环境，以上安装教程可自行百度...，安装记得修改 `ymall-web-api` 和 `ymall-web-admin` 的 Redis 和 Elasticsearch 的连接地址
 ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/Yuu_2020-09-06_13-13-20.png)
-## 2. 导入项目
+
+### 2. 导入项目
 
 - `IDEA` -> `open`
 
@@ -131,12 +132,14 @@
 
   ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/Yuu_20191113095010.png)
 
-## 2. 导入 SQL 文件
+###　3. 导入 SQL 文件
+
  sql 文件在 `sql\ymall.sql`
 
 ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/Yuu_20191113103213.png)
 
-## 3. 部署接口项目
+### ４. 部署接口项目
+
   由于前台使用的是前后分离，所以接口项目是给前台 Vue 项目使用的
 
 - 配置 `Tomcat`
@@ -159,16 +162,18 @@
 
   ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/Yuu_20191113104506.png)
 
-## 4. 部署后台项目
+### 5. 部署后台项目
+
 后台项目暂时为 SSM + Jsp 项目，后期可能会重构为 VUE 项目
 
 部署方式与接口项目一致，只需要改端口号和 JMX port 即可
 
 ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/Yuu_20191113104946.png)
 
-## 5.  启动前台 vue 项目
+### 6. 启动前台 vue 项目
 
 - 确保已安装 `node.js`
 - `npm install` 安装依赖
 - `npm install node-sass` 安装 sass
 - `npm run dev` 运行项目
+
