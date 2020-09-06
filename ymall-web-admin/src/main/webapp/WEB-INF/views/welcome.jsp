@@ -94,7 +94,7 @@
                                 <img width="83px" height="83px" src="/static/assets/lib/flatlab/img/avatar1.jpg" alt="">
                             </a>
                             <div class="task-thumb-details">
-                                <h1><a href="http://71yuu.com" target="_blank">Yuu</a></h1>
+                                <h1><a href="https://blog.csdn.net/qq_37581282" target="_blank">Yuu</a></h1>
                                 <p>Author</p>
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                                     <i class=" icon-tasks"></i>
                                 </td>
                                 <td>
-                                    <a target="_blank" href="http://www.71yuu.com/about/">
+                                    <a target="_blank" href="https://blog.csdn.net/qq_37581282">
                                         个人简介
                                     </a>
                                 </td>
@@ -116,7 +116,7 @@
                                     <i class="icon-book"></i>
                                 </td>
                                 <td>
-                                    <a target="_blank" href="http://www.71yuu.com/">
+                                    <a target="_blank" href="https://blog.csdn.net/qq_37581282/">
                                         个人博客
                                     </a>
                                 </td>

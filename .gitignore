@@ -24,3 +24,5 @@ rebel.xml
 ### Other ###
 logs/
 temp/
+
+/.idea/

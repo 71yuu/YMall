@@ -12,12 +12,12 @@
               </li>
             </ul>
           </div>
-          <div class="thumb">
+          <!--<div class="thumb">
             <div class="big" style="width:100%; height: 100%;">
               <pic-zoom :url="big" :scale="3" :alt="product.productName"></pic-zoom>
-              <!--<img :src="big" :alt="product.productName">-->
+              &lt;!&ndash;<img :src="big" :alt="product.productName">&ndash;&gt;
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
       <!-- 右边 -->
@@ -68,7 +68,6 @@
 <script>
   import { productDet } from '/api/goods'
   import { mapState, mapMutations } from 'vuex'
-  import PicZoom from 'vue-piczoom'
   import YButton from '/components/YButton'
   import BuyNum from '/components/buynum'
   import { addCartProduct } from '/api/cart'
@@ -165,7 +164,6 @@
     },
     components: {
       YButton,
-      PicZoom,
       BuyNum,
       YShelf
     }

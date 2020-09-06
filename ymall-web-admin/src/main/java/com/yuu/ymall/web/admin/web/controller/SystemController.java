@@ -37,8 +37,7 @@ public class SystemController {
     @ApiOperation(value = "获取天气信息")
     public BaseResult getWeather(HttpServletRequest request) {
         // todo 修改 ip
-        // String result = IPInfoUtil.getIpInfo(IPInfoUtil.getIpAddr(request));
-        String result = IPInfoUtil.getIpInfo("58.23.36.251");
+         String result = IPInfoUtil.getIpInfo(IPInfoUtil.getIpAddr(request));
         return BaseResult.success((Object)result);
     }
 
