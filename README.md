@@ -112,6 +112,12 @@
 确保你已经安装上述环境，以上安装教程可自行百度...，安装记得修改 `ymall-web-api` 和 `ymall-web-admin` 的 Redis 和 Elasticsearch 的连接地址
 ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/Yuu_2020-09-06_13-13-20.png)
 
+- 还需要七牛云的图片服务器和阿里云沙箱支付的密钥，请自行申请
+
+  ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/Yuu_2020-09-06_13-51-23.png)
+
+  ![](https://yuu-blog.oss-cn-shenzhen.aliyuncs.com/Yuu_2020-09-06_13-51-45.png)
+
 ### 2. 导入项目
 
 - `IDEA` -> `open`
