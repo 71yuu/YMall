@@ -11,7 +11,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "element-china-area-data": "^4.1.2",
     "element-ui": "^1.4.13",
     "geetest3": "^1.0.0",
