@@ -55,7 +55,7 @@
         <quartz.version>2.2.3</quartz.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <slf4j.version>1.8.0-alpha2</slf4j.version>
-        <spring.version>5.0.4.RELEASE</spring.version>
+        <spring.version>5.2.22.RELEASE</spring.version>
         <spring-data-redis.version>1.8.22.RELEASE</spring-data-redis.version>
         <spring-data-elasticsearch.version>3.0.5.RELEASE</spring-data-elasticsearch.version>
         <shiro.version>1.4.0</shiro.version>
